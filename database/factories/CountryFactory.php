@@ -19,7 +19,6 @@ class CountryFactory extends Factory
         return [
             'name' => $this->faker->country,
             'iso2' => $this->faker->countryCode,
-            'iso3' => $this->faker->countryISOAlpha3,
             'status' => $this->faker->boolean,
         ];
     }

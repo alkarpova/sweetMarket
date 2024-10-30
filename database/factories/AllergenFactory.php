@@ -17,7 +17,7 @@ class AllergenFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word,
+            'name' => $this->faker->unique()->name,
             'description' => $this->faker->sentence,
             'severity_level' => $this->faker->numberBetween(1, 5),
             'status' => $this->faker->boolean,

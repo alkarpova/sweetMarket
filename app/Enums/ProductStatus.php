@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-enum ProductStatus: int
+use Filament\Support\Contracts\HasLabel;
+
+enum ProductStatus: int implements HasLabel
 {
     case Draft = 0;
     case Pending = 1;
@@ -11,4 +13,17 @@ enum ProductStatus: int
     case Published = 4;
     case Archived = 5;
     case Inactive = 6;
+
+    public function getLabel(): string
+    {
+        return match ($this) {
+            self::Draft => 'Draft',
+            self::Pending => 'Pending',
+            self::Approved => 'Approved',
+            self::Rejected => 'Rejected',
+            self::Published => 'Published',
+            self::Archived => 'Archived',
+            self::Inactive => 'Inactive',
+        };
+    }
 }

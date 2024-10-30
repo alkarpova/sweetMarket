@@ -31,8 +31,8 @@ class ProductFactory extends Factory
             'theme_id' => Theme::value('id'),
             'name' => $this->faker->name,
             'description' => $this->faker->text,
-            'price' => $this->faker->randomFloat(2, 0, 1000),
-            'weight' => $this->faker->randomFloat(2, 0, 1000),
+            'price' => $this->faker->randomFloat(2, 0, 100),
+            'weight' => $this->faker->randomFloat(2, 0, 100),
         ];
     }
 }

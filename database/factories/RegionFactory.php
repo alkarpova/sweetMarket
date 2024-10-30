@@ -19,7 +19,7 @@ class RegionFactory extends Factory
     {
         return [
             'country_id' => Country::value('id'),
-            'name' => $this->faker->country,
+            'name' => $this->faker->name,
             'status' => $this->faker->boolean,
         ];
     }

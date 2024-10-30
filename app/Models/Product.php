@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
@@ -30,8 +31,11 @@ class Product extends Model
             'theme_id' => 'string',
             'name' => 'string',
             'description' => 'string',
+            'price' => 'float',
             'minimum' => 'integer',
             'maximum' => 'integer',
+            'quantity' => 'integer',
+            'weight' => 'float',
             'status' => ProductStatus::class,
         ];
     }
@@ -82,6 +86,14 @@ class Product extends Model
     public function theme(): BelongsTo
     {
         return $this->belongsTo(Theme::class);
+    }
+
+    /**
+     * Get the options for the product.
+     */
+    public function options(): HasMany
+    {
+        return $this->hasMany(ProductOption::class);
     }
 
     /**
