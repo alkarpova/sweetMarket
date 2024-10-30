@@ -31,9 +31,6 @@ class CountryResource extends Resource
                         Forms\Components\TextInput::make('iso2')
                             ->required()
                             ->maxLength(2),
-                        Forms\Components\TextInput::make('iso3')
-                            ->required()
-                            ->maxLength(3),
                         Forms\Components\Toggle::make('status')
                             ->default(true),
                     ]),
@@ -47,8 +44,6 @@ class CountryResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('iso2')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('iso3')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('status')
                     ->boolean(),

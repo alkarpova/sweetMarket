@@ -25,15 +25,16 @@ class RegionResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
+                        Forms\Components\Select::make('country_id')
+                            ->required()
+                            ->relationship('country', 'name')
+                            ->preload()
+                            ->searchable(),
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('iso2')
-                            ->required()
-                            ->maxLength(2),
-                        Forms\Components\TextInput::make('iso3')
-                            ->required()
-                            ->maxLength(3),
+                        Forms\Components\Toggle::make('status')
+                            ->default(true),
                     ]),
             ]);
     }
