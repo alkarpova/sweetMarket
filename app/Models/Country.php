@@ -20,7 +20,6 @@ class Country extends Model
     protected $fillable = [
         'name',
         'iso2',
-        'iso3',
         'status',
     ];
 
@@ -34,7 +33,6 @@ class Country extends Model
         return [
             'name' => 'string',
             'iso2' => 'string',
-            'iso3' => 'string',
             'status' => 'boolean',
         ];
     }

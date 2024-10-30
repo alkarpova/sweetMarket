@@ -15,7 +15,6 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('name')->unique()->index();
             $table->string('iso2', 2);
-            $table->string('iso3', 3);
             $table->boolean('status')->default(true)->index();
             $table->timestamps();
             $table->softDeletes();
