@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'role' => \App\Enums\UserRole::Admin,
         ]);
 
         Country::factory()->create([
@@ -83,6 +84,15 @@ class DatabaseSeeder extends Seeder
         $items->each(function ($product) {
             $product->options()->saveMany(
                 ProductOption::factory(3)->make()
+            );
+            $product->allergens()->attach(
+                Allergen::inRandomOrder()->limit(3)->get()
+            );
+            $product->ingredients()->attach(
+                Ingredient::inRandomOrder()->limit(3)->get()
+            );
+            $product->themes()->attach(
+                Theme::inRandomOrder()->limit(3)->get()
             );
         });
     }

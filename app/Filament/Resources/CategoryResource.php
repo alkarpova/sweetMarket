@@ -43,6 +43,9 @@ class CategoryResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\IconColumn::make('status')
+                    ->sortable()
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

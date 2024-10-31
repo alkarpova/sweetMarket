@@ -20,7 +20,6 @@ class ProductOption extends Model
     protected function casts(): array
     {
         return [
-            'product_id' => 'string',
             'name' => 'string',
             'price' => 'float',
             'quantity' => 'integer',

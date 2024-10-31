@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -23,13 +24,8 @@ class Product extends Model
     protected function casts(): array
     {
         return [
-            'user_id' => 'string',
-            'country_id' => 'string',
-            'region_id' => 'string',
-            'city_id' => 'string',
-            'category_id' => 'string',
-            'theme_id' => 'string',
             'name' => 'string',
+            'image' => 'string',
             'description' => 'string',
             'price' => 'float',
             'minimum' => 'integer',
@@ -81,11 +77,12 @@ class Product extends Model
     }
 
     /**
-     * Get the theme that owns the product.
+     * Get the themes for the product.
      */
-    public function theme(): BelongsTo
+    public function themes(): BelongsToMany
     {
-        return $this->belongsTo(Theme::class);
+        return $this->belongsToMany(Theme::class)
+            ->withTimestamps();
     }
 
     /**
@@ -94,6 +91,24 @@ class Product extends Model
     public function options(): HasMany
     {
         return $this->hasMany(ProductOption::class);
+    }
+
+    /**
+     * Get the allergens for the product.
+     */
+    public function allergens(): BelongsToMany
+    {
+        return $this->belongsToMany(Allergen::class)
+            ->withTimestamps();
+    }
+
+    /**
+     * Get the ingredients for the product.
+     */
+    public function ingredients(): BelongsToMany
+    {
+        return $this->belongsToMany(Ingredient::class)
+            ->withTimestamps();
     }
 
     /**

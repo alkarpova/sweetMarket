@@ -41,6 +41,7 @@ class ThemeResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('status')
+                    ->sortable()
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

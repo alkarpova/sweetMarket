@@ -2,18 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Category;
+use App\Enums\OrderStatus;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Region;
-use App\Models\Theme;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Order>
  */
-class ProductFactory extends Factory
+class OrderFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -27,12 +26,11 @@ class ProductFactory extends Factory
             'country_id' => Country::value('id'),
             'region_id' => Region::value('id'),
             'city_id' => City::value('id'),
-            'category_id' => Category::value('id'),
-            'name' => $this->faker->name,
-            'image' => $this->faker->imageUrl(),
-            'description' => $this->faker->text,
-            'price' => $this->faker->randomFloat(2, 0, 100),
-            'weight' => $this->faker->randomFloat(2, 0, 100),
+            'number' => $this->faker->uuid,
+            'shipping_address' => $this->faker->address,
+            'total' => $this->faker->randomFloat(2, 0, 1000),
+            'notes' => $this->faker->text,
+            'status' => $this->faker->randomElement(OrderStatus::cases())->value,
         ];
     }
 }

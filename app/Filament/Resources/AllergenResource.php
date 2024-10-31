@@ -49,8 +49,9 @@ class AllergenResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('severity_level')
                     ->sortable(),
-                Tables\Columns\ToggleColumn::make('status')
-                    ->sortable(),
+                Tables\Columns\IconColumn::make('status')
+                    ->sortable()
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

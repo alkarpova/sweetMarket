@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RegionResource\Pages;
-use App\Filament\Resources\RegionResource\RelationManagers;
-use App\Models\Region;
+use App\Enums\OrderStatus;
+use App\Filament\Resources\OrderResource\Pages;
+use App\Filament\Resources\OrderResource\RelationManagers;
+use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class RegionResource extends Resource
+class OrderResource extends Resource
 {
-    protected static ?string $model = Region::class;
+    protected static ?string $model = Order::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -25,16 +26,18 @@ class RegionResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
-                        Forms\Components\Select::make('country_id')
-                            ->required()
-                            ->relationship('country', 'name')
+                        Forms\Components\TextInput::make('number')
+                            ->disabled(),
+                        Forms\Components\Select::make('user_id')
+                            ->relationship('user', 'name')
+                            ->searchable()
                             ->preload()
-                            ->searchable(),
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Toggle::make('status')
-                            ->default(true),
+                            ->disabled(),
+                        Forms\Components\TextInput::make('total')
+                            ->disabled(),
+                        Forms\Components\Select::make('status')
+                            ->options(OrderStatus::class)
+                            ->disabled(),
                     ]),
             ]);
     }
@@ -42,12 +45,24 @@ class RegionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function ($query) {
+                return $query->with([
+                    'user',
+                    'items',
+                ]);
+            })
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('number')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('status')
-                    ->sortable()
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('items_count')
+                    ->counts('items'),
+                Tables\Columns\TextColumn::make('total')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -65,6 +80,7 @@ class RegionResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -86,9 +102,10 @@ class RegionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRegions::route('/'),
-            'create' => Pages\CreateRegion::route('/create'),
-            'edit' => Pages\EditRegion::route('/{record}/edit'),
+            'index' => Pages\ListOrders::route('/'),
+            'create' => Pages\CreateOrder::route('/create'),
+            'view' => Pages\ViewOrder::route('/{record}'),
+            'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
 

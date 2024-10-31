@@ -104,12 +104,24 @@ class ProductResource extends Resource
                                     ->searchable()
                                     ->preload()
                                     ->disabled(),
-                                Forms\Components\Select::make('theme_id')
-                                    ->relationship('theme', 'name')
+                                Forms\Components\Select::make('themes')
+                                    ->relationship('themes', 'name')
+                                    ->multiple()
                                     ->searchable()
                                     ->preload()
                                     ->disabled(),
-
+                                Forms\Components\Select::make('allergens')
+                                    ->relationship('allergens', 'name')
+                                    ->multiple()
+                                    ->searchable()
+                                    ->preload()
+                                    ->disabled(),
+                                Forms\Components\Select::make('ingredients')
+                                    ->relationship('ingredients', 'name')
+                                    ->multiple()
+                                    ->searchable()
+                                    ->preload()
+                                    ->disabled(),
                                 Forms\Components\Select::make('status')
                                     ->searchable()
                                     ->preload()
@@ -127,13 +139,11 @@ class ProductResource extends Resource
                 return $query->with([
                     'user',
                     'category',
-                    'theme',
                 ]);
             })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name'),
                 Tables\Columns\TextColumn::make('category.name'),
-                Tables\Columns\TextColumn::make('theme.name'),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
@@ -179,8 +189,8 @@ class ProductResource extends Resource
                     ->relationship('category', 'name')
                     ->preload()
                     ->searchable(),
-                Tables\Filters\SelectFilter::make('theme')
-                    ->relationship('theme', 'name')
+                Tables\Filters\SelectFilter::make('themes')
+                    ->relationship('themes', 'name')
                     ->preload()
                     ->searchable(),
                 Tables\Filters\SelectFilter::make('status')

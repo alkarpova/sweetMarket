@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RegionResource\Pages;
-use App\Filament\Resources\RegionResource\RelationManagers;
-use App\Models\Region;
+use App\Enums\UserRole;
+use App\Filament\Resources\UserResource\Pages;
+use App\Filament\Resources\UserResource\RelationManagers;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class RegionResource extends Resource
+class UserResource extends Resource
 {
-    protected static ?string $model = Region::class;
+    protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,19 +24,17 @@ class RegionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
-                    ->schema([
-                        Forms\Components\Select::make('country_id')
-                            ->required()
-                            ->relationship('country', 'name')
-                            ->preload()
-                            ->searchable(),
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Toggle::make('status')
-                            ->default(true),
-                    ]),
+                Forms\Components\Section::make([
+                    Forms\Components\TextInput::make('name')
+                        ->label('Name')
+                        ->required()
+                        ->disabled(),
+                    Forms\Components\TextInput::make('email')
+                        ->label('Email')
+                        ->required()
+                        ->email()
+                        ->disabled(),
+                ]),
             ]);
     }
 
@@ -45,9 +44,11 @@ class RegionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('status')
-                    ->sortable()
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\SelectColumn::make('role')
+                    ->options(UserRole::class)
+                    ->disabled(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -65,6 +66,7 @@ class RegionResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -86,9 +88,10 @@ class RegionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRegions::route('/'),
-            'create' => Pages\CreateRegion::route('/create'),
-            'edit' => Pages\EditRegion::route('/{record}/edit'),
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'view' => Pages\ViewUser::route('/{record}'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 
