@@ -26,6 +26,7 @@ class IngredientResource extends Resource
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->maxLength(255)
                             ->required(),
                         Forms\Components\Toggle::make('status')
                             ->default(true),
