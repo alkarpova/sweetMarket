@@ -26,6 +26,7 @@ class AllergenResource extends Resource
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->maxLength(255)
                             ->required(),
                         Forms\Components\Textarea::make('description')
                             ->rows(3)

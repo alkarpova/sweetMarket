@@ -21,7 +21,6 @@ class CategoryFactory extends Factory
         $name = $this->faker->name;
 
         return [
-            'parent_id' => Category::value('id'),
             'name' => $name,
             'slug' => Str::slug($name),
             'status' => $this->faker->boolean,

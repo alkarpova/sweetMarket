@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('parent_id')->nullable()->constrained('categories')->nullOnDelete();
             $table->string('name')->unique()->index();
             $table->string('slug')->unique()->index();
             $table->boolean('status')->default(true)->index();

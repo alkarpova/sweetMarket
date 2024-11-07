@@ -20,7 +20,6 @@ class Category extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'parent_id',
         'name',
         'slug',
         'status',
@@ -34,7 +33,6 @@ class Category extends Model
     protected function casts(): array
     {
         return [
-            'parent_id' => 'string',
             'name' => 'string',
             'slug' => 'string',
             'status' => 'boolean',
@@ -42,23 +40,13 @@ class Category extends Model
     }
 
     /**
-     * Get the parent that owns the category.
+     * Get the products for the category.
      *
-     * @return BelongsTo<Category>
+     * @return HasMany<Product>
      */
-    public function parent(): BelongsTo
+    public function products(): HasMany
     {
-        return $this->belongsTo(__CLASS__, 'parent_id');
-    }
-
-    /**
-     * Get the children for the category.
-     *
-     * @return HasMany<Category>
-     */
-    public function children(): HasMany
-    {
-        return $this->hasMany(__CLASS__, 'parent_id');
+        return $this->hasMany(Product::class);
     }
 
     /**

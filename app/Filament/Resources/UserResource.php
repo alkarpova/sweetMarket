@@ -26,6 +26,7 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\Section::make([
                     Forms\Components\TextInput::make('name')
+                        ->maxLength(255)
                         ->label('Name')
                         ->required()
                         ->disabled(),
