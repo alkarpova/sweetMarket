@@ -37,6 +37,15 @@ class Product extends Model
     }
 
     /**
+     * Get the short description attribute.
+     */
+    public function getShortDescriptionAttribute(): string
+    {
+        $shortDescription = substr($this->description, 0, 60);
+        return strlen($this->description) > 60 ? $shortDescription . '...' : $shortDescription;
+    }
+
+    /**
      * Get the user that owns the product.
      */
     public function user(): BelongsTo

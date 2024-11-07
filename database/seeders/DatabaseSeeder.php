@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ProductStatus;
 use App\Models\Allergen;
 use App\Models\Category;
 use App\Models\City;
@@ -67,33 +68,31 @@ class DatabaseSeeder extends Seeder
         Ingredient::factory(10)->create();
         Theme::factory(10)->create();
 
-        Category::factory()->create([
-            'name' => 'Cakes',
+        $categories = Category::factory(8)->create([
+            'status' => true,
         ]);
 
-        Category::factory()->create([
-            'name' => 'Cookies',
-        ]);
+        $categories->each(function ($category) {
+            // Create products
+            $products = Product::factory(50)->create([
+                'category_id' => $category->id,
+                'status' => ProductStatus::Published,
+            ]);
 
-        Category::factory()->create([
-            'name' => 'Pies',
-        ]);
-
-        $items = Product::factory(10)->create();
-
-        $items->each(function ($product) {
-            $product->options()->saveMany(
-                ProductOption::factory(3)->make()
-            );
-            $product->allergens()->attach(
-                Allergen::inRandomOrder()->limit(3)->get()
-            );
-            $product->ingredients()->attach(
-                Ingredient::inRandomOrder()->limit(3)->get()
-            );
-            $product->themes()->attach(
-                Theme::inRandomOrder()->limit(3)->get()
-            );
+            $products->each(function ($product) {
+                $product->options()->saveMany(
+                    ProductOption::factory(3)->make()
+                );
+                $product->allergens()->attach(
+                    Allergen::inRandomOrder()->limit(3)->get()
+                );
+                $product->ingredients()->attach(
+                    Ingredient::inRandomOrder()->limit(3)->get()
+                );
+                $product->themes()->attach(
+                    Theme::inRandomOrder()->limit(3)->get()
+                );
+            });
         });
     }
 }
