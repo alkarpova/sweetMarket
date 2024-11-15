@@ -26,12 +26,14 @@ class AllergenResource extends Resource
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->unique(ignoreRecord: true)
                             ->maxLength(255)
                             ->required(),
                         Forms\Components\Textarea::make('description')
                             ->rows(3)
                             ->nullable(),
                         Forms\Components\TextInput::make('severity_level')
+                            ->required()
                             ->integer()
                             ->minValue(1)
                             ->maxValue(5),
@@ -44,6 +46,7 @@ class AllergenResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginated([10])
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
@@ -67,6 +70,13 @@ class AllergenResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        0 => 'Inactive',
+                        1 => 'Active',
+                    ])
+                    ->preload()
+                    ->searchable(),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([

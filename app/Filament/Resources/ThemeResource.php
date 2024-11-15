@@ -26,6 +26,7 @@ class ThemeResource extends Resource
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->unique(ignoreRecord: true)
                             ->required()
                             ->maxLength(255),
                         Forms\Components\Toggle::make('status')
@@ -37,6 +38,7 @@ class ThemeResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginated([10])
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
@@ -57,6 +59,13 @@ class ThemeResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        0 => 'Inactive',
+                        1 => 'Active',
+                    ])
+                    ->preload()
+                    ->searchable(),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([

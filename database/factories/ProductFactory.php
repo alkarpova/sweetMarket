@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Region;
-use App\Models\Theme;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -28,7 +27,7 @@ class ProductFactory extends Factory
             'region_id' => Region::value('id'),
             'city_id' => City::value('id'),
             'category_id' => Category::value('id'),
-            'name' => $this->faker->name,
+            'name' => $this->faker->sentence,
             'image' => $this->faker->imageUrl(640, 480, null , false, false, false, 'jpg'),
             'description' => $this->faker->text,
             'price' => $this->faker->randomFloat(2, 0, 100),

@@ -20,6 +20,11 @@ class OrderResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -51,6 +56,7 @@ class OrderResource extends Resource
                     'items',
                 ]);
             })
+            ->paginated([10])
             ->columns([
                 Tables\Columns\TextColumn::make('number')
                     ->searchable()
@@ -103,9 +109,7 @@ class OrderResource extends Resource
     {
         return [
             'index' => Pages\ListOrders::route('/'),
-            'create' => Pages\CreateOrder::route('/create'),
             'view' => Pages\ViewOrder::route('/{record}'),
-            'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
 

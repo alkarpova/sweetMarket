@@ -28,6 +28,7 @@ class RegionResource extends Resource
                         Forms\Components\Select::make('country_id')
                             ->required()
                             ->relationship('country', 'name')
+                            ->unique(ignoreRecord: true)
                             ->preload()
                             ->searchable(),
                         Forms\Components\TextInput::make('name')
@@ -42,6 +43,7 @@ class RegionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginated([10])
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
@@ -62,6 +64,13 @@ class RegionResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        0 => 'Inactive',
+                        1 => 'Active',
+                    ])
+                    ->preload()
+                    ->searchable(),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([

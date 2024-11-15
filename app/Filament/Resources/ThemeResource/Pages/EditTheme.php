@@ -18,4 +18,9 @@ class EditTheme extends EditRecord
             Actions\RestoreAction::make(),
         ];
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('index');
+    }
 }

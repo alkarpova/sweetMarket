@@ -17,6 +17,28 @@ class Product extends Model
     use HasFactory, HasUlids, SoftDeletes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'country_id',
+        'region_id',
+        'city_id',
+        'category_id',
+        'name',
+        'image',
+        'price',
+        'minimum',
+        'maximum',
+        'quantity',
+        'weight',
+        'description',
+        'status',
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>

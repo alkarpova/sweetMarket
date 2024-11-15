@@ -26,6 +26,7 @@ class CategoryResource extends Resource
                 Forms\Components\Section::make()
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->unique(ignoreRecord: true)
                             ->maxLength(255)
                             ->required(),
                         Forms\Components\Toggle::make('status')
@@ -37,6 +38,7 @@ class CategoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->paginated([10])
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
@@ -58,6 +60,13 @@ class CategoryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        0 => 'Inactive',
+                        1 => 'Active',
+                    ])
+                    ->preload()
+                    ->searchable(),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([

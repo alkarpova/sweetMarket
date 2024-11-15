@@ -20,6 +20,11 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -33,6 +38,7 @@ class ProductResource extends Resource
                             ->columnSpan(3)
                             ->schema([
                                 Forms\Components\TextInput::make('name')
+                                    ->unique(ignoreRecord: true)
                                     ->disabled(),
                                 Forms\Components\Textarea::make('description')
                                     ->disabled(),
@@ -141,6 +147,7 @@ class ProductResource extends Resource
                     'category',
                 ]);
             })
+            ->paginated([10])
             ->columns([
                 Tables\Columns\TextColumn::make('user.name'),
                 Tables\Columns\TextColumn::make('category.name'),
@@ -201,7 +208,6 @@ class ProductResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
