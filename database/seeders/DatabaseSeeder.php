@@ -23,14 +23,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'role' => \App\Enums\UserRole::Admin,
-        ]);
-
         Country::factory()->create([
             'name' => 'Latvia',
             'iso2' => 'LV',
@@ -64,14 +56,147 @@ class DatabaseSeeder extends Seeder
             'name' => 'Rīga',
         ]);
 
-        Allergen::factory(10)->create();
-        Ingredient::factory(10)->create();
-        Theme::factory(10)->create();
-
-        $categories = Category::factory(8)->create([
-            'status' => true,
+        // Create admin user
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'role' => \App\Enums\UserRole::Admin,
         ]);
 
+        // Create suppliers
+        $users = User::factory(10)->create([
+            'role' => \App\Enums\UserRole::Supplier,
+        ]);
+
+        $users->each(function ($user) {
+            $user->city()->associate(City::inRandomOrder()->first());
+            $user->save();
+        });
+
+        $categoryMap = [
+            'Tortes',
+            'Smalkmaizes',
+            'Pīrādziņi',
+            'Ruletes',
+            'Ekleri',
+            'Riekstiņi',
+            'Kūkas',
+            'Kliņģeri',
+            'Zefīrs',
+            'Austrumu saldumi',
+            'Cits',
+        ];
+
+        $categories = collect();
+        foreach ($categoryMap as $categoryName) {
+            $cat = Category::factory()->create([
+                'name' => $categoryName,
+                'status' => true,
+            ]);
+
+            $categories->push($cat);
+        }
+
+        $themeMap = [
+            'Bērniem',
+            'Dzimšanas diena',
+            'Kāzas',
+            'Ziemassvētki',
+            'Lieldienas',
+        ];
+
+        $themes = collect();
+        foreach ($themeMap as $themeName) {
+            $theme = Theme::factory()->create([
+                'name' => $themeName,
+                'status' => true,
+            ]);
+
+            $themes->push($theme);
+        }
+
+        $ingredientMap = [
+            'Šokolāde',
+            'Mellenes',
+            'Zemenes',
+            'Medus',
+            'Biezpiens',
+            'Āboli',
+            'Apelsīni',
+            'Ķirši',
+            'Vārītais krēms',
+            'Avenes',
+            'Banāns',
+            'Rieksti',
+            'Kanēlis',
+            'Magones',
+            'Plūmes',
+            'Iebiezinātais piens',
+            'Aprikozes',
+            'Karamele',
+            'Olas',
+            'Siers',
+            'Gaļa',
+            'Kāposti',
+            'Sīpoli',
+            'Sēnes',
+            'Kartupeļi',
+            'Cits',
+        ];
+
+        $ingredients = collect();
+        foreach ($ingredientMap as $ingredientName) {
+            $ingredient = Ingredient::factory()->create([
+                'name' => $ingredientName,
+                'status' => true,
+            ]);
+
+            $ingredients->push($ingredient);
+        }
+
+        $allergenMap = [
+            'Glutēns',
+            'Laktoze',
+            'Olu',
+            'Soja',
+            'Rieksti',
+            'Zivis',
+            'Garneles',
+            'Jūras veltes',
+            'Zirņi',
+            'Sinepes',
+            'Sēnes',
+            'Sulfiți',
+            'Lupīna',
+            'Kukurūza',
+            'Kvieši',
+            'Piena olbaltumvielas',
+            'Mitrālija',
+            'Kakao',
+            'Kokosrieksti',
+            'Mandarīni',
+            'Piena šokolāde',
+            'Kivi',
+            'Mango',
+            'Ananāsi',
+            'Piena produkti',
+            'Melnā šokolāde',
+            'Baltais šokolāde',
+            'Kafija',
+            'Cits',
+        ];
+
+        $allergens = collect();
+        foreach ($allergenMap as $allergenName) {
+            $allergen = Allergen::factory()->create([
+                'name' => $allergenName,
+                'status' => true,
+            ]);
+
+            $allergens->push($allergen);
+        }
+
+        // make products
         $categories->each(function ($category) {
             // Create products
             $products = Product::factory(50)->create([
@@ -80,9 +205,6 @@ class DatabaseSeeder extends Seeder
             ]);
 
             $products->each(function ($product) {
-                $product->options()->saveMany(
-                    ProductOption::factory(3)->make()
-                );
                 $product->allergens()->attach(
                     Allergen::inRandomOrder()->limit(3)->get()
                 );
