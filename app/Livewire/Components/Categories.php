@@ -25,10 +25,14 @@ class Categories extends Component
             ->get();
     }
 
+    #[Computed]
+    public function isActiveCategory($slug): bool
+    {
+        return url()->current() === route('category-page', ['slug' => $slug]);
+    }
+
     public function render(): View
     {
-        return view('livewire.components.categories', [
-            'categories' => $this->categories(),
-        ]);
+        return view('livewire.components.categories');
     }
 }

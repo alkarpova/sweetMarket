@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Pages;
 
+use App\Models\Allergen;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Theme;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,13 +14,6 @@ use Livewire\WithPagination;
 class CategoryPage extends Component
 {
     use WithPagination;
-
-    /**
-     * Url slug of the category
-     *
-     * @var string
-     */
-    public string $slug;
 
     /**
      * Selected themes in the filter
@@ -29,30 +24,44 @@ class CategoryPage extends Component
     public array $selectedThemes = [];
 
     /**
+     * Selected allergens in the filter
+     *
+     * @var array
+     */
+    #[Url(as: 't')]
+    public array $selectedAllergens = [];
+
+    /**
+     * Category record
+     *
+     * @var Category
+     */
+    public ?Category $record;
+
+    /**
      * Get the category by slug
      *
      */
-    public function category()
+    public function mount(string $slug)
     {
-        return cache()->remember("category_{$this->slug}", 3600, function () {
-            return Category::where('slug', $this->slug)
-                ->status()
-                ->firstOrFail();
-        });
+         $this->record = Category::where('slug', $slug)
+            ->status()
+            ->firstOrFail();
     }
 
     /**
      * Get the products for the category
      *
      */
+    #[Computed]
     public function products()
     {
         // Create base query
         $query = Product::query()
             ->orderBy('created_at', 'desc')
-            ->where('category_id', $this->category()->id)
+            ->where('category_id', $this->record->id)
             ->with([
-                'user',
+                'themes',
             ])
             ->status();
 
@@ -66,6 +75,16 @@ class CategoryPage extends Component
             }
         });
 
+        // Apply allergen filter if selected allergens are not empty
+        $query->when(!empty($this->selectedAllergens), function ($query) {
+            $selectedAllergens = $this->filterSelectedAllergens();
+            if (!empty($selectedAllergens)) {
+                $query->whereHas('allergens', function ($query) use ($selectedAllergens) {
+                    $query->whereIn('allergens.id', $selectedAllergens);
+                });
+            }
+        });
+
         // Return paginated results
         return $query->paginate();
     }
@@ -74,6 +93,7 @@ class CategoryPage extends Component
      * Filter selected themes to include only available themes for the category
      *
      */
+    #[Computed]
     protected function filterSelectedThemes(): array
     {
         $availableThemes = $this->themes()->pluck('id')->toArray();
@@ -88,13 +108,38 @@ class CategoryPage extends Component
     /**
      * Get the themes for the category
      */
+    #[Computed]
     public function themes()
     {
-        return cache()->remember("themes_for_category_{$this->category()->id}", 3600, function () {
-            return Theme::whereHas('products', function ($query) {
-                $query->where('category_id', $this->category()->id);
-            })->status()->get();
-        });
+        return Theme::whereHas('products', function ($query) {
+            $query->where('category_id', $this->record->id);
+        })->status()->get();
+    }
+
+    /**
+     * Get the allergens for the category
+     */
+    #[Computed]
+    public function allergens()
+    {
+        return Allergen::whereHas('products', function ($query) {
+            $query->where('category_id', $this->record->id);
+        })->status()->get();
+    }
+
+    /**
+     * Filter selected allergens to include only available allergens for the category
+     */
+    #[Computed]
+    public function filterSelectedAllergens(): array
+    {
+        $available = $this->allergens()->pluck('id')->toArray();
+
+        // Filter out themes that are not available
+        return collect($this->selectedAllergens)
+            ->filter(fn($theme) => in_array($theme, $available, true))
+            ->values()
+            ->all();
     }
 
     /**
@@ -102,10 +147,6 @@ class CategoryPage extends Component
      */
     public function render()
     {
-        return view('livewire.pages.category-page', [
-            'category' => $this->category(),
-            'products' => $this->products(),
-            'themes' => $this->themes(),
-        ]);
+        return view('livewire.pages.category-page');
     }
 }

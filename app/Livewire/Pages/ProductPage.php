@@ -3,18 +3,22 @@
 namespace App\Livewire\Pages;
 
 use App\Models\Product;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class ProductPage extends Component
 {
-    public string $id;
+    public ?Product $record;
 
-    #[Computed]
-    public function product(): Product
+    /**
+     * Get the product by id
+     *
+     * @param string $id
+     */
+    public function mount(string $id)
     {
-        return Product::where('id', $this->id)
+        $this->record = Product::where('id', $id)
             ->with([
+                'category',
                 'user',
                 'allergens',
                 'ingredients',
@@ -26,8 +30,6 @@ class ProductPage extends Component
 
     public function render()
     {
-        return view('livewire.pages.product-page', [
-            'product' => $this->product(),
-        ]);
+        return view('livewire.pages.product-page');
     }
 }

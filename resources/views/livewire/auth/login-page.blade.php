@@ -1,12 +1,12 @@
 <div>
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900 leading-9">
+        <h1 class="mt-6 text-3xl font-extrabold text-center text-gray-900 leading-9">
             Sign in to your account
-        </h2>
-        @if (Route::has('register'))
+        </h1>
+        @if (Route::has('register-page'))
             <p class="mt-2 text-sm text-center text-gray-600 leading-5 max-w">
                 Or
-                <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
+                <a href="{{ route('register-page') }}" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:underline transition ease-in-out duration-150">
                     create a new account
                 </a>
             </p>

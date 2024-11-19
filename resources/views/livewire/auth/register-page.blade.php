@@ -1,8 +1,8 @@
 <div>
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 class="mt-6 text-3xl font-extrabold text-center text-gray-900 leading-9">
+        <h1 class="mt-6 text-3xl font-extrabold text-center text-gray-900 leading-9">
             Create a new account
-        </h2>
+        </h1>
 
         <p class="mt-2 text-sm text-center text-gray-600 leading-5 max-w">
             Or
