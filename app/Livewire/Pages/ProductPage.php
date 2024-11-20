@@ -2,12 +2,14 @@
 
 namespace App\Livewire\Pages;
 
+use App\Facades\Cart;
 use App\Models\Product;
 use Livewire\Component;
 
 class ProductPage extends Component
 {
     public ?Product $record;
+    public int $quantity = 1;
 
     /**
      * Get the product by id
@@ -26,6 +28,11 @@ class ProductPage extends Component
             ])
             ->status()
             ->firstOrFail();
+    }
+
+    public function addToCart(): void
+    {
+        Cart::add($this->record, $this->quantity);
     }
 
     public function render()

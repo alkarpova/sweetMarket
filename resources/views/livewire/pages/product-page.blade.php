@@ -7,7 +7,7 @@
         >
             Category: {{ $this->record->category->name }}
         </a>
-        <h1 class="text-3xl font-bold text-gray-800">{{ $this->record->name }}</h1>
+        <h1 class="text-3xl font-bold text-gray-800">{!! $this->record->name !!}</h1>
         <div class="flex flex-wrap items-center gap-2">
             @foreach($this->record->themes as $theme)
                 <span class="bg-gray-100 px-2 py-1 rounded-lg">{{ $theme->name }}</span>
@@ -21,9 +21,9 @@
         <div class="flex-shrink-0 w-full md:w-1/2">
             <img
                 src="https://placehold.co/700x420/000000/333"
-                alt="{{ $this->record->name }}"
+                alt="{!! $this->record->name !!}"
                 class="object-cover w-full h-full rounded"
-            >
+            />
         </div>
 
         <!-- Product Details -->
@@ -43,22 +43,12 @@
                 <span class="text-gray-600">4.5/5</span>
             </div>
             <div class="font-bold text-xl">
-                {{ $this->record->price }}€
+                {!! $this->record->price !!}€
             </div>
-            <a class="inline-block bg-green-900 text-white px-3 py-2 rounded-lg font-semibold hover:bg-black" href="{{ route('checkout-page') }}">Checkout</a>
+            <div class="mt-4 flex items-center gap-2">
+                <input type="number" wire:model="quantity" class="w-16 px-2 py-1 border border-gray-300 rounded-lg">
+                <button wire:click="addToCart" class="inline-block bg-green-900 text-white px-3 py-2 rounded-lg font-semibold hover:bg-black">Add To Cart</button>
+            </div>
         </div>
     </div>
-
-    <!-- Comments Section -->
-{{--    <div class="p-6">--}}
-{{--        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Comments</h2>--}}
-{{--        <div class="space-y-4">--}}
-{{--            <div class="p-4 bg-gray-50 rounded-lg">--}}
-{{--                <p><span class="font-medium">User123</span>: Очень полезный товар, рекомендую!</p>--}}
-{{--            </div>--}}
-{{--            <div class="p-4 bg-gray-50 rounded-lg">--}}
-{{--                <p><span class="font-medium">AnotherUser</span>: Качество хорошее, но доставка была долгой.</p>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
 </div>
