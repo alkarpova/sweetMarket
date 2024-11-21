@@ -17,16 +17,8 @@
     <title>{{ config('app.name') }}</title>
 </head>
 <body class="min-h-screen antialiased bg-neutral-100">
+<x-navbar />
 <livewire:components.categories />
-<div class="container mx-auto px-4">
-    <a href="{{ route('home-page') }}">Home</a>
-    @auth
-
-    @else
-        <a href="{{ route('login-page') }}">Login</a>
-        <a href="{{ route('register-page') }}">Register</a>
-    @endauth
-</div>
 {{ $slot }}
 @livewireScripts
 </body>
