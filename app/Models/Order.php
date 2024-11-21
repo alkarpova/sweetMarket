@@ -42,26 +42,6 @@ class Order extends Model
     }
 
     /**
-     * Get the country that owns the order.
-     *
-     * @return BelongsTo
-     */
-    public function country(): BelongsTo
-    {
-        return $this->belongsTo(Country::class);
-    }
-
-    /**
-     * Get the region that owns the order.
-     *
-     * @return BelongsTo
-     */
-    public function region(): BelongsTo
-    {
-        return $this->belongsTo(Region::class);
-    }
-
-    /**
      * Get the city that owns the order.
      *
      * @return BelongsTo

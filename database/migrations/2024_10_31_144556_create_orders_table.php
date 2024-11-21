@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignUlid('country_id')->constrained()->cascadeOnDelete();
-            $table->foreignUlid('region_id')->constrained()->cascadeOnDelete();
+            $table->foreignUlid('user_id')
+                ->nullable()
+                ->constrained()
+                ->nullOnDelete();
             $table->foreignUlid('city_id')->constrained()->cascadeOnDelete();
             $table->string('number')->unique()->index();
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('payment_method');
             $table->string('shipping_address');
             $table->decimal('total', 15, 4);
             $table->text('notes')->nullable();
