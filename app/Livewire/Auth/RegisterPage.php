@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -22,6 +23,8 @@ class RegisterPage extends Component
     /** @var string */
     public $passwordConfirmation = '';
 
+    public $customerType;
+
     public function register()
     {
         $this->validate([
@@ -34,6 +37,7 @@ class RegisterPage extends Component
             'email' => $this->email,
             'name' => $this->name,
             'password' => Hash::make($this->password),
+            'role' => $this->customerType === 'client' ? UserRole::Client : UserRole::Supplier,
         ]);
 
         event(new Registered($user));
