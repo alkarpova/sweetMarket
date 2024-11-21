@@ -11,8 +11,7 @@ enum ProductStatus: int implements HasLabel
     case Approved = 2;
     case Rejected = 3;
     case Published = 4;
-    case Archived = 5;
-    case Inactive = 6;
+    case Inactive = 5;
 
     public function getLabel(): string
     {
@@ -22,7 +21,6 @@ enum ProductStatus: int implements HasLabel
             self::Approved => 'Approved',
             self::Rejected => 'Rejected',
             self::Published => 'Published',
-            self::Archived => 'Archived',
             self::Inactive => 'Inactive',
         };
     }

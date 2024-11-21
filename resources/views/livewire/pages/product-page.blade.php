@@ -1,12 +1,16 @@
 <div class="max-w-4xl mx-auto my-8 bg-white shadow-lg rounded-lg">
     <!-- Product Header -->
     <div class="p-6 space-y-4">
-        <a
-            href="{{ route('category-page', ['slug' => $this->record->category->slug]) }}"
-            wire:navigate
-        >
-            Category: {{ $this->record->category->name }}
-        </a>
+        <div class="flex flex-col gap-2">
+            <a
+                href="{{ route('category-page', ['slug' => $this->record->category->slug]) }}"
+                wire:navigate
+            >
+                Category: {{ $this->record->category->name }}
+            </a>
+            <!-- User Name -->
+            <span>Supplier: {{ $this->record->user->name }}</span>
+        </div>
         <h1 class="text-3xl font-bold text-gray-800">{!! $this->record->name !!}</h1>
         <div class="flex flex-wrap items-center gap-2">
             @foreach($this->record->themes as $theme)
@@ -22,7 +26,7 @@
             <img
                 src="https://placehold.co/700x420/000000/333"
                 alt="{!! $this->record->name !!}"
-                class="object-cover w-full h-full rounded"
+                class="w-full rounded"
             />
         </div>
 
@@ -30,6 +34,24 @@
         <div class="w-full p-6 md:w-1/2">
             <div class="mb-4 text-gray-600">
                 {!! $this->record->description !!}
+            </div>
+            <!-- Product allergens -->
+            <div>
+                <h2 class="font-semibold text-lg">Allergens</h2>
+                <ul class="list-disc list-inside">
+                    @foreach($this->record->allergens as $allergen)
+                        <li>{{ $allergen->name }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            <!-- Product ingredients -->
+            <div>
+                <h2 class="font-semibold text-lg">Ingredients</h2>
+                <ul class="list-disc list-inside">
+                    @foreach($this->record->ingredients as $ingredient)
+                        <li>{{ $ingredient->name }}</li>
+                    @endforeach
+                </ul>
             </div>
             <div class="flex items-center space-x-2 mb-4">
                 <!-- Product Rating -->

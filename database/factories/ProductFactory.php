@@ -32,6 +32,9 @@ class ProductFactory extends Factory
             'description' => $this->faker->text,
             'price' => $this->faker->randomFloat(2, 0, 100),
             'weight' => $this->faker->randomFloat(2, 0, 100),
+            'quantity' => 10,
+            'minimum' => 1,
+            'maximum' => 5,
         ];
     }
 }
