@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('price', 15, 4);
             $table->decimal('total', 15, 4);
             $table->integer('quantity')->default(1);
+            $table->string('status')->default(\App\Enums\OrderItemStatus::Pending->value)->index();
             $table->timestamps();
         });
     }

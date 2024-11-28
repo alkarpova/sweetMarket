@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderItemStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class OrderItem extends Model
 {
     use HasFactory, HasUlids;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'order_id',
+        'supplier_id',
+        'product_id',
+        'product_option_id',
+        'price',
+        'total',
+        'quantity',
+        'status',
+    ];
 
     /**
      * Get the attributes that should be cast.
@@ -22,6 +39,7 @@ class OrderItem extends Model
             'price' => 'float',
             'total' => 'float',
             'quantity' => 'integer',
+            'status' => OrderItemStatus::class,
         ];
     }
 

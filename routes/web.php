@@ -21,12 +21,10 @@ Route::middleware(['auth'])->group(function () {
         return redirect()->route('home-page');
     })->name('logout');
 
-    Route::get('/suppliers', Supplier\ProfilePage::class)->name('supplier-profile-page');
-
-    Route::get('/suppliers/products', Supplier\Products\ListPage::class)->name('supplier-products-page');
-    Route::get('/suppliers/products/create', Supplier\Products\CreatePage::class)->name('supplier-products-create-page');
-    Route::get('/suppliers/products/{product}', Supplier\Products\EditPage::class)->name('supplier-products-edit-page');
-
-    Route::get('/suppliers/orders', Supplier\Orders\ListPage::class)->name('supplier-orders-page');
-    Route::get('/suppliers/orders/{order}', Supplier\Orders\ViewPage::class)->name('supplier-orders-view-page');
+    Route::get('/supplier', Supplier\ProfilePage::class)->name('supplier-profile-page');
+    Route::get('/supplier/products', Supplier\Products\ListPage::class)->name('supplier-products-page');
+    Route::get('/supplier/products/create', Supplier\Products\CreatePage::class)->name('supplier-products-create-page');
+    Route::get('/supplier/products/{product}', Supplier\Products\EditPage::class)->name('supplier-products-edit-page');
+    Route::get('/supplier/orders', Supplier\Orders\ListPage::class)->name('supplier-orders-page');
+    Route::get('/supplier/orders/{order}', Supplier\Orders\ViewPage::class)->name('supplier-orders-view-page');
 });

@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use App\Enums\OrderStatus;
-use Illuminate\Database\Eloquent\Builder;
+use App\Enums\PaymentMethod;
+use App\Enums\ShippingMethod;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +17,26 @@ class Order extends Model
     use HasFactory, HasUlids, SoftDeletes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'user_id',
+        'city_id',
+        'number',
+        'name',
+        'email',
+        'phone',
+        'shipping_address',
+        'shipping_method',
+        'payment_method',
+        'total',
+        'notes',
+        'status',
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -23,8 +44,8 @@ class Order extends Model
     protected function casts(): array
     {
         return [
-            'number' => 'string',
-            'shipping_address' => 'string',
+            'shipping_method' => ShippingMethod::class,
+            'payment_method' => PaymentMethod::class,
             'total' => 'float',
             'notes' => 'string',
             'status' => OrderStatus::class,
@@ -59,13 +80,5 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
-    }
-
-    /**
-     * Scope a query to only include orders of a given status.
-     */
-    public function scopeStatus(Builder $query, OrderStatus $status = OrderStatus::Pending): Builder
-    {
-        return $query->where('status', $status);
     }
 }

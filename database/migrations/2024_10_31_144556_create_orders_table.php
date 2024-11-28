@@ -19,10 +19,11 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->foreignUlid('city_id')->constrained()->cascadeOnDelete();
             $table->string('number')->unique()->index();
-            $table->string('name');
-            $table->string('email');
-            $table->string('phone');
-            $table->string('payment_method');
+            $table->string('name')->index();
+            $table->string('email')->index();
+            $table->string('phone')->index();
+            $table->string('payment_method')->default(\App\Enums\PaymentMethod::Cash->value)->index();
+            $table->string('shipping_method')->default(\App\Enums\ShippingMethod::Pickup->value)->index();
             $table->string('shipping_address');
             $table->decimal('total', 15, 4);
             $table->text('notes')->nullable();

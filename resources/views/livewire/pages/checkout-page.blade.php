@@ -36,6 +36,20 @@
                     @enderror
                 </div>
 
+                <!-- City -->
+                <div class="mb-4">
+                    <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                    <select wire:model="city" id="city" class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300">
+                        <option value="">Select your city</option>
+                        @foreach($this->cities as $city)
+                            <option value="{{ $city['id'] }}">{{ $city['name'] }}</option>
+                        @endforeach
+                    </select>
+                    @error('city')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Address -->
                 <div class="mb-4">
                     <label for="address" class="block text-sm font-medium text-gray-700">Delivery address</label>
@@ -62,6 +76,15 @@
                         <label for="cash" class="ml-3 text-sm font-medium text-gray-700">Cash on delivery</label>
                     </div>
                 </div>
+
+                <!-- Shipping Method -->
+                <h2 class="text-xl font-semibold mb-4 mt-6">Delivery method</h2>
+                <div class="space-y-2">
+                    <div class="flex items-center">
+                        <input id="courier" wire:model="shippingMethod" value="courier" name="shipping_method" type="radio" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                        <label for="courier" class="ml-3 text-sm font-medium text-gray-700">Courier delivery</label>
+                    </div>
+                </div>
             </form>
         </div>
 
@@ -70,15 +93,55 @@
             <h2 class="text-xl font-semibold mb-4">Your order</h2>
             <div class="space-y-4">
                 @foreach($this->cartItems as $item)
-                    <!-- Order Item -->
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h3 class="text-sm font-medium text-gray-800">{!! $item['name'] !!}</h3>
-                            <p class="text-sm text-gray-600">{{ $item['quantity'] }} x {{ $item['price'] }}€</p>
+                    @php
+                        $itemErrors = collect($this->getCartErrors)->firstWhere('id', $item['id']);
+                    @endphp
+                    @if($itemErrors)
+                        <div class="flex flex-col items-start gap-2 bg-red-50 py-2 px-4 rounded-md">
+                            <div class="space-y-1">
+                                <h3 class="text-sm font-bold text-neutral-600">
+                                    <a wire:navigate href="{{ route('product-page', $item['id']) }}">{!! $item['name'] !!}</a>
+                                </h3>
+                                <p class="text-sm text-neutral-600">{{ $item['quantity'] }} x {{ $item['price'] }}€</p>
+                                <p class="text-sm font-bold text-neutral-600">{{ $item['price'] * $item['quantity'] }}€</p>
+                            </div>
+                            <div>
+                                <ul class="list-disc list-inside text-sm text-red-600">
+                                    @foreach($itemErrors['errors']->all() as $message)
+                                        <li>{{ $message }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            <div>
+                                <button
+                                    wire:click="removeCartItem('{{ $item['id'] }}')"
+                                    class="inline-flex text-sm font-bold text-red-600 hover:text-red-700 focus:ring focus:ring-red-300"
+                                >
+                                    Remove
+                                </button>
+                            </div>
                         </div>
-                        <p class="text-sm font-medium text-gray-800">{{ $item['price'] * $item['quantity'] }}€</p>
-                    </div>
+                    @else
+                        <div class="flex flex-col items-start gap-2 bg-white py-2 px-4 rounded-md">
+                            <div class="space-y-1">
+                                <h3 class="text-sm font-bold text-gray-800">
+                                    <a wire:navigate href="{{ route('product-page', $item['id']) }}">{!! $item['name'] !!}</a>
+                                </h3>
+                                <p class="text-sm text-gray-600">{{ $item['quantity'] }} x {{ $item['price'] }}€</p>
+                                <p class="text-sm font-bold text-gray-800">{{ $item['price'] * $item['quantity'] }}€</p>
+                            </div>
+                            <div>
+                                <button
+                                    wire:click="removeCartItem('{{ $item['id'] }}')"
+                                    class="inline-flex text-sm text-red-600 hover:text-red-700 focus:ring focus:ring-red-300"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    @endif
                 @endforeach
+
                 <!-- Total -->
                 <div class="border-t pt-4">
                     <div class="flex justify-between">
