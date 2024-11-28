@@ -41,6 +41,7 @@
                                             <option value="{{ $status->value }}" {{ $item->status->value == $status->value ? 'selected' : '' }}>{{ $status->name }}</option>
                                         @endforeach
                                     </select>
+                                    @error('status') <span class="text-red-500">{{ $message }}</span> @enderror
                                 </td>
                             </tr>
                         @endforeach

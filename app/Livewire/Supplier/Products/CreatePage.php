@@ -8,62 +8,68 @@ use App\Models\Ingredient;
 use App\Models\Product;
 use App\Models\Theme;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class CreatePage extends Component
 {
+    use WithFileUploads;
+
     public $category;
-    public $selectedThemes;
-    public $selectedAllergens;
-    public $selectedIngredients;
+    public $selectedThemes = [];
+    public $selectedAllergens = [];
+    public $selectedIngredients = [];
     public $name;
     public $description;
     public $image;
     public $price;
-    public $minimum;
-    public $maximum;
-    public $quantity;
+    public $minimum = 1;
+    public $maximum = 1;
+    public $quantity = 1;
     public $weight;
+    public $status = 1;
 
     public function createProduct(): void
     {
-        $this->validate([
-            'category_id' => 'required|exists:categories,id',
-            'selectedThemes.*' => 'nullable|array|exists:themes,id',
-            'selectedAllergens.*' => 'nullable|array|exists:allergens,id',
-            'selectedIngredients.*' => 'nullable|array|exists:ingredients,id',
+        $validated = $this->validate([
+            'category' => 'required|exists:categories,id',
+            'selectedThemes.*' => 'nullable|exists:themes,id',
+            'selectedAllergens.*' => 'nullable|exists:allergens,id',
+            'selectedIngredients.*' => 'nullable|exists:ingredients,id',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image',
-            'price' => 'required|numeric',
-            'minimum' => 'required|integer',
-            'maximum' => 'required|integer',
-            'quantity' => 'required|integer',
-            'weight' => 'nullable|numeric',
+            'image' => 'nullable|image|max:2048',
+            'price' => 'required|numeric|min:0',
+            'minimum' => 'required|integer|min:1',
+            'maximum' => 'required|integer|min:1|gte:minimum',
+            'quantity' => 'required|integer|min:1',
+            'weight' => 'nullable|numeric|min:0',
+            'status' => 'required|in:0,1',
         ]);
 
-        $product = new Product();
-        $product->category_id = $this->category;
-        $product->name = $this->name;
-        $product->description = $this->description;
-        $product->price = $this->price;
-        $product->minimum = $this->minimum;
-        $product->maximum = $this->maximum;
-        $product->quantity = $this->quantity;
-        $product->weight = $this->weight;
-        $product->save();
+        $validated['image'] = $this->image->store('products', 'public');
+
+        $product = Product::create([
+            'user_id' => auth()->user()->id,
+            'country_id' => auth()->user()?->country_id,
+            'region_id' => auth()->user()?->region_id,
+            'city_id' => auth()->user()?->city_id,
+            'category_id' => $validated['category'],
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+            'minimum' => $validated['minimum'],
+            'maximum' => $validated['maximum'],
+            'quantity' => $validated['quantity'],
+            'weight' => $validated['weight'],
+            'image' => $validated['image'],
+            'status' => $validated['status'],
+        ]);
 
         $product->themes()->sync($this->selectedThemes);
         $product->allergens()->sync($this->selectedAllergens);
         $product->ingredients()->sync($this->selectedIngredients);
-
-        if ($this->image) {
-            $product->update([
-                'image' => Storage::putFile('products', $this->image),
-            ]);
-        }
 
         $this->redirect(route('supplier-products-page'));
     }

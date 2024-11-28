@@ -11,6 +11,8 @@ class ProfilePage extends Component
 
     public function updateProfile(): void
     {
+        // TODO: Add
+
         $this->validate([
             'user.name' => 'required|string|max:255',
             'user.email' => 'required|string|email|max:255|unique:users,email,' . $this->user->id,

@@ -14,7 +14,8 @@ class ListPage extends Component
     #[Computed]
     public function products()
     {
-        return Product::where('user_id', auth()->id())
+        return Product::where('user_id', auth()->user()->id)
+            ->orderBy('created_at', 'desc')
             ->paginate();
     }
 

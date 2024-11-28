@@ -14,9 +14,9 @@ class ListPage extends Component
     #[Computed]
     public function orders()
     {
-        return Order::whereHas('items', function ($query) {
+        return Order::whereHas('items', static function ($query) {
             $query->where('supplier_id', auth()->user()->id);
-        })->paginate();
+        })->orderBy('created_at', 'desc')->paginate();
     }
 
     public function render()

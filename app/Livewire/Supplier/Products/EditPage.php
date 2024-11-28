@@ -2,18 +2,22 @@
 
 namespace App\Livewire\Supplier\Products;
 
+use App\Enums\ProductStatus;
 use App\Models\Allergen;
 use App\Models\Category;
 use App\Models\Ingredient;
 use App\Models\Product;
 use App\Models\Theme;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class EditPage extends Component
 {
+    use WithFileUploads;
+
+    public $productId;
     public $category;
     public $selectedThemes;
     public $selectedAllergens;
@@ -30,9 +34,9 @@ class EditPage extends Component
     public function mount($product)
     {
         $query = Product::where('id', $product)
-            ->status()
             ->firstOrFail();
 
+        $this->productId = $query->id;
         $this->category = $query->category_id;
         $this->selectedThemes = $query->themes->pluck('id')->toArray();
         $this->selectedAllergens = $query->allergens->pluck('id')->toArray();
@@ -48,41 +52,43 @@ class EditPage extends Component
 
     public function updateProduct(): void
     {
-        $this->validate([
-            'category_id' => 'required|exists:categories,id',
-            'selectedThemes.*' => 'nullable|array|exists:themes,id',
-            'selectedAllergens.*' => 'nullable|array|exists:allergens,id',
-            'selectedIngredients.*' => 'nullable|array|exists:ingredients,id',
+        $validated = $this->validate([
+            'category' => 'required|exists:categories,id',
+            'selectedThemes.*' => 'nullable|exists:themes,id',
+            'selectedAllergens.*' => 'nullable|exists:allergens,id',
+            'selectedIngredients.*' => 'nullable|exists:ingredients,id',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image',
-            'price' => 'required|numeric',
-            'minimum' => 'required|integer',
-            'maximum' => 'required|integer',
-            'quantity' => 'required|integer',
-            'weight' => 'nullable|numeric',
+            'image' => 'nullable|image|max:2048',
+            'price' => 'required|numeric|min:0',
+            'minimum' => 'required|integer|min:1',
+            'maximum' => 'required|integer|min:1|gte:minimum',
+            'quantity' => 'required|integer|min:1',
+            'weight' => 'nullable|numeric|min:0',
         ]);
 
-        $product = new Product();
-        $product->category_id = $this->category;
-        $product->name = $this->name;
-        $product->description = $this->description;
-        $product->price = $this->price;
-        $product->minimum = $this->minimum;
-        $product->maximum = $this->maximum;
-        $product->quantity = $this->quantity;
-        $product->weight = $this->weight;
+        $validated['image'] = $this->image->store('products', 'public');
+
+        $product = Product::findOrFail($this->productId);
+
+        $product->country_id = auth()->user()?->country_id;
+        $product->region_id = auth()->user()?->region_id;
+        $product->city_id = auth()->user()?->city_id;
+        $product->category_id = $validated['category'];
+        $product->name = $validated['name'];
+        $product->description = $validated['description'];
+        $product->price = $validated['price'];
+        $product->minimum = $validated['minimum'];
+        $product->maximum = $validated['maximum'];
+        $product->quantity = $validated['quantity'];
+        $product->weight = $validated['weight'];
+        $product->image = $validated['image'];
+        $product->status = ProductStatus::Pending;
         $product->save();
 
         $product->themes()->sync($this->selectedThemes);
         $product->allergens()->sync($this->selectedAllergens);
         $product->ingredients()->sync($this->selectedIngredients);
-
-        if ($this->image) {
-            $product->update([
-                'image' => Storage::putFile('products', $this->image),
-            ]);
-        }
 
         $this->redirect(route('supplier-products-page'));
     }
