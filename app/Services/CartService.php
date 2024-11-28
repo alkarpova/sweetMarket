@@ -53,7 +53,7 @@ class CartService
     /**
      * Validate product and quantity before adding to the cart.
      */
-    protected function validateProduct(Product $product, int $quantity): void
+    public function validateProduct(Product $product, int $quantity): void
     {
         $validator = Validator::make([
             'status' => $product->status->value,
@@ -73,7 +73,11 @@ class CartService
         ]);
 
         if ($validator->fails()) {
-            $this->errors = $validator->errors();
+            $this->errors[] = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'errors' => $validator->errors(),
+            ];
         }
     }
 
@@ -159,7 +163,7 @@ class CartService
     /**
      * Get the cart content.
      */
-    public function content(): Collection
+    public function getContent(): Collection
     {
         return $this->getCartItems();
     }
@@ -172,5 +176,14 @@ class CartService
         return $this->getCartItems()->sum(function ($item) {
             return $item['price'] * $item['quantity'];
         });
+    }
+
+    /**
+     * Get the cart errors.
+     *
+     */
+    public function getErrors(): Collection
+    {
+        return collect($this->errors);
     }
 }
