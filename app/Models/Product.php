@@ -35,6 +35,7 @@ class Product extends Model
         'quantity',
         'weight',
         'description',
+        'rating',
         'status',
     ];
 
@@ -54,6 +55,7 @@ class Product extends Model
             'maximum' => 'integer',
             'quantity' => 'integer',
             'weight' => 'float',
+            'rating' => 'float',
             'status' => ProductStatus::class,
         ];
     }
