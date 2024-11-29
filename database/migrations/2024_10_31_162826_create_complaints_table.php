@@ -14,11 +14,8 @@ return new class extends Migration
         Schema::create('complaints', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUlid('order_id')->constrained()->cascadeOnDelete();
-            $table->foreignUlid('order_item_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignUlid('user_id')->constrained()->cascadeOnDelete();
-            $table->string('full_name');
-            $table->string('phone');
-            $table->string('email');
+            $table->foreignUlid('supplier_id')->nullable()->constrained('users')->nullOnDelete();
             $table->text('comment');
             $table->timestamps();
         });

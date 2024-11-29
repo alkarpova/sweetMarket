@@ -13,6 +13,7 @@
         link.crossOrigin = 'anonymous';
         document.head.appendChild(link);
     </script>
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ config('app.name') }}</title>
 </head>
@@ -20,6 +21,7 @@
 <x-navbar />
 <livewire:components.categories />
 {{ $slot }}
+@livewire('wire-elements-modal')
 @livewireScripts
 </body>
 </html>

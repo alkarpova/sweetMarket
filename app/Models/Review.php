@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ReviewRating;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +18,10 @@ class Review extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'full_name',
+        'user_id',
+        'order_id',
+        'order_item_id',
+        'supplier_id',
         'rating',
         'comment',
         'status',
@@ -31,8 +35,7 @@ class Review extends Model
     protected function casts(): array
     {
         return [
-            'full_name' => 'string',
-            'rating' => 'integer',
+            'rating' => ReviewRating::class,
             'comment' => 'string',
             'status' => 'boolean',
         ];
@@ -47,6 +50,14 @@ class Review extends Model
     }
 
     /**
+     * Get the user that owns the review.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
      * Get the order item that owns the review.
      */
     public function orderItem(): BelongsTo
@@ -55,9 +66,9 @@ class Review extends Model
     }
 
     /**
-     * Get the user that owns the review.
+     * Get the supplier that owns the review.
      */
-    public function user(): BelongsTo
+    public function supplier(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

@@ -11,6 +11,9 @@
             @if(auth()->user()->isSupplier())
                 <li><a href="{{ route('supplier-profile-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Profile</a></li>
             @endif
+            @if(auth()->user()->isClient())
+                <li><a href="{{ route('customer-profile-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Profile</a></li>
+            @endif
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <li><button type="submit" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Logout</button></li>
@@ -47,6 +50,9 @@
         @auth
             @if(auth()->user()->isSupplier())
                 <li class="py-4"><a href="{{ route('supplier-profile-page') }}" class="w-full text-lg font-medium text-neutral-600 focus:underline" wire:navigate>Profile</a></li>
+            @endif
+            @if(auth()->user()->isClient())
+                <li class="py-4"><a href="{{ route('customer-profile-page') }}" class="w-full text-lg font-medium text-neutral-600 focus:underline" wire:navigate>Profile</a></li>
             @endif
             <form method="POST" action="{{ route('logout') }}">
                 @csrf

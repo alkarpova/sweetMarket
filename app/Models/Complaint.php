@@ -17,9 +17,9 @@ class Complaint extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'full_name',
-        'phone',
-        'email',
+        'user_id',
+        'order_id',
+        'supplier_id',
         'comment',
     ];
 
@@ -31,9 +31,6 @@ class Complaint extends Model
     protected function casts(): array
     {
         return [
-            'full_name' => 'string',
-            'phone' => 'string',
-            'email' => 'string',
             'comment' => 'string',
         ];
     }
@@ -47,17 +44,17 @@ class Complaint extends Model
     }
 
     /**
-     * Get the order item that owns the complaint.
-     */
-    public function orderItem(): BelongsTo
-    {
-        return $this->belongsTo(OrderItem::class);
-    }
-
-    /**
      * Get the user that owns the complaint.
      */
     public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the supplier that owns the complaint.
+     */
+    public function supplier(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
