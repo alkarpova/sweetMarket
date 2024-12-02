@@ -18,8 +18,6 @@ class AllergenFactory extends Factory
     {
         return [
             'name' => $this->faker->unique()->name,
-            'description' => $this->faker->sentence,
-            'severity_level' => $this->faker->numberBetween(1, 5),
             'status' => $this->faker->boolean,
         ];
     }

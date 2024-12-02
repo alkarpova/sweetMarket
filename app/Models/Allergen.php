@@ -20,8 +20,6 @@ class Allergen extends Model
      */
     protected $fillable = [
         'name',
-        'description',
-        'severity_level',
         'status',
     ];
 
@@ -34,8 +32,6 @@ class Allergen extends Model
     {
         return [
             'name' => 'string',
-            'description' => 'string',
-            'severity_level' => 'integer',
             'status' => 'boolean',
         ];
     }

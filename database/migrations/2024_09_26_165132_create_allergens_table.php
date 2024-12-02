@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('allergens', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name')->unique()->index();
-            $table->string('description')->nullable();
-            $table->integer('severity_level')->default(1);
             $table->boolean('status')->default(true)->index();
             $table->timestamps();
             $table->softDeletes();

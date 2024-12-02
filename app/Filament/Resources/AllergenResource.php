@@ -29,14 +29,6 @@ class AllergenResource extends Resource
                             ->unique(ignoreRecord: true)
                             ->maxLength(255)
                             ->required(),
-                        Forms\Components\Textarea::make('description')
-                            ->rows(3)
-                            ->nullable(),
-                        Forms\Components\TextInput::make('severity_level')
-                            ->required()
-                            ->integer()
-                            ->minValue(1)
-                            ->maxValue(5),
                         Forms\Components\Toggle::make('status')
                             ->default(true),
                     ]),
@@ -50,8 +42,6 @@ class AllergenResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('severity_level')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('status')
                     ->sortable()
