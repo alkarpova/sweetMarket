@@ -65,8 +65,7 @@ class Product extends Model
      */
     public function getShortDescriptionAttribute(): string
     {
-        $shortDescription = substr($this->description, 0, 60);
-        return strlen($this->description) > 60 ? $shortDescription . '...' : $shortDescription;
+        return str($this->description)->words(10);
     }
 
     /**
