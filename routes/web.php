@@ -9,6 +9,7 @@ Route::get('/', Pages\HomePage::class)->name('home-page');
 Route::get('/category/{slug}', Pages\CategoryPage::class)->name('category-page');
 Route::get('/product/{id}', Pages\ProductPage::class)->name('product-page');
 Route::get('/checkout', Pages\CheckoutPage::class)->name('checkout-page');
+Route::get('/order-success/{number}', Pages\OrderSuccess::class)->name('order-success-page');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', Auth\LoginPage::class)->name('login-page');

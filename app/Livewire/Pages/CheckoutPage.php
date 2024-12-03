@@ -10,8 +10,10 @@ use App\Models\City;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -19,8 +21,8 @@ class CheckoutPage extends Component
 {
     public string $name;
     public string $email;
-    public string $phone;
-    public string $city;
+    public string|null $phone = null;
+    public string|null $city = null;
     public string $address;
     public string $notes;
     public string $paymentMethod = 'cash';
@@ -32,6 +34,13 @@ class CheckoutPage extends Component
     {
         // Get the cart items
         $this->validateCart();
+
+        if (auth()->check()) {
+            $this->name = auth()->user()->name;
+            $this->email = auth()->user()->email;
+            $this->phone = auth()->user()->phone;
+            $this->city = auth()->user()->city_id;
+        }
 
         // Get the cities
         $this->cities = City::all()->map(function ($city) {
@@ -99,79 +108,85 @@ class CheckoutPage extends Component
             'city' => 'required|exists:cities,id',
             'address' => 'required|string|min:4|max:255',
             'notes' => 'nullable|string|max:255',
-            'paymentMethod' => ['required', Rule::in(PaymentMethod::cases())],
-            'shippingMethod' => ['required', Rule::in(ShippingMethod::cases())],
+            'paymentMethod' => ['required', new Enum(PaymentMethod::class)],
+            'shippingMethod' => ['required', new Enum(ShippingMethod::class)],
         ]);
 
-        try {
-            // Get the cart items
-            $products = Cart::getContent();
+        // Get the cart items
+        $products = Cart::getContent();
 
-            // Validate cart items before creating the order
-            $this->validateCart();
+        // Validate cart items before creating the order
+        $this->validateCart();
 
-            // Insert order data
-            $data = [
-                'number' => Str::ulid(),
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'],
-                'city_id' => $validated['city'],
-                'shipping_address' => $validated['address'],
-                'notes' => $validated['notes'],
-                'payment_method' => $validated['paymentMethod'],
-                'shipping_method' => $validated['shippingMethod'],
-                'total' => Cart::total(),
-            ];
+        DB::transaction(function () use ($validated, $products) {
+            $this->createOrderTransaction($validated, $products);
+        });
+    }
 
-            // Insert user id if authenticated
-            if (auth()->check()) {
-                $data['user_id'] = auth()->user()->id;
-            }
+    private function createOrderTransaction($validated, $products): void
+    {
+        // Generate a unique order number
+        do {
+            $number = Str::ulid();
+        } while (Order::where('number', $number)->exists());
 
-            // Create a new order record
-            $order = Order::create($data);
+        // Insert order data
+        $data = [
+            'number' => $number,
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'city_id' => $validated['city'],
+            'shipping_address' => $validated['address'],
+            'notes' => $validated['notes'],
+            'payment_method' => $validated['paymentMethod'],
+            'shipping_method' => $validated['shippingMethod'],
+            'total' => Cart::total(),
+        ];
 
-            // Create order items
-            $products->each(function ($item) use ($order) {
-                $product = Product::find($item['id']);
-
-                $order->items()->create([
-                    'product_id' => $product->id,
-                    'supplier_id' => $product->user->id,
-                    'price' => $product->price,
-                    'total' => $item['quantity'] * $product->price,
-                    'quantity' => $item['quantity'],
-                ]);
-
-                // Decrement product quantity
-                $product->decrement('quantity', $item['quantity']);
-            });
-
-            // Clear the cart
-            Cart::clear();
-
-            // Reset form fields
-            $this->reset(['name', 'email', 'phone', 'city', 'address', 'notes', 'paymentMethod', 'shippingMethod']);
-
-            // Supplier email notification with queue
-            $suppliers = $order->items
-                ->pluck('supplier.email', 'supplier.id')
-                ->unique();
-
-            foreach ($suppliers as $email) {
-                SendOrderEmail::dispatch($order, $email);
-            }
-
-            // User email notification with queue
-            SendOrderEmail::dispatch($order, $order->email);
-
-            $this->redirect(route('order.success', $order->number));
-
-        } catch (\Exception $e) {
-            report($e);
-            $this->addError('order', 'An error occurred while creating the order.');
+        // Insert user id if authenticated
+        if (auth()->check()) {
+            $data['user_id'] = auth()->user()->id;
         }
+
+        // Create a new order record
+        $order = Order::create($data);
+
+        // Create order items
+        $products->each(function ($item) use ($order) {
+            $product = Product::find($item['id']);
+
+            $order->items()->create([
+                'product_id' => $product->id,
+                'supplier_id' => $product->user->id,
+                'price' => $product->price,
+                'total' => $item['quantity'] * $product->price,
+                'quantity' => $item['quantity'],
+            ]);
+
+            // Decrement product quantity
+            $product->decrement('quantity', $item['quantity']);
+        });
+
+        // Clear the cart
+        Cart::clear();
+
+        // Reset form fields
+        $this->reset(['name', 'email', 'phone', 'city', 'address', 'notes', 'paymentMethod', 'shippingMethod']);
+
+        // Supplier email notification with queue
+        $suppliers = $order->items
+            ->pluck('supplier.email', 'supplier.id')
+            ->unique();
+
+        foreach ($suppliers as $email) {
+            SendOrderEmail::dispatch($order, $email);
+        }
+
+        // User email notification with queue
+        SendOrderEmail::dispatch($order, $order->email);
+
+        $this->redirect(route('order-success-page', $order->number));
     }
 
     /**
