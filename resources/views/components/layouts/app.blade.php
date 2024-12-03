@@ -21,6 +21,7 @@
 <x-navbar />
 <livewire:components.categories />
 {{ $slot }}
+<livewire:components.alert />
 @livewire('wire-elements-modal')
 @livewireScripts
 </body>
