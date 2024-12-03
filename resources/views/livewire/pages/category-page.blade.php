@@ -12,13 +12,13 @@
                     </select>
                 </div>
             @endif
-            @if($this->allergens)
+            @if($this->suppliers)
                 <div>
-                    <label for="allergens" class="font-semibold">Allergens</label>
-                    <select id="allergen" wire:model.live="selectedAllergens" multiple class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300">
-                        <option value="" selected>All allergens</option>
-                        @foreach($this->allergens as $allergen)
-                            <option value="{{ $allergen->id }}">{{ $allergen->name }}</option>
+                    <label for="suppliers" class="font-semibold">Suppliers</label>
+                    <select id="supplier" wire:model.live="selectedSupplier" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300">
+                        <option value="" selected>All suppliers</option>
+                        @foreach($this->suppliers as $supplier)
+                            <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
                         @endforeach
                     </select>
                 </div>

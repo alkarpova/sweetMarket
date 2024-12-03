@@ -6,6 +6,9 @@ use App\Models\Allergen;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Theme;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -22,14 +25,7 @@ class CategoryPage extends Component
      */
     #[Url(as: 't')]
     public array $selectedThemes = [];
-
-    /**
-     * Selected allergens in the filter
-     *
-     * @var array
-     */
-    #[Url(as: 't')]
-    public array $selectedAllergens = [];
+    public ?string $selectedSupplier = null;
 
     /**
      * Category record
@@ -42,7 +38,7 @@ class CategoryPage extends Component
      * Get the category by slug
      *
      */
-    public function mount(string $slug)
+    public function mount(string $slug): void
     {
          $this->record = Category::where('slug', $slug)
             ->status()
@@ -57,7 +53,7 @@ class CategoryPage extends Component
     public function products()
     {
         // Create base query
-        $query = Product::query()
+        $query = Product::whereHas('user', static fn (Builder $query) => $query->whereNull('deleted_at'))
             ->orderBy('created_at', 'desc')
             ->where('category_id', $this->record->id)
             ->with([
@@ -75,15 +71,9 @@ class CategoryPage extends Component
             }
         });
 
-        // Apply allergen filter if selected allergens are not empty
-        $query->when(!empty($this->selectedAllergens), function ($query) {
-            $selectedAllergens = $this->filterSelectedAllergens();
-            if (!empty($selectedAllergens)) {
-                $query->whereHas('allergens', function ($query) use ($selectedAllergens) {
-                    $query->whereIn('allergens.id', $selectedAllergens);
-                });
-            }
-        });
+        if ($this->selectedSupplier) {
+            $query->where('user_id', $this->selectedSupplier);
+        }
 
         // Return paginated results
         return $query->paginate();
@@ -109,37 +99,20 @@ class CategoryPage extends Component
      * Get the themes for the category
      */
     #[Computed]
-    public function themes()
+    public function themes(): Collection
     {
         return Theme::whereHas('products', function ($query) {
             $query->where('category_id', $this->record->id);
         })->status()->get();
     }
 
-    /**
-     * Get the allergens for the category
-     */
     #[Computed]
-    public function allergens()
+    public function suppliers(): Collection
     {
-        return Allergen::whereHas('products', function ($query) {
+        return User::whereHas('products', function ($query) {
             $query->where('category_id', $this->record->id);
-        })->status()->get();
-    }
-
-    /**
-     * Filter selected allergens to include only available allergens for the category
-     */
-    #[Computed]
-    public function filterSelectedAllergens(): array
-    {
-        $available = $this->allergens()->pluck('id')->toArray();
-
-        // Filter out themes that are not available
-        return collect($this->selectedAllergens)
-            ->filter(fn($theme) => in_array($theme, $available, true))
-            ->values()
-            ->all();
+            $query->status();
+        })->get();
     }
 
     /**
