@@ -6,7 +6,9 @@
     <!-- Desktop Menu -->
     <ul class="hidden items-center gap-4 md:flex">
         <li><a href="{{ route('home-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Home</a></li>
-        <li><a href="{{ route('checkout-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Checkout ({{ \App\Facades\Cart::total() }})</a></li>
+        <li class="relative">
+            <livewire:components.cart />
+        </li>
         <li>
             <button @click="$dispatch('openModal', { component: 'contact.modal.add-record' })" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Contact</button>
         </li>
