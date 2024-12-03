@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\ProductStatus;
 use App\Models\Category;
 use App\Models\City;
 use App\Models\Country;
@@ -22,7 +23,7 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::value('id'),
+            'user_id' => User::all()->random()->id,
             'country_id' => Country::value('id'),
             'region_id' => Region::value('id'),
             'city_id' => City::value('id'),
@@ -35,6 +36,7 @@ class ProductFactory extends Factory
             'quantity' => 10,
             'minimum' => 1,
             'maximum' => 5,
+            'status' => $this->faker->randomElement(ProductStatus::cases())->value,
         ];
     }
 }

@@ -36,6 +36,7 @@ class UserFactory extends Factory
             'region_id' => Region::value('id'),
             'city_id' => City::value('id'),
             'address' => fake()->address,
+            'phone' => fake()->unique()->phoneNumber,
         ];
     }
 
