@@ -17,20 +17,12 @@
                 @if ($order->status === \App\Enums\OrderItemStatus::Completed)
 
                 @endif
-                <div class="flex items-center flex-wrap justify-between gap-4">
-                    <button
-                        wire:click="$dispatch('openModal', { component: 'customer.modal.add-review', arguments: { order: '{{ $order->id}}' } })"
-                        class="inline-block px-4 py-2 bg-green-500 text-white rounded"
-                    >
-                        Review
-                    </button>
-                    <button
-                        wire:click="$dispatch('openModal', { component: 'customer.modal.add-complaint', arguments: { order: '{{ $order->id }}' } })"
-                        class="inline-block px-4 py-2 bg-red-500 text-white rounded"
-                    >
-                        Complaint
-                    </button>
-                </div>
+                <button
+                    wire:click="$dispatch('openModal', { component: 'customer.modal.add-complaint', arguments: { order: '{{ $order->id }}' } })"
+                    class="inline-block px-4 py-2 bg-red-500 text-white rounded"
+                >
+                    Complaint
+                </button>
                 <table class="w-full border-collapse table-auto">
                     <thead>
                         <tr>
@@ -54,6 +46,17 @@
                                 <td class="px-4 py-2 border">{{ $item->price }}€</td>
                                 <td class="px-4 py-2 border">{{ $item->total }}€</td>
                                 <td class="px-4 py-2 border">{{ $item->status->name }}</td>
+                                @if($order->status === \App\Enums\OrderStatus::Delivered)
+
+                                @endif
+                                <td class="px-4 py-2 border flex flex-wrap items-center gap-4 text-sm">
+                                    <button
+                                        wire:click="$dispatch('openModal', { component: 'customer.modal.add-review', arguments: { order: '{{ $order->id }}', orderItem: '{{ $item->id }}' }})"
+                                        class="inline-block px-4 py-2 bg-green-500 text-white rounded"
+                                    >
+                                        Review
+                                    </button>
+                                </td>
                             </tr>
                         @empty
                             <tr>
