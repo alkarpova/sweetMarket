@@ -29,7 +29,6 @@ class ProductFactory extends Factory
             'city_id' => City::value('id'),
             'category_id' => Category::value('id'),
             'name' => $this->faker->sentence,
-            'image' => $this->faker->imageUrl(640, 480, null , false, false, false, 'jpg'),
             'description' => $this->faker->text,
             'price' => $this->faker->randomFloat(2, 0, 100),
             'weight' => $this->faker->randomFloat(2, 0, 100),

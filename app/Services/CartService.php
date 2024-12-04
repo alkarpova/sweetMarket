@@ -63,13 +63,13 @@ class CartService
             'available_quantity' => $product->quantity,
         ], [
             'status' => ['in:4'],
-            'quantity' => ['integer', 'min:' . $product->minimum, 'max:' . $product->maximum],
+            'quantity' => ['integer', 'min:'.$product->minimum, 'max:'.$product->maximum],
             'quantity' => ['lte:available_quantity'], // Ensure requested quantity is less than or equal to available stock
         ], [
             'status.in' => 'This product is not available for purchase.',
             'quantity.min' => "Minimum quantity for order: {$product->minimum}",
             'quantity.max' => "Maximum quantity for order: {$product->maximum}",
-            'quantity.lte' => "Requested quantity exceeds available stock.",
+            'quantity.lte' => 'Requested quantity exceeds available stock.',
         ]);
 
         if ($validator->fails()) {
@@ -180,7 +180,6 @@ class CartService
 
     /**
      * Get the cart errors.
-     *
      */
     public function getErrors(): Collection
     {

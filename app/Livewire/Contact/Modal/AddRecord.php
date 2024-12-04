@@ -12,9 +12,13 @@ use LivewireUI\Modal\ModalComponent;
 class AddRecord extends ModalComponent
 {
     public ?User $user = null;
+
     public string $topic = '';
+
     public string $name = '';
+
     public string $email = '';
+
     public string $comment = '';
 
     public function mount(): void
@@ -41,9 +45,9 @@ class AddRecord extends ModalComponent
                 'required',
                 new Enum(ContactTopic::class),
             ],
-            'name' => 'required|string',
-            'email' => 'required|email',
-            'comment' => 'required|string',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'comment' => 'required|string|max:1000',
         ]);
 
         Contact::create([

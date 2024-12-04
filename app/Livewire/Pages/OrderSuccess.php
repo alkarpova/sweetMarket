@@ -11,7 +11,7 @@ class OrderSuccess extends Component
 
     public function mount(string $number): void
     {
-       $this->order = Order::where('number', $number)
+        $this->order = Order::where('number', $number)
             ->with([
                 'items',
                 'items.supplier',

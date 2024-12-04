@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Livewire\Auth;
 use App\Livewire\Pages;
 use App\Livewire\Supplier;
-use App\Livewire\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', Pages\HomePage::class)->name('home-page');
 Route::get('/category/{slug}', Pages\CategoryPage::class)->name('category-page');
@@ -19,17 +19,18 @@ Route::middleware('guest')->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::post('/logout', static function () {
         auth()->logout();
+
         return redirect()->route('home-page');
     })->name('logout');
 
-    Route::get('/supplier', Supplier\ProfilePage::class)->name('supplier-profile-page');
+    Route::get('/profile', Auth\ProfilePage::class)->name('profile-page');
+
     Route::get('/supplier/products', Supplier\Products\ListPage::class)->name('supplier-products-page');
     Route::get('/supplier/products/create', Supplier\Products\CreatePage::class)->name('supplier-products-create-page');
     Route::get('/supplier/products/{product}', Supplier\Products\EditPage::class)->name('supplier-products-edit-page');
     Route::get('/supplier/orders', Supplier\Orders\ListPage::class)->name('supplier-orders-page');
     Route::get('/supplier/orders/{order}', Supplier\Orders\ViewPage::class)->name('supplier-orders-view-page');
 
-    Route::get('/customer', App\Livewire\Customer\ProfilePage::class)->name('customer-profile-page');
     Route::get('/customer/orders', App\Livewire\Customer\Orders\ListPage::class)->name('customer-orders-page');
     Route::get('/customer/orders/{order}', App\Livewire\Customer\Orders\ViewPage::class)->name('customer-orders-view-page');
 });

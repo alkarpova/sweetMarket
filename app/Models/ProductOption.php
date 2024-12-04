@@ -30,6 +30,8 @@ class ProductOption extends Model
 
     /**
      * Get the product that owns the option.
+     *
+     * @return BelongsTo<Product>
      */
     public function product(): BelongsTo
     {

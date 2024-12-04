@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
@@ -35,7 +36,6 @@ class Product extends Model
         'quantity',
         'weight',
         'description',
-        'rating',
         'status',
     ];
 
@@ -55,7 +55,6 @@ class Product extends Model
             'maximum' => 'integer',
             'quantity' => 'integer',
             'weight' => 'float',
-            'rating' => 'float',
             'status' => ProductStatus::class,
         ];
     }
@@ -70,6 +69,8 @@ class Product extends Model
 
     /**
      * Get the user that owns the product.
+     *
+     * @return BelongsTo<User>
      */
     public function user(): BelongsTo
     {
@@ -78,6 +79,8 @@ class Product extends Model
 
     /**
      * Get the country that owns the product.
+     *
+     * @return BelongsTo<Country>
      */
     public function country(): BelongsTo
     {
@@ -86,6 +89,8 @@ class Product extends Model
 
     /**
      * Get the region that owns the product.
+     *
+     * @return BelongsTo<Region>
      */
     public function region(): BelongsTo
     {
@@ -94,6 +99,8 @@ class Product extends Model
 
     /**
      * Get the city that owns the product.
+     *
+     * @return BelongsTo<City>
      */
     public function city(): BelongsTo
     {
@@ -102,6 +109,8 @@ class Product extends Model
 
     /**
      * Get the category that owns the product.
+     *
+     * @return BelongsTo<Category>
      */
     public function category(): BelongsTo
     {
@@ -110,6 +119,8 @@ class Product extends Model
 
     /**
      * Get the themes for the product.
+     *
+     * @return BelongsToMany<Theme>
      */
     public function themes(): BelongsToMany
     {
@@ -119,6 +130,8 @@ class Product extends Model
 
     /**
      * Get the options for the product.
+     *
+     * @return HasMany<ProductOption>
      */
     public function options(): HasMany
     {
@@ -127,6 +140,8 @@ class Product extends Model
 
     /**
      * Get the allergens for the product.
+     *
+     * @return BelongsToMany<Allergen>
      */
     public function allergens(): BelongsToMany
     {
@@ -136,11 +151,30 @@ class Product extends Model
 
     /**
      * Get the ingredients for the product.
+     *
+     * @return BelongsToMany<Ingredient>
      */
     public function ingredients(): BelongsToMany
     {
         return $this->belongsToMany(Ingredient::class)
             ->withTimestamps();
+    }
+
+    /**
+     * Get the reviews for the product.
+     *
+     * @return HasManyThrough<Review, OrderItem>
+     */
+    public function reviews(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Review::class,
+            OrderItem::class,
+            'product_id', // Foreign key on the OrderItem table
+            'order_item_id', // Foreign key on the Review table
+            'id', // Local key on the Product table
+            'id' // Local key on the OrderItem table
+        );
     }
 
     /**

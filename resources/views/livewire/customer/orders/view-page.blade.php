@@ -14,15 +14,14 @@
                         <li>Created: {{ $order->created_at->format('d.m.Y H:i')}}</li>
                     </ul>
                 </div>
-                @if ($order->status === \App\Enums\OrderItemStatus::Completed)
-
+                @if ($order->status === \App\Enums\OrderStatus::Delivered)
+                    <button
+                        wire:click="$dispatch('openModal', { component: 'customer.modal.add-complaint', arguments: { order: '{{ $order->id }}' } })"
+                        class="inline-block px-4 py-2 bg-red-500 text-white rounded"
+                    >
+                        Complaint
+                    </button>
                 @endif
-                <button
-                    wire:click="$dispatch('openModal', { component: 'customer.modal.add-complaint', arguments: { order: '{{ $order->id }}' } })"
-                    class="inline-block px-4 py-2 bg-red-500 text-white rounded"
-                >
-                    Complaint
-                </button>
                 <table class="w-full border-collapse table-auto">
                     <thead>
                         <tr>
@@ -32,9 +31,7 @@
                             <th class="px-4 py-2 border">Price</th>
                             <th class="px-4 py-2 border">Total</th>
                             <th class="px-4 py-2 border">Status</th>
-                            @if($order->status === \App\Enums\OrderStatus::Delivered)
-                                <th class="px-4 py-2 border">Actions</th>
-                            @endif
+                            <th class="px-4 py-2 border">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,16 +44,17 @@
                                 <td class="px-4 py-2 border">{{ $item->total }}€</td>
                                 <td class="px-4 py-2 border">{{ $item->status->name }}</td>
                                 @if($order->status === \App\Enums\OrderStatus::Delivered)
-
+                                    <td class="px-4 py-2 border flex flex-wrap items-center gap-4 text-sm">
+                                        <button
+                                            wire:click="$dispatch('openModal', { component: 'customer.modal.add-review', arguments: { order: '{{ $order->id }}', orderItem: '{{ $item->id }}' }})"
+                                            class="inline-block px-4 py-2 bg-green-500 text-white rounded"
+                                        >
+                                            Review
+                                        </button>
+                                    </td>
+                                @else
+                                    <td class="px-4 py-2 border"></td>
                                 @endif
-                                <td class="px-4 py-2 border flex flex-wrap items-center gap-4 text-sm">
-                                    <button
-                                        wire:click="$dispatch('openModal', { component: 'customer.modal.add-review', arguments: { order: '{{ $order->id }}', orderItem: '{{ $item->id }}' }})"
-                                        class="inline-block px-4 py-2 bg-green-500 text-white rounded"
-                                    >
-                                        Review
-                                    </button>
-                                </td>
                             </tr>
                         @empty
                             <tr>
@@ -68,10 +66,7 @@
             </div>
         </div>
         <aside class="col-span-2 px-4 py-8 bg-white shadow rounded-lg">
-            <ul class="list-disc ps-5 space-y-2">
-                <li><a href="{{ route('customer-profile-page') }}">Profile</a></li>
-                <li><a href="{{ route('customer-orders-page') }}">List Orders</a></li>
-            </ul>
+            <x-sidebar />
         </aside>
     </div>
 </div>

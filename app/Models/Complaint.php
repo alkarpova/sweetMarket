@@ -37,6 +37,8 @@ class Complaint extends Model
 
     /**
      * Get the order that owns the complaint.
+     *
+     * @return BelongsTo<Order>
      */
     public function order(): BelongsTo
     {
@@ -45,6 +47,8 @@ class Complaint extends Model
 
     /**
      * Get the user that owns the complaint.
+     *
+     * @return BelongsTo<User>
      */
     public function user(): BelongsTo
     {
@@ -53,6 +57,8 @@ class Complaint extends Model
 
     /**
      * Get the supplier that owns the complaint.
+     *
+     * @return BelongsTo<User>
      */
     public function supplier(): BelongsTo
     {

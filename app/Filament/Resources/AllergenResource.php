@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AllergenResource\Pages;
-use App\Filament\Resources\AllergenResource\RelationManagers;
 use App\Models\Allergen;
 use Filament\Forms;
 use Filament\Forms\Form;

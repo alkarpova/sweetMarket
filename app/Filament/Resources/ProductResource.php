@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Enums\ProductStatus;
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -74,7 +73,7 @@ class ProductResource extends Resource
                                                 0 => 'No',
                                                 1 => 'Yes',
                                             ]),
-                                    ])
+                                    ]),
                             ]),
                         Forms\Components\Section::make('Relations')
                             ->collapsible()
@@ -133,8 +132,8 @@ class ProductResource extends Resource
                                     ->preload()
                                     ->options(ProductStatus::class)
                                     ->default(ProductStatus::Draft),
-                            ])
-                    ])
+                            ]),
+                    ]),
             ]);
     }
 

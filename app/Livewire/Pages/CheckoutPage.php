@@ -12,7 +12,6 @@ use App\Models\Product;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -20,12 +19,19 @@ use Livewire\Component;
 class CheckoutPage extends Component
 {
     public string $name;
+
     public string $email;
-    public string|null $phone = null;
-    public string|null $city = null;
+
+    public ?string $phone = null;
+
+    public ?string $city = null;
+
     public string $address;
+
     public string $notes;
+
     public string $paymentMethod = 'cash';
+
     public string $shippingMethod = 'courier';
 
     public array $cities = [];
@@ -53,8 +59,6 @@ class CheckoutPage extends Component
 
     /**
      * Get the cart items
-     *
-     * @return Collection
      */
     #[Computed]
     public function cartItems(): Collection
@@ -64,8 +68,6 @@ class CheckoutPage extends Component
 
     /**
      * Get the cart total
-     *
-     * @return float
      */
     #[Computed]
     public function cartTotal(): float
@@ -75,8 +77,6 @@ class CheckoutPage extends Component
 
     /**
      * Get the shipping methods
-     *
-     * @return array
      */
     public function getShippingMethods(): array
     {
@@ -85,8 +85,6 @@ class CheckoutPage extends Component
 
     /**
      * Get the payment methods
-     *
-     * @return array
      */
     public function getPaymentMethods(): array
     {
@@ -95,8 +93,6 @@ class CheckoutPage extends Component
 
     /**
      * Create a new order
-     *
-     * @return void
      */
     public function createOrder(): void
     {
@@ -118,11 +114,15 @@ class CheckoutPage extends Component
         // Validate cart items before creating the order
         $this->validateCart();
 
+        // Create the order transaction
         DB::transaction(function () use ($validated, $products) {
             $this->createOrderTransaction($validated, $products);
         });
     }
 
+    /**
+     * Create the order transaction
+     */
     private function createOrderTransaction($validated, $products): void
     {
         // Generate a unique order number
@@ -191,13 +191,12 @@ class CheckoutPage extends Component
 
     /**
      * Remove a cart item
-     *
-     * @param Product $productId
-     * @return void
      */
     public function removeCartItem(Product $productId): void
     {
         Cart::remove($productId);
+
+        $this->dispatch('alert', $message = 'Product removed from cart', $type = 'success');
     }
 
     /**

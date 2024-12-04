@@ -5,27 +5,22 @@
     </a>
     <!-- Desktop Menu -->
     <ul class="hidden items-center gap-4 md:flex">
-        <li><a href="{{ route('home-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Home</a></li>
-        <li class="relative">
-            <livewire:components.cart />
-        </li>
+        <li><a wire:navigate href="{{ route('home-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Home</a></li>
         <li>
             <button @click="$dispatch('openModal', { component: 'contact.modal.add-record' })" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Contact</button>
         </li>
+        <li class="relative">
+            <livewire:components.cart />
+        </li>
         @auth
-            @if(auth()->user()->isSupplier())
-                <li><a href="{{ route('supplier-profile-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Profile</a></li>
-            @endif
-            @if(auth()->user()->isClient())
-                <li><a href="{{ route('customer-profile-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Profile</a></li>
-            @endif
+            <li><a wire:navigate href="{{ route('profile-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">My Account</a></li>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <li><button type="submit" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Logout</button></li>
             </form>
         @else
-            <li><a href="{{ route('login-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Login</a></li>
-            <li><a href="{{ route('register-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Register</a></li>
+            <li><a wire:navigate href="{{ route('login-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Login</a></li>
+            <li><a wire:navigate href="{{ route('register-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Register</a></li>
         @endauth
     </ul>
     <!-- Mobile Menu Button -->
@@ -50,22 +45,22 @@
         id="mobileMenu"
         class="fixed max-h-svh overflow-y-auto inset-x-0 top-0 z-10 flex flex-col divide-y divide-neutral-300 rounded-b-md border-b border-neutral-300 bg-neutral-50 px-6 pb-6 pt-20 md:hidden"
     >
-        <li class="py-4"><a href="{{ route('home-page') }}" class="w-full text-lg font-medium text-neutral-600 focus:underline">Home</a></li>
-        <li class="py-4"><a href="{{ route('checkout-page') }}" class="w-full text-lg font-medium text-neutral-600 focus:underline">Checkout</a></li>
+        <li class="py-4"><a wire:navigate href="{{ route('home-page') }}" class="w-full text-lg font-medium text-neutral-600 focus:underline">Home</a></li>
+        <li>
+            <button @click="$dispatch('openModal', { component: 'contact.modal.add-record' })" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Contact</button>
+        </li>
+        <li class="relative">
+            <livewire:components.cart />
+        </li>
         @auth
-            @if(auth()->user()->isSupplier())
-                <li class="py-4"><a href="{{ route('supplier-profile-page') }}" class="w-full text-lg font-medium text-neutral-600 focus:underline" wire:navigate>Profile</a></li>
-            @endif
-            @if(auth()->user()->isClient())
-                <li class="py-4"><a href="{{ route('customer-profile-page') }}" class="w-full text-lg font-medium text-neutral-600 focus:underline" wire:navigate>Profile</a></li>
-            @endif
+            <li><a wire:navigate href="{{ route('profile-page') }}" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">My Account</a></li>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <li><button type="submit" class="w-full text-lg font-medium text-neutral-600 focus:underline">Logout</button></li>
+                <li><button type="submit" class="font-medium text-neutral-600 underline-offset-2 hover:text-black focus:outline-none focus:underline">Logout</button></li>
             </form>
         @else
-            <li class="py-4"><a href="{{ route('login-page') }}" class="w-full text-lg font-medium text-neutral-600 focus:underline" wire:navigate>Login</a></li>
-            <li class="py-4"><a href="{{ route('register-page') }}" class="w-full text-lg font-medium text-neutral-600 focus:underline" wire:navigate>Register</a></li>
+            <li class="py-4"><a wire:navigate href="{{ route('login-page') }}" class="w-full text-lg font-medium text-neutral-600 focus:underline" wire:navigate>Login</a></li>
+            <li class="py-4"><a wire:navigate href="{{ route('register-page') }}" class="w-full text-lg font-medium text-neutral-600 focus:underline" wire:navigate>Register</a></li>
         @endauth
     </ul>
 </nav>

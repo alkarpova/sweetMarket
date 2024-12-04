@@ -9,7 +9,9 @@ use Livewire\Component;
 class Alert extends Component
 {
     public string $message = '';
+
     public string $type = 'info';
+
     public bool $visible = false;
 
     #[On('alert')]
@@ -19,7 +21,7 @@ class Alert extends Component
         $this->type = $type;
         $this->visible = true;
 
-        // Скрываем уведомление через 3 секунды
+        // Hide the alert after 3 seconds
         $this->dispatch('hide-alert', ['timeout' => 3000]);
     }
 

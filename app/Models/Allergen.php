@@ -39,7 +39,7 @@ class Allergen extends Model
     /**
      * Get the products that belong to the allergen.
      *
-     * @return BelongsToMany
+     * @return BelongsToMany<Product>
      */
     public function products(): BelongsToMany
     {

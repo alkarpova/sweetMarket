@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Review extends Model
 {
@@ -43,6 +44,8 @@ class Review extends Model
 
     /**
      * Get the order that owns the review.
+     *
+     * @return BelongsTo<Order>
      */
     public function order(): BelongsTo
     {
@@ -51,6 +54,8 @@ class Review extends Model
 
     /**
      * Get the user that owns the review.
+     *
+     * @return BelongsTo<User>
      */
     public function user(): BelongsTo
     {
@@ -59,6 +64,8 @@ class Review extends Model
 
     /**
      * Get the order item that owns the review.
+     *
+     * @return BelongsTo<OrderItem>
      */
     public function orderItem(): BelongsTo
     {
@@ -67,9 +74,28 @@ class Review extends Model
 
     /**
      * Get the supplier that owns the review.
+     *
+     * @return BelongsTo<User>
      */
     public function supplier(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the product that owns the review.
+     *
+     * @return HasOneThrough<Product, OrderItem>
+     */
+    public function product(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Product::class,
+            OrderItem::class,
+            'id', // Foreign key on the OrderItem table
+            'id', // Foreign key on the Product table
+            'order_item_id', // Local key on the Review table
+            'product_id'// Local key on the OrderItem table
+        );
     }
 }

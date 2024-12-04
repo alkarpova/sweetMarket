@@ -10,12 +10,11 @@ use Livewire\Component;
 class ProductPage extends Component
 {
     public ?Product $record;
+
     public int $quantity = 1;
 
     /**
      * Get the product by id
-     *
-     * @param string $id
      */
     public function mount(string $id): void
     {
@@ -27,6 +26,7 @@ class ProductPage extends Component
                 'allergens',
                 'ingredients',
                 'themes',
+                'reviews',
             ])
             ->status()
             ->firstOrFail();
@@ -34,9 +34,16 @@ class ProductPage extends Component
 
     public function addToCart(): void
     {
+        if (auth()->user()->id === $this->record->user->id) {
+            $this->dispatch('alert', $message = 'You can not add your own product to cart', $type = 'error');
+
+            return;
+        }
+
         Cart::add($this->record, $this->quantity);
 
         $this->dispatch('cartUpdated');
+        $this->dispatch('alert', $message = 'Product added to cart', $type = 'success');
     }
 
     public function render()

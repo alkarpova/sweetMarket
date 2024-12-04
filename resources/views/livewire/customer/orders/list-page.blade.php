@@ -16,12 +16,14 @@
                     <tbody>
                     @forelse ($this->orders as $item)
                         <tr>
-                            <td class="px-4 py-2 border">{{ $item->number }}</td>
+                            <td class="px-4 py-2 border">
+                                <a wire:navigate href="{{ route('customer-orders-view-page', $item->id) }}" class="text-blue-500"> {{ $item->number }}</a>
+                            </td>
                             <td class="px-4 py-2 border">{{ $item->total }}€</td>
                             <td class="px-4 py-2 border">{{ $item->status->name }}</td>
                             <td class="px-4 py-2 border">{{ $item->created_at->format('d.m.Y H:i') }}</td>
                             <td class="px-4 py-2 border">
-                                <a href="{{ route('customer-orders-view-page', $item->id) }}" class="text-blue-500">Detail</a>
+                                <a wire:navigate href="{{ route('customer-orders-view-page', $item->id) }}" class="text-blue-500">Detail</a>
                             </td>
                         </tr>
                     @empty
@@ -35,10 +37,7 @@
             </div>
         </div>
         <aside class="col-span-2 px-4 py-8 bg-white shadow rounded-lg">
-            <ul class="list-disc ps-5 space-y-2">
-                <li><a href="{{ route('customer-profile-page') }}">Profile</a></li>
-                <li><a href="{{ route('customer-orders-page') }}">List Orders</a></li>
-            </ul>
+            <x-sidebar />
         </aside>
     </div>
 </div>

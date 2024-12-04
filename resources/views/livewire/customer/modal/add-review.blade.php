@@ -3,7 +3,10 @@
     <form wire:submit.prevent="send">
         <div class="border-b py-5 px-5 space-y-4">
             <div class="space-y-2">
-                <label for="supplier" class="font-bold">Supplier</label>
+                <label for="supplier" class="font-bold">
+                    Supplier
+                    <span class="text-red-600">*</span>
+                </label>
                 <select wire:model="supplier" id="supplier" class="block w-full border" required>
                     <option value="">Select supplier</option>
                     @foreach($suppliers as $supplier)
@@ -13,7 +16,10 @@
                 <div class="text-red-500">@error('supplier') {{ $message }} @enderror</div>
             </div>
             <div class="space-y-2">
-                <label for="rating" class="font-bold">Rating</label>
+                <label for="rating" class="font-bold">
+                    Rating
+                    <span class="text-red-600">*</span>
+                </label>
                 <select wire:model="rating" id="rating" class="block w-full border" required>
                     <option value="1">1 Star</option>
                     <option value="2">2 Stars</option>

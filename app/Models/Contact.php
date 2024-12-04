@@ -41,6 +41,8 @@ class Contact extends Model
 
     /**
      * Get the user that owns the contact.
+     *
+     * @return BelongsTo<User>
      */
     public function user(): BelongsTo
     {

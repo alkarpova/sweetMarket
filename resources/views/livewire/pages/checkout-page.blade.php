@@ -12,8 +12,11 @@
                 <form>
                     <!-- Name -->
                     <div class="mb-4">
-                        <label for="name" class="block text-sm font-medium text-gray-700">First and last name</label>
-                        <input wire:model="name" type="text" id="name" class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your first and last name">
+                        <label for="name" class="block text-sm font-medium text-gray-700">
+                            First and last name
+                            <span class="text-red-600">*</span>
+                        </label>
+                        <input wire:model="name" type="text" id="name" required class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your first and last name">
                         @error('name')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -21,8 +24,11 @@
 
                     <!-- Email -->
                     <div class="mb-4">
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input wire:model="email" type="email" id="email" class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your email">
+                        <label for="email" class="block text-sm font-medium text-gray-700">
+                            Email
+                            <span class="text-red-600">*</span>
+                        </label>
+                        <input wire:model="email" type="email" id="email" required class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your email">
                         @error('email')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -30,8 +36,11 @@
 
                     <!-- Phone -->
                     <div class="mb-4">
-                        <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-                        <input wire:model="phone" type="tel" id="phone" class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your phone">
+                        <label for="phone" class="block text-sm font-medium text-gray-700">
+                            Phone
+                            <span class="text-red-600">*</span>
+                        </label>
+                        <input wire:model="phone" type="tel" id="phone" required class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your phone">
                         @error('phone')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -39,8 +48,11 @@
 
                     <!-- City -->
                     <div class="mb-4">
-                        <label for="city" class="block text-sm font-medium text-gray-700">City</label>
-                        <select wire:model="city" id="city" class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300">
+                        <label for="city" class="block text-sm font-medium text-gray-700">
+                            City
+                            <span class="text-red-600">*</span>
+                        </label>
+                        <select wire:model="city" id="city" required class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300">
                             <option value="">Select your city</option>
                             @foreach($this->cities as $city)
                                 <option value="{{ $city['id'] }}">{{ $city['name'] }}</option>
@@ -53,8 +65,11 @@
 
                     <!-- Address -->
                     <div class="mb-4">
-                        <label for="address" class="block text-sm font-medium text-gray-700">Delivery address</label>
-                        <textarea wire:model="address" id="address" rows="3" class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your address"></textarea>
+                        <label for="address" class="block text-sm font-medium text-gray-700">
+                            Delivery address
+                            <span class="text-red-600">*</span>
+                        </label>
+                        <textarea wire:model="address" id="address" required rows="3" class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your address"></textarea>
                         @error('address')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -73,7 +88,7 @@
                     <h2 class="text-xl font-semibold mb-4 mt-6">Method of payment</h2>
                     <div class="space-y-2">
                         <div class="flex items-center">
-                            <input id="cash" wire:model="paymentMethod" value="cash" name="payment_method" type="radio" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                            <input id="cash" wire:model="paymentMethod" value="cash" name="payment_method" type="radio" required checked class="h-4 w-4 text-blue-600 focus:ring-blue-500">
                             <label for="cash" class="ml-3 text-sm font-medium text-gray-700">Cash on delivery</label>
                         </div>
                     </div>
@@ -82,7 +97,7 @@
                     <h2 class="text-xl font-semibold mb-4 mt-6">Delivery method</h2>
                     <div class="space-y-2">
                         <div class="flex items-center">
-                            <input id="courier" wire:model="shippingMethod" value="courier" name="shipping_method" type="radio" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                            <input id="courier" wire:model="shippingMethod" value="courier" name="shipping_method" type="radio" required checked class="h-4 w-4 text-blue-600 focus:ring-blue-500">
                             <label for="courier" class="ml-3 text-sm font-medium text-gray-700">Courier delivery</label>
                         </div>
                     </div>

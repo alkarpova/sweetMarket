@@ -24,7 +24,7 @@
                             @foreach($this->products as $product)
                                 <tr class="odd:bg-white even:bg-gray-50 border-b">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                        {!! $product->name !!}
+                                        <a wire:navigate href="{{ route('supplier-products-edit-page', ['product' => $product->id]) }}" class="text-blue-500">{!! $product->name !!}</a>
                                     </th>
                                     <td class="px-6 py-4">
                                         {{ $product->price }}€
@@ -45,7 +45,7 @@
                                         {{ $product->updated_at->format('d/m/Y H:i') }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        <a href="{{ route('supplier-products-edit-page', ['product' => $product->id]) }}" class="text-blue-500">Edit</a>
+                                        <a wire:navigate href="{{ route('supplier-products-edit-page', ['product' => $product->id]) }}" class="text-blue-500">Edit</a>
                                     </td>
                                 </tr>
                             @endforeach
@@ -58,11 +58,7 @@
             </div>
         </div>
         <aside class="col-span-2 px-4 py-8 bg-white shadow rounded-lg">
-            <ul class="list-disc ps-5 space-y-2">
-                <li><a href="{{ route('supplier-profile-page') }}">Profile</a></li>
-                <li><a href="{{ route('supplier-orders-page') }}">List Orders</a></li>
-                <li><a href="{{ route('supplier-products-page') }}">List Products</a></li>
-            </ul>
+            <x-sidebar />
         </aside>
     </div>
 </div>

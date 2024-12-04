@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignUlid('city_id')->constrained()->cascadeOnDelete();
             $table->foreignUlid('category_id')->constrained()->cascadeOnDelete();
             $table->string('name')->index();
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->decimal('price', 15, 4)->default(0);
             $table->integer('minimum')->default(1);
             $table->integer('maximum')->nullable();

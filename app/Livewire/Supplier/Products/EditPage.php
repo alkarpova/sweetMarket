@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Theme;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -18,17 +19,30 @@ class EditPage extends Component
     use WithFileUploads;
 
     public $productId;
+
     public $category;
+
     public $selectedThemes;
+
     public $selectedAllergens;
+
     public $selectedIngredients;
+
     public $name;
+
     public $description;
+
+    #[Validate('image|max:2048')]
     public $image;
+
     public $price;
+
     public $minimum;
+
     public $maximum;
+
     public $quantity;
+
     public $weight;
 
     public function mount($product)
@@ -43,6 +57,7 @@ class EditPage extends Component
         $this->selectedIngredients = $query->ingredients->pluck('id')->toArray();
         $this->name = $query->name;
         $this->description = $query->description;
+        $this->image = $query->image;
         $this->price = $query->price;
         $this->minimum = $query->minimum;
         $this->maximum = $query->maximum;
@@ -89,6 +104,8 @@ class EditPage extends Component
         $product->themes()->sync($this->selectedThemes);
         $product->allergens()->sync($this->selectedAllergens);
         $product->ingredients()->sync($this->selectedIngredients);
+
+        $this->dispatch('alert', $message = 'Product updated', $type = 'success');
 
         $this->redirect(route('supplier-products-page'));
     }

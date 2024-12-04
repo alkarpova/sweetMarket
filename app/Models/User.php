@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Enums\UserRole;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -61,6 +60,8 @@ class User extends Authenticatable implements FilamentUser
 
     /**
      * Get the country associated with the user.
+     *
+     * @return BelongsTo<Country>
      */
     public function country(): BelongsTo
     {
@@ -69,6 +70,8 @@ class User extends Authenticatable implements FilamentUser
 
     /**
      * Get the region associated with the user.
+     *
+     * @return BelongsTo<Region>
      */
     public function region(): BelongsTo
     {
@@ -77,6 +80,8 @@ class User extends Authenticatable implements FilamentUser
 
     /**
      * Get the city associated with the user.
+     *
+     * @return BelongsTo<City>
      */
     public function city(): BelongsTo
     {
@@ -117,6 +122,8 @@ class User extends Authenticatable implements FilamentUser
 
     /**
      * Get the products for the user.
+     *
+     * @return HasMany<Product>
      */
     public function products(): HasMany
     {

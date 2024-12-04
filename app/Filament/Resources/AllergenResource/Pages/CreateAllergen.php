@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\AllergenResource\Pages;
 
 use App\Filament\Resources\AllergenResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateAllergen extends CreateRecord

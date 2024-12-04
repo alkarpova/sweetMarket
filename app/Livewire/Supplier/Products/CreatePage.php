@@ -17,17 +17,29 @@ class CreatePage extends Component
     use WithFileUploads;
 
     public $category;
+
     public $selectedThemes = [];
+
     public $selectedAllergens = [];
+
     public $selectedIngredients = [];
+
     public $name;
+
     public $description;
+
     public $image;
+
     public $price;
+
     public $minimum = 1;
+
     public $maximum = 1;
+
     public $quantity = 1;
-    public $weight;
+
+    public $weight = 0;
+
     public $status = 1;
 
     public function createProduct(): void
@@ -39,7 +51,7 @@ class CreatePage extends Component
             'selectedIngredients.*' => 'nullable|exists:ingredients,id',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'required|image|max:2048',
             'price' => 'required|numeric|min:0',
             'minimum' => 'required|integer|min:1',
             'maximum' => 'required|integer|min:1|gte:minimum',
@@ -48,7 +60,9 @@ class CreatePage extends Component
             'status' => 'required|in:0,1',
         ]);
 
-        $validated['image'] = $this->image->store('products', 'public');
+        if ($this->image) {
+            $validated['image'] = $this->image->store('products', 'public');
+        }
 
         $product = Product::create([
             'user_id' => auth()->user()->id,
@@ -70,6 +84,8 @@ class CreatePage extends Component
         $product->themes()->sync($this->selectedThemes);
         $product->allergens()->sync($this->selectedAllergens);
         $product->ingredients()->sync($this->selectedIngredients);
+
+        $this->dispatch('alert', $message = 'Product created', $type = 'success');
 
         $this->redirect(route('supplier-products-page'));
     }

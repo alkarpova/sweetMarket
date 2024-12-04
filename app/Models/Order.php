@@ -55,7 +55,7 @@ class Order extends Model
     /**
      * Get the user that owns the order.
      *
-     * @return BelongsTo
+     * @return BelongsTo<User>
      */
     public function user(): BelongsTo
     {
@@ -65,7 +65,7 @@ class Order extends Model
     /**
      * Get the city that owns the order.
      *
-     * @return BelongsTo
+     * @return BelongsTo<City>
      */
     public function city(): BelongsTo
     {
@@ -75,10 +75,20 @@ class Order extends Model
     /**
      * Get the items for the order.
      *
-     * @return HasMany
+     * @return HasMany<OrderItem>
      */
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * Get the reviews for the order.
+     *
+     * @return HasMany<Review>
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
     }
 }

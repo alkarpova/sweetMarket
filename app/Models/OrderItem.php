@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class OrderItem extends Model
 {
@@ -45,6 +46,8 @@ class OrderItem extends Model
 
     /**
      * Get the order that owns the order item.
+     *
+     * @return BelongsTo<Order>
      */
     public function order(): BelongsTo
     {
@@ -53,6 +56,8 @@ class OrderItem extends Model
 
     /**
      * Get the supplier that owns the order item.
+     *
+     * @return BelongsTo<User>
      */
     public function supplier(): BelongsTo
     {
@@ -61,6 +66,8 @@ class OrderItem extends Model
 
     /**
      * Get the product that owns the order item.
+     *
+     * @return BelongsTo<Product>
      */
     public function product(): BelongsTo
     {
@@ -68,7 +75,19 @@ class OrderItem extends Model
     }
 
     /**
+     * Get the review associated with the order item.
+     *
+     * @return HasOne<Review>
+     */
+    public function review(): HasOne
+    {
+        return $this->hasOne(Review::class);
+    }
+
+    /**
      * Get the product option that owns the order item.
+     *
+     * @return BelongsTo<ProductOption>
      */
     public function productOption(): BelongsTo
     {

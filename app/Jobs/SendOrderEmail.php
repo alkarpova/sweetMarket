@@ -16,6 +16,7 @@ class SendOrderEmail implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public Order $order;
+
     public string $recipient;
 
     /**

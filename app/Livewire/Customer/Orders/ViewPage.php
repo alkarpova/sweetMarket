@@ -11,7 +11,13 @@ class ViewPage extends Component
 
     public function mount(Order $order): void
     {
-        $order->where('user_id', auth()->user()->id)->get();
+        $order->where('user_id', auth()->user()->id)
+            ->with([
+                'items.product',
+                'items.supplier',
+                'items.review',
+            ])
+            ->get();
     }
 
     public function render()

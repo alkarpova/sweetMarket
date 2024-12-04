@@ -11,15 +11,20 @@ use LivewireUI\Modal\ModalComponent;
 class AddComplaint extends ModalComponent
 {
     public Order $order;
+
     public string $comment = '';
+
     public Collection $suppliers;
+
     public string $supplier;
 
     public function mount(): void
     {
         // Find users and set them to the suppliers
         // Get the suppliers from the order items
-        $this->suppliers = User::whereIn('id', $this->order->items->pluck('supplier_id')->unique())->get();
+        $this->suppliers = User::whereIn('id', $this->order->items->pluck('supplier_id')->unique())
+            ->where('id', '!=', auth()->user()->id) // exclude the current user
+            ->get();
 
         // if supplier one set default
         $this->supplier = $this->suppliers->containsOneItem()
@@ -29,6 +34,14 @@ class AddComplaint extends ModalComponent
 
     public function send(): void
     {
+        // Check if the user is trying to complaint themselves
+        if (auth()->user()->id === $this->supplier) {
+            $this->dispatch('alert', $message = 'You cannot complain about yourself.', $type = 'error');
+            $this->forceClose()->closeModal();
+
+            return;
+        }
+
         // Validate the comment
         $this->validate([
             'supplier' => 'required|exists:users,id', // required and exists in the users table
@@ -50,6 +63,8 @@ class AddComplaint extends ModalComponent
 
         // Close the modal
         $this->forceClose()->closeModal();
+
+        $this->dispatch('alert', $message = 'Your complaint has been submitted.', $type = 'success');
     }
 
     public function render()

@@ -9,7 +9,6 @@ use App\Models\City;
 use App\Models\Country;
 use App\Models\Ingredient;
 use App\Models\Product;
-use App\Models\ProductOption;
 use App\Models\Region;
 use App\Models\Theme;
 use App\Models\User;
@@ -26,34 +25,42 @@ class DatabaseSeeder extends Seeder
         Country::factory()->create([
             'name' => 'Latvia',
             'iso2' => 'LV',
+            'status' => true,
         ]);
 
         Region::factory()->create([
             'name' => 'Rīga',
+            'status' => true,
         ]);
 
         Region::factory()->create([
             'name' => 'Pierīga',
+            'status' => true,
         ]);
 
         Region::factory()->create([
             'name' => 'Kurzeme',
+            'status' => true,
         ]);
 
         Region::factory()->create([
             'name' => 'Latgale',
+            'status' => true,
         ]);
 
         Region::factory()->create([
             'name' => 'Vidzeme',
+            'status' => true,
         ]);
 
         Region::factory()->create([
             'name' => 'Zemgale',
+            'status' => true,
         ]);
 
         City::factory()->create([
             'name' => 'Rīga',
+            'status' => true,
         ]);
 
         // Create admin user

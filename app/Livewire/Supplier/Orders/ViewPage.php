@@ -33,14 +33,16 @@ class ViewPage extends Component
      */
     public function updateStatus(OrderItem $item, $newStatus): void
     {
+        // Check if the user is allowed to change the status of the item
         if ($item->supplier_id !== auth()->user()->id) {
             $this->addError('status', 'You are not allowed to change the status of this item.');
+
             return;
         }
 
         $data = [
             'item_id' => $item->id,
-            'status' => $newStatus
+            'status' => $newStatus,
         ];
 
         $validator = Validator::make($data, [
@@ -64,15 +66,12 @@ class ViewPage extends Component
         // Update the status of the item
         $item->update(['status' => $newStatus]);
 
-        // If status is 'delivered', email the customer
-        if ($newStatus === OrderItemStatus::Completed) {
-            //
-        }
-
         // Reload the order to reflect the changes
         $this->order->load([
             'items' => fn ($query) => $query->where('supplier_id', auth()->user()->id),
         ]);
+
+        $this->dispatch('alert', $message = 'Status updated successfully.', $type = 'success');
     }
 
     public function render()
