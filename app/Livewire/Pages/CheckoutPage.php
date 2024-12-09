@@ -196,7 +196,7 @@ class CheckoutPage extends Component
     {
         Cart::remove($productId);
 
-        $this->dispatch('alert', $message = 'Product removed from cart', $type = 'success');
+        $this->dispatch('alert', 'Product removed from cart', 'success');
     }
 
     /**
@@ -210,6 +210,16 @@ class CheckoutPage extends Component
         foreach ($products as $item) {
             Cart::validateProduct($existingProducts[$item['id']] ?? null, $item['quantity']);
         }
+    }
+
+    public function decreaseCartItem($cartItemId): void
+    {
+        Cart::decrease($cartItemId);
+    }
+
+    public function increaseCartItem($cartItemId): void
+    {
+        Cart::increase($cartItemId);
     }
 
     #[Computed]

@@ -23,7 +23,7 @@ class AddRecord extends ModalComponent
 
     public function mount(): void
     {
-        $this->topic = ContactTopic::General->value;
+        $this->topic = ContactTopic::Feedback->value;
 
         if (auth()->check()) {
             $this->user = auth()->user();

@@ -147,6 +147,23 @@
                                     <p class="text-sm font-bold text-gray-800">{{ $item['price'] * $item['quantity'] }}€</p>
                                 </div>
                                 <div>
+                                    {{-- Decrease quantity --}}
+                                    <button
+                                        wire:click="decreaseCartItem('{{ $item['id'] }}')"
+                                        class="inline-flex items-center justify-center size-5 rounded-full bg-blue-600 font-bold text-white"
+                                    >
+                                        -
+                                    </button>
+                                    {{-- Quantity --}}
+                                    {{-- Increase quantity --}}
+                                    <button
+                                        wire:click="increaseCartItem('{{ $item['id'] }}')"
+                                        class="inline-flex items-center justify-center size-5 rounded-full bg-blue-600 font-bold text-white"
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                                <div>
                                     <button
                                         wire:click="removeCartItem('{{ $item['id'] }}')"
                                         class="inline-flex text-sm text-red-600 hover:text-red-700 focus:ring focus:ring-red-300"

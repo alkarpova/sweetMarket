@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/supplier/products/{product}', Supplier\Products\EditPage::class)->name('supplier-products-edit-page');
     Route::get('/supplier/orders', Supplier\Orders\ListPage::class)->name('supplier-orders-page');
     Route::get('/supplier/orders/{order}', Supplier\Orders\ViewPage::class)->name('supplier-orders-view-page');
+    Route::get('/supplier/reviews', Supplier\Reviews\ListPage::class)->name('supplier-reviews-page');
 
     Route::get('/customer/orders', App\Livewire\Customer\Orders\ListPage::class)->name('customer-orders-page');
     Route::get('/customer/orders/{order}', App\Livewire\Customer\Orders\ViewPage::class)->name('customer-orders-view-page');

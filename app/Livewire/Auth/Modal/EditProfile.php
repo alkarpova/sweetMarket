@@ -19,11 +19,11 @@ class EditProfile extends ModalComponent
 
     public ?string $phone = null;
 
-    public ?string $country = null;
+    public ?string $country_id = null;
 
-    public ?string $region = null;
+    public ?string $region_id = null;
 
-    public ?string $city = null;
+    public ?string $city_id = null;
 
     public ?string $address = null;
 
@@ -35,51 +35,55 @@ class EditProfile extends ModalComponent
 
     public function mount(): void
     {
-        $this->user = auth()->user();
+        $this->user = User::find(auth()->user()->id);
 
         $this->name = $this->user->name;
         $this->email = $this->user->email;
         $this->phone = $this->user->phone;
-        $this->country = $this->user->country_id;
-        $this->region = $this->user->region_id;
-        $this->city = $this->user->city_id;
+        $this->country_id = $this->user->country_id;
+        $this->region_id = $this->user->region_id;
+        $this->city_id = $this->user->city_id;
         $this->address = $this->user->address;
 
-        $this->countries = Country::where('status', true)
-            ->get();
-
-        $this->regions = Region::where('status', true)
-            ->get();
-
-        $this->cities = City::where('status', true)
-            ->get();
+        $this->countries = Country::where('status', true)->get();
+        $this->regions = Region::where('status', true)->get();
+        $this->cities = City::where('status', true)->get();
     }
 
     public function update(): void
     {
         $this->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:255',
-            'country' => 'required|exists:countries,id',
-            'region' => 'required|exists:regions,id',
-            'city' => 'required|exists:cities,id',
-            'address' => 'required|string|max:255',
+            'email' => 'required|email|max:64|unique:users,email,'.$this->user->id,
+            'phone' => 'nullable|string|max:255',
+            'country_id' => 'nullable|exists:countries,id',
+            'region_id' => 'nullable|exists:regions,id',
+            'city_id' => 'nullable|exists:cities,id',
+            'address' => 'nullable|string|max:255',
         ]);
 
-        $this->user->update([
+        User::where('id', $this->user->id)->update([
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
-            'country_id' => $this->country,
-            'region_id' => $this->region,
-            'city_id' => $this->city,
-            'address' => $this->address,
+            'country_id' => $this->country_id === '' ? null : $this->country_id,
+            'region_id' => $this->region_id === '' ? null : $this->region_id,
+            'city_id' => $this->city_id === '' ? null : $this->city_id,
+            'address' => trim($this->address),
         ]);
 
         $this->forceClose()->closeModal();
-        $this->dispatch('alert', $message = 'Profile updated successfully.', $type = 'success');
+        $this->dispatch('alert', 'Profile updated successfully.', 'success');
         $this->dispatch('userUpdated');
+    }
+
+    public function delete(): void
+    {
+        $this->user->delete();
+        auth()->logout();
+
+        $this->forceClose()->closeModal();
+        $this->dispatch('alert', 'Profile deleted successfully.', 'success');
     }
 
     public function render()

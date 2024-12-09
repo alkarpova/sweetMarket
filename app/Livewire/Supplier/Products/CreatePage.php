@@ -85,7 +85,10 @@ class CreatePage extends Component
         $product->allergens()->sync($this->selectedAllergens);
         $product->ingredients()->sync($this->selectedIngredients);
 
-        $this->dispatch('alert', $message = 'Product created', $type = 'success');
+        session()->flash('notify', [
+            'type' => 'success',
+            'message' => 'Product added',
+        ]);
 
         $this->redirect(route('supplier-products-page'));
     }

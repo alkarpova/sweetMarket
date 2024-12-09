@@ -39,9 +39,25 @@
             <div class="text-gray-600 leading-relaxed">
                 {!! $this->record->description !!}
             </div>
-            <div class="inline-flex gap-x-2 text-neutral-600">
-                <div class="font-semibold">Weight:</div>
-                <div>{{ $this->record->weight }} kg</div>
+            <div class="flex flex-col">
+                @if($this->record->weight)
+                    <div class="inline-flex gap-x-2 text-neutral-600">
+                        <div class="font-semibold">Weight:</div>
+                        <div>{{ $this->record->weight }} kg</div>
+                    </div>
+                @endif
+                <div class="inline-flex gap-x-2 text-neutral-600">
+                    <div class="font-semibold">
+                        Minimum order:
+                    </div>
+                    <div>{{ $this->record->minimum }}</div>
+                </div>
+                <div class="inline-flex gap-x-2 text-neutral-600">
+                    <div class="font-semibold">
+                        Quantity:
+                    </div>
+                    <div>{{ $this->record->quantity }}</div>
+                </div>
             </div>
             <div class="flex flex-wrap gap-x-12">
                 <!-- Product ingredients -->
@@ -94,19 +110,21 @@
                 {!! $this->record->price !!}€
             </div>
             <!-- Add to Cart -->
-            <div class="flex items-center gap-4">
-                <input
-                    type="number"
-                    wire:model="quantity"
-                    class="w-20 px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-green-300"
-                >
-                <button
-                    wire:click="addToCart"
-                    class="px-6 py-2 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-800 focus:outline-none focus:ring focus:ring-green-300"
-                >
-                    Add To Cart
-                </button>
-            </div>
+            @if($this->canAddToCart)
+                <div class="flex items-center gap-4">
+                    <input
+                        type="number"
+                        wire:model="quantity"
+                        class="w-20 px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-green-300"
+                    >
+                    <button
+                        wire:click="addToCart"
+                        class="px-6 py-2 bg-green-700 text-white font-semibold rounded-lg hover:bg-green-800 focus:outline-none focus:ring focus:ring-green-300"
+                    >
+                        Add To Cart
+                    </button>
+                </div>
+            @endif
         </div>
     </div>
 </div>

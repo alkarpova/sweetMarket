@@ -59,21 +59,16 @@ class ProductResource extends Resource
                                             ->disabled(),
                                     ]),
 
-                                Forms\Components\Repeater::make('options')
-                                    ->relationship('options')
-                                    ->disabled()
-                                    ->columns(5)
-                                    ->schema([
-                                        Forms\Components\TextInput::make('name'),
-                                        Forms\Components\TextInput::make('price'),
-                                        Forms\Components\TextInput::make('quantity'),
-                                        Forms\Components\TextInput::make('weight'),
-                                        Forms\Components\Select::make('is_required')
-                                            ->options([
-                                                0 => 'No',
-                                                1 => 'Yes',
-                                            ]),
-                                    ]),
+                                Forms\Components\Select::make('status')
+                                    ->searchable()
+                                    ->preload()
+                                    ->options(function () {
+                                        return ProductStatus::class;
+                                    })
+                                    ->disabled(function ($livewire) {
+                                        return $livewire->record->status === ProductStatus::Draft;
+                                    })
+                                    ->default(ProductStatus::Draft),
                             ]),
                         Forms\Components\Section::make('Relations')
                             ->collapsible()
@@ -127,11 +122,6 @@ class ProductResource extends Resource
                                     ->searchable()
                                     ->preload()
                                     ->disabled(),
-                                Forms\Components\Select::make('status')
-                                    ->searchable()
-                                    ->preload()
-                                    ->options(ProductStatus::class)
-                                    ->default(ProductStatus::Draft),
                             ]),
                     ]),
             ]);
@@ -158,8 +148,7 @@ class ProductResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('options_count')
                     ->counts('options'),
-                Tables\Columns\SelectColumn::make('status')
-                    ->options(ProductStatus::class)
+                Tables\Columns\TextColumn::make('status')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

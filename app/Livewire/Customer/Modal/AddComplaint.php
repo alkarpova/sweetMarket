@@ -36,7 +36,7 @@ class AddComplaint extends ModalComponent
     {
         // Check if the user is trying to complaint themselves
         if (auth()->user()->id === $this->supplier) {
-            $this->dispatch('alert', $message = 'You cannot complain about yourself.', $type = 'error');
+            $this->dispatch('alert', 'You cannot complain about yourself.', 'error');
             $this->forceClose()->closeModal();
 
             return;
@@ -46,11 +46,6 @@ class AddComplaint extends ModalComponent
         $this->validate([
             'supplier' => 'required|exists:users,id', // required and exists in the users table
             'comment' => 'required|max:65535', // required and max 65535 characters
-        ], [
-            'supplier.required' => 'Please select a supplier.',
-            'supplier.exists' => 'The selected supplier is invalid.',
-            'comment.required' => 'Please provide a comment.',
-            'comment.max' => 'Your comment exceeds the maximum allowed length.',
         ]);
 
         // Create the complaint
@@ -64,7 +59,7 @@ class AddComplaint extends ModalComponent
         // Close the modal
         $this->forceClose()->closeModal();
 
-        $this->dispatch('alert', $message = 'Your complaint has been submitted.', $type = 'success');
+        $this->dispatch('alert', 'Your complaint has been submitted.', 'success');
     }
 
     public function render()

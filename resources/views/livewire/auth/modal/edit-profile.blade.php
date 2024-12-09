@@ -8,7 +8,7 @@
                     Name
                     <span class="text-red-600">*</span>
                 </label>
-                <input wire:model="name" id="name" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <input wire:model="name" id="name" required type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 @error('name')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -19,7 +19,7 @@
                     Email
                     <span class="text-red-600">*</span>
                 </label>
-                <input wire:model="email" id="email" type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <input wire:model="email" id="email" required type="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 @error('email')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
@@ -28,7 +28,6 @@
             <div>
                 <label for="phone" class="block text-sm font-medium text-gray-700">
                     Phone
-                    <span class="text-red-600">*</span>
                 </label>
                 <input wire:model="phone" id="phone" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 @error('phone')
@@ -39,15 +38,14 @@
             <div>
                 <label for="country" class="block text-sm font-medium text-gray-700">
                     Country
-                    <span class="text-red-600">*</span>
                 </label>
-                <select wire:model="country" id="country" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <select wire:model="country_id" id="country" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <option value="">Select Country</option>
                     @foreach ($countries as $country)
                         <option value="{{ $country->id }}">{{ $country->name }}</option>
                     @endforeach
                 </select>
-                @error('country')
+                @error('country_id')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
@@ -55,15 +53,14 @@
             <div>
                 <label for="region" class="block text-sm font-medium text-gray-700">
                     Region
-                    <span class="text-red-600">*</span>
                 </label>
-                <select wire:model="region" id="region" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <select wire:model="region_id" id="region" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <option value="">Select Region</option>
                     @foreach ($regions as $region)
                         <option value="{{ $region->id }}">{{ $region->name }}</option>
                     @endforeach
                 </select>
-                @error('region')
+                @error('region_id')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
@@ -71,15 +68,14 @@
             <div>
                 <label for="city" class="block text-sm font-medium text-gray-700">
                     City
-                    <span class="text-red-600">*</span>
                 </label>
-                <select wire:model="city" id="city" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <select wire:model="city_id" id="city" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                     <option value="">Select City</option>
                     @foreach ($cities as $city)
                         <option value="{{ $city->id }}">{{ $city->name }}</option>
                     @endforeach
                 </select>
-                @error('city')
+                @error('city_id')
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                 @enderror
             </div>
@@ -87,7 +83,6 @@
             <div>
                 <label for="address" class="block text-sm font-medium text-gray-700">
                     Address
-                    <span class="text-red-600">*</span>
                 </label>
                 <textarea wire:model="address" id="address" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
                 @error('address')

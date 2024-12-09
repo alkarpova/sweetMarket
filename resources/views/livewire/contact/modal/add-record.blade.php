@@ -3,7 +3,10 @@
     <form wire:submit.prevent="send">
         <div class="border-b py-5 px-5 space-y-4">
             <div class="space-y-2">
-                <label for="topic" class="font-bold">Topic</label>
+                <label for="topic" class="font-bold">
+                    Topic
+                    <span class="text-red-600">*</span>
+                </label>
                 <select wire:model="topic" id="topic" required class="block w-full border py-2 px-3">
                     @foreach($this->topics as $topic)
                         <option value="{{ $topic->value }}">{{ $topic->name }}</option>
@@ -14,23 +17,32 @@
                 @enderror
             </div>
             <div class="space-y-2">
-                <label for="name" class="font-bold">Name</label>
+                <label for="name" class="font-bold">
+                    Name
+                    <span class="text-red-600">*</span>
+                </label>
                 <input wire:model="name" id="name" type="text" required class="block w-full border py-2 px-3" />
                 @error('name')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
             <div class="space-y-2">
-                <label for="email" class="font-bold">Email</label>
+                <label for="email" class="font-bold">
+                    Email
+                    <span class="text-red-600">*</span>
+                </label>
                 <input wire:model="email" id="email" type="email" required class="block w-full border py-2 px-3" />
                 @error('email')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>
             <div class="space-y-2">
-                <label for="comment" class="font-bold">Comment</label>
+                <label for="comment" class="font-bold">
+                    Comment
+                    <span class="text-red-600">*</span>
+                </label>
                 <textarea wire:model="comment" id="comment" required class="block w-full h-32 border py-2 px-3"></textarea>
-                @error('email')
+                @error('comment')
                     <div class="text-red-500">{{ $message }}</div>
                 @enderror
             </div>

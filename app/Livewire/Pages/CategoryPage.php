@@ -196,8 +196,6 @@ class CategoryPage extends Component
 
     /**
      * Get the suppliers for the category
-     *
-     * @return Collection
      */
     #[Computed]
     public function suppliers(): Collection
@@ -210,8 +208,6 @@ class CategoryPage extends Component
 
     /**
      * Get the regions for the category
-     *
-     * @return Collection
      */
     #[Computed]
     public function regions(): Collection
@@ -223,8 +219,6 @@ class CategoryPage extends Component
 
     /**
      * Get the cities for the category
-     *
-     * @return Collection
      */
     #[Computed]
     public function cities(): Collection

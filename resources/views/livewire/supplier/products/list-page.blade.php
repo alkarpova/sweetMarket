@@ -7,7 +7,7 @@
                     <a href="{{ route('supplier-products-create-page') }}" class="px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg">Add Product</a>
                 </div>
                 <div class="relative overflow-x-auto sm:rounded-lg">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+                    <table class="w-full text-sm text-left rtl:text-right">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3">Product name</th>

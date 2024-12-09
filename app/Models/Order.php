@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\OrderItemStatus;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\ShippingMethod;
@@ -80,6 +81,25 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function getItemsStatusAttribute(): string
+    {
+        // Проверяем, есть ли элементы заказа
+        if ($this->items->isEmpty()) {
+            return 'No items';
+        }
+
+        // Если все элементы имеют статус Completed
+        if ($this->items->every(fn ($item) => $item->status === OrderItemStatus::Completed)) {
+            return 'Finished';
+        }
+
+        $duration = now()->diffForHumans($this->created_at, [
+            'syntax' => \Carbon\CarbonInterface::DIFF_ABSOLUTE,
+        ]);
+
+        return "In progress ({$duration})";
     }
 
     /**

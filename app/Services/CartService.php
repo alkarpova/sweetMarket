@@ -137,6 +137,42 @@ class CartService
     }
 
     /**
+     * Increase the quantity of a product in the cart.
+     */
+    public function increase($productId): void
+    {
+        $cartItems = $this->getCartItems();
+
+        if ($cartItems->has($productId)) {
+            $cartItem = $cartItems->get($productId);
+            $quantity = $cartItem->get('quantity') + 1;
+            $cartItem->put('quantity', $quantity);
+            $cartItems->put($productId, $cartItem);
+            $this->saveCart($cartItems);
+        }
+    }
+
+    /**
+     * Decrease the quantity of a product in the cart.
+     */
+    public function decrease($productId): void
+    {
+        $cartItems = $this->getCartItems();
+
+        if ($cartItems->has($productId)) {
+            $cartItem = $cartItems->get($productId);
+            $quantity = $cartItem->get('quantity') - 1;
+            if ($quantity <= 0) {
+                $cartItems->forget($productId);
+            } else {
+                $cartItem->put('quantity', $quantity);
+                $cartItems->put($productId, $cartItem);
+            }
+            $this->saveCart($cartItems);
+        }
+    }
+
+    /**
      * Remove a product from the cart.
      */
     public function remove(Product $product): void

@@ -13,7 +13,13 @@ class ProfilePage extends Component
     #[On('userUpdated')]
     public function mount(): void
     {
-        $this->user = auth()->user();
+        $this->user = User::where('id', auth()->user()->id)
+            ->with([
+                'country',
+                'region',
+                'city',
+            ])
+            ->firstOrFail();
     }
 
     public function render()

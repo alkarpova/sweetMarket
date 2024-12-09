@@ -120,9 +120,8 @@
                     <div class="mb-4">
                         <label for="weight" class="block text-sm font-bold text-gray-700">
                             Weight
-                            <span class="text-red-600">*</span>
                         </label>
-                        <input wire:model="weight" id="weight" type="text" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('weight') border-red-300 text-red-900 @enderror">
+                        <input wire:model="weight" id="weight" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('weight') border-red-300 text-red-900 @enderror">
                         @error('weight')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -153,7 +152,11 @@
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
-                    <button type="submit" class="px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg">Update Product</button>
+                    <div class="flex flex-wrap gap-4">
+                        <button type="submit" class="px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg">Update Product</button>
+                        <a href="{{ route('supplier-products-page') }}" class="px-4 py-2 font-semibold text-white bg-gray-500 rounded-lg">Cancel</a>
+                        <button wire:click.prevent="deleteProduct" type="button" class="px-4 py-2 font-semibold text-white bg-red-500 rounded-lg">Delete Product</button>
+                    </div>
                 </form>
             </div>
         </div>

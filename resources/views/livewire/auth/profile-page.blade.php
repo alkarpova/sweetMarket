@@ -6,8 +6,21 @@
                 <ul class="ps-4 list-disc">
                     <li>Name: {{ $user->name }}</li>
                     <li>Email: {{ $user->email }}</li>
-                    <li>Phone: {{ $user->phone }}</li>
-                    <li>Address: {{ $user->address }}</li>
+                    @if($user->phone)
+                        <li>Phone: {{ $user->phone }}</li>
+                    @endif
+                    @if($user->country)
+                        <li>Country: {{ $user->country->name }}</li>
+                    @endif
+                    @if($user->region)
+                        <li>Region: {{ $user->region->name }}</li>
+                    @endif
+                    @if($user->city)
+                        <li>City: {{ $user->city->name }}</li>
+                    @endif
+                    @if($user->address)
+                        <li>Address: {{ $user->address }}</li>
+                    @endif
                 </ul>
                 <button @click="$dispatch('openModal', { component: 'auth.modal.edit-profile' })" class="inline-block mt-4 rounded-md py-2 px-5 bg-green-500 text-white">Edit</button>
             </div>

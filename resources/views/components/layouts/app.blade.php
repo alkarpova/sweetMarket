@@ -22,6 +22,18 @@
 <livewire:components.categories />
 {{ $slot }}
 <livewire:components.alert />
+@if(session()->has('notify'))
+    <div x-data="{
+        init () {
+            this.$nextTick(() => {
+                this.$dispatch('alert', {
+                    type: '{{ session('notify')['type'] }}',
+                    message: '{{ session('notify')['message'] }}'
+                });
+            })
+        }
+    }"></div>
+@endif
 @livewire('wire-elements-modal')
 @livewireScripts
 </body>

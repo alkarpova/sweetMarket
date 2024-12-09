@@ -5,11 +5,15 @@ namespace App\Livewire\Pages;
 use App\Facades\Cart;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class ProductPage extends Component
 {
     public ?Product $record;
+
+    #[Locked]
+    public bool $canAddToCart = true;
 
     public int $quantity = 1;
 
@@ -30,12 +34,16 @@ class ProductPage extends Component
             ])
             ->status()
             ->firstOrFail();
+
+        if (auth()->check() && auth()->user()->id === $this->record->user->id) {
+            $this->canAddToCart = false;
+        }
     }
 
     public function addToCart(): void
     {
-        if (auth()->user()->id === $this->record->user->id) {
-            $this->dispatch('alert', $message = 'You can not add your own product to cart', $type = 'error');
+        if (auth()->check() && auth()->user()->id === $this->record->user->id) {
+            $this->dispatch('alert', 'You can not add your own product to cart', 'error');
 
             return;
         }
@@ -43,7 +51,7 @@ class ProductPage extends Component
         Cart::add($this->record, $this->quantity);
 
         $this->dispatch('cartUpdated');
-        $this->dispatch('alert', $message = 'Product added to cart', $type = 'success');
+        $this->dispatch('alert', 'Product added to cart', 'success');
     }
 
     public function render()

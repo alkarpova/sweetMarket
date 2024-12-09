@@ -105,7 +105,24 @@ class EditPage extends Component
         $product->allergens()->sync($this->selectedAllergens);
         $product->ingredients()->sync($this->selectedIngredients);
 
-        $this->dispatch('alert', $message = 'Product updated', $type = 'success');
+        session()->flash('notify', [
+            'type' => 'success',
+            'message' => 'Product updated',
+        ]);
+
+        $this->redirect(route('supplier-products-page'));
+    }
+
+    public function deleteProduct(): void
+    {
+        $product = Product::findOrFail($this->productId);
+
+        $product->delete();
+
+        session()->flash('notify', [
+            'type' => 'success',
+            'message' => 'Product deleted',
+        ]);
 
         $this->redirect(route('supplier-products-page'));
     }

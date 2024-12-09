@@ -34,18 +34,6 @@
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="allergens" class="block text-sm font-bold text-gray-700">Allergens</label>
-                        <select wire:model="selectedAllergens" id="allergens" multiple class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('selectedAllergens.*') border-red-300 text-red-900 @enderror">
-                            <option value="">Select a allergens</option>
-                            @foreach($this->allergens as $allergen)
-                                <option value="{{ $allergen->id }}">{{ $allergen->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('selectedAllergens.*')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="mb-4">
                         <label for="ingredients" class="block text-sm font-bold text-gray-700">Ingredients</label>
                         <select wire:model="selectedIngredients" multiple id="ingredients" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('selectedIngredients.*') border-red-300 text-red-900 @enderror">
                             <option value="">Select a allergens</option>
@@ -54,6 +42,18 @@
                             @endforeach
                         </select>
                         @error('selectedIngredients.*')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div class="mb-4">
+                        <label for="allergens" class="block text-sm font-bold text-gray-700">Allergens</label>
+                        <select wire:model="selectedAllergens" id="allergens" multiple class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('selectedAllergens.*') border-red-300 text-red-900 @enderror">
+                            <option value="">Select a allergens</option>
+                            @foreach($this->allergens as $allergen)
+                                <option value="{{ $allergen->id }}">{{ $allergen->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('selectedAllergens.*')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
@@ -120,9 +120,8 @@
                     <div class="mb-4">
                         <label for="weight" class="block text-sm font-bold text-gray-700">
                             Weight
-                            <span class="text-red-600">*</span>
                         </label>
-                        <input wire:model="weight" id="weight" type="text" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('weight') border-red-300 text-red-900 @enderror">
+                        <input wire:model="weight" id="weight" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('weight') border-red-300 text-red-900 @enderror">
                         @error('weight')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -151,7 +150,10 @@
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
-                    <button type="submit" class="px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg">Create Product</button>
+                    <div class="flex flex-wrap gap-4">
+                        <button type="submit" class="px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg">Create Product</button>
+                        <a href="{{ route('supplier-products-page') }}" class="px-4 py-2 font-semibold text-white bg-gray-500 rounded-lg">Cancel</a>
+                    </div>
                 </form>
             </div>
         </div>

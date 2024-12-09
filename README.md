@@ -1,66 +1,167 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Marketplace - SweetMarket
+## Used technologies
+- Laravel 11
+- FilamentPHP
+- TailwindCSS
+- AlpineJS
+- Livewire
+- Laravel Socialite
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Description
+The marketplace system is designed to connect sellers of baked goods and sweets with potential buyers. The platform includes the following core functionalities:
+- User Registration and Authentication: Both sellers and buyers can register, log in, and manage their accounts. Sellers have access to product management features, while buyers can browse and purchase products.
+- Product Listing: Sellers can create and manage product listings, including categories like cakes, cookies, vegan sweets, and more. Each product listing contains descriptions, images, prices, and information on dietary restrictions (e.g., gluten-free, vegan). 
+- Shopping Cart and Checkout: Buyers can add products to a shopping cart, calculate taxes and shipping, and proceed through a secure checkout process with multiple payment options. 
+- Order Management: Sellers can manage incoming orders, update order statuses, and communicate with buyers regarding shipment details. 
+- Review and Rating System: Buyers can leave reviews and ratings for products they purchase, helping others make informed decisions. 
+- Search and Filtering: The platform includes advanced search and filtering capabilities, allowing buyers to quickly find specific products based on category, dietary needs, or price. 
+- Admin Dashboard: An admin panel allows the platform owner to oversee transactions, manage users, approve product listings, and resolve disputes.
 
-## About Laravel
+## Models
+### **User**
+The user model represents a system user.
+- `name`: user name
+- `email`: unique email
+- `password`: encrypted password
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### **Country**
+The country model represents countries.
+- `name`: country name
+- `has_vat`: VAT presence (true, false)
+- `outside_eu_vat`: country outside the EU
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### **Region**
+The region model represents regions within a country.
+- `name`: region name
+- `country_id`: foreign key to the country model
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### **City**
+The city model represents cities within a region.
+- `name`: city name
+- `region_id`: foreign key to the region model
+- `country_id`: foreign key to the country model
+- `status`: city status
 
-## Learning Laravel
+### **Allergen**
+Allergens present in products.
+- `name`: allergen name
+- `description`: allergen description
+- `severity_level`: allergen severity level
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### **Theme**
+Themes for the platform.
+- `name`: theme name
+- `status`: theme status
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### **Ingredient**
+Ingredients used in products.
+- `name`: ingredient name
+- `description`: ingredient description
+- `is_allergen`: allergen flag
+- `is_vegan`: vegan flag
+- `is_organic`: organic flag
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### **???Seller???**
+Sellers registered on the platform.
+- `name`: seller name
+- `description`: seller description
+- `user_id`: foreign key to the user model
+- `country_id`: foreign key to the country model
+- `region_id`: foreign key to the region model
+- `address`: seller address
+- `phone`: seller phone number
+- `website`: seller website
+- `vat_number`: VAT number
 
-## Laravel Sponsors
+### **Category**
+Product categories.
+- `name`: category name
+- `description`: category description
+- `parent_id`: parent category ID
+- `is_active`: active flag
+- `is_featured`: featured flag
+- `is_popular`: popular flag
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### **Product**
+Products available for sale.
+- `name`: product name
+- `description`: product description
+- `price`: product price
+- `category_id`: foreign key to the category model
+- `seller_id`: foreign key to the user model
+- `is_vegan`: vegan flag
+- `is_gluten_free`: gluten-free flag
+- `is_nut_free`: nut-free flag
+- `is_organic`: organic flag
+- `is_halal`: halal flag
+- `is_kosher`: kosher flag
+- `is_sugar_free`: sugar-free flag
+- `is_lactose_free`: lactose-free flag
 
-### Premium Partners
+### **Shipping**
+Shipping methods available for products.
+- `name`: shipping method name
+- `description`: shipping method description
+- `price`: shipping method price
+- `is_active`: active flag
+- `is_default`: default flag
+- `is_express`: express flag
+- `is_international`: international flag
+- `is_free`: free flag
+- `is_pickup`: pickup flag
+- `is_local`: local flag
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### **Payment**
+Payment methods available for orders.
+- `name`: payment method name
+- `description`: payment method description
+- `is_active`: active flag
+- `is_default`: default flag
+- `is_cash`: cash flag
+- `is_card`: card flag
+- `is_paypal`: PayPal flag
+- `is_stripe`: Stripe flag
+- `is_bank_transfer`: bank transfer flag
 
-## Contributing
+### **Order**
+Orders placed by buyers.
+- `buyer_id`: foreign key to the user model
+- `seller_id`: foreign key to the user model
+- `product_id`: foreign key to the product model
+- `quantity`: product quantity
+- `total_price`: total order price
+- `status`: order status
+- `is_paid`: paid flag
+- `is_shipped`: shipped flag
+- `is_delivered`: delivered flag
+- `is_cancelled`: cancelled flag
+- `is_refunded`: refunded flag
+- `is_disputed`: disputed flag
+- `dispute_reason`: dispute reason
+- `dispute_resolution`: dispute resolution
+- `dispute_status`: dispute status
+- `dispute_date`: dispute date
+- `shipping_date`: shipping date
+- `delivery_date`: delivery date
+- `cancelled_date`: cancelled date
+- `refunded_date`: refunded date
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### **Review**
+Product reviews left by buyers.
+- `buyer_id`: foreign key to the user model
+- `order_id`: foreign key to the order model
+- `rating`: review rating
+- `comment`: review comment
+- `is_active`: active flag
+- `is_approved`: approved flag
 
-## Code of Conduct
+### **Complaint**
+Complaints filed by buyers.
+- `buyer_id`: foreign key to the user model
+- `seller_id`: foreign key to the user model
+- `order_id`: foreign key to the order model
+- `reason`: complaint reason
+- `resolution`: complaint resolution
+- `status`: complaint status
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+###')

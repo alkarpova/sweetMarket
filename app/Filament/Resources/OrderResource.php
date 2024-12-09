@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\OrderStatus;
 use App\Filament\Resources\OrderResource\Pages;
+use App\Filament\Resources\OrderResource\RelationManagers\ItemsRelationManager;
 use App\Models\Order;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class OrderResource extends Resource
@@ -24,23 +26,55 @@ class OrderResource extends Resource
         return false;
     }
 
+    public static function canEdit(Model $record): bool
+    {
+        return $record->status !== OrderStatus::Delivered;
+    }
+
+    public static function canDelete(Model $record): bool
+    {
+        return false;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Section::make()
+                    ->aside()
+                    ->description('Order Information')
+                    ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('number')
                             ->disabled(),
-                        Forms\Components\Select::make('user_id')
-                            ->relationship('user', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->disabled(),
                         Forms\Components\TextInput::make('total')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('payment_method')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('shipping_method')
                             ->disabled(),
                         Forms\Components\Select::make('status')
                             ->options(OrderStatus::class)
+                            ->disabled(function ($livewire) {
+                                return $livewire->record->status === OrderStatus::Delivered;
+                            }),
+                    ]),
+                Forms\Components\Section::make()
+                    ->aside()
+                    ->description('Customer Information')
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('email')
+                            ->disabled(),
+                        Forms\Components\TextInput::make('phone')
+                            ->disabled(),
+                        Forms\Components\Select::make('city')
+                            ->relationship('city', 'name')
+                            ->disabled(),
+                        Forms\Components\Textarea::make('shipping_address')
+                            ->disabled(),
+                        Forms\Components\Textarea::make('notes')
                             ->disabled(),
                     ]),
             ]);
@@ -51,7 +85,6 @@ class OrderResource extends Resource
         return $table
             ->modifyQueryUsing(function ($query) {
                 return $query->with([
-                    'user',
                     'items',
                 ]);
             })
@@ -60,18 +93,22 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('number')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('user.name')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->label('Customer'),
                 Tables\Columns\TextColumn::make('items_count')
-                    ->counts('items'),
+                    ->counts('items')
+                    ->label('Products'),
                 Tables\Columns\TextColumn::make('total')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('items_status')
+                    ->label('Products Status'),
                 Tables\Columns\TextColumn::make('status')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -82,6 +119,10 @@ class OrderResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->options(OrderStatus::class)
+                    ->preload()
+                    ->searchable(),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
@@ -100,7 +141,7 @@ class OrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ItemsRelationManager::class,
         ];
     }
 
@@ -109,6 +150,7 @@ class OrderResource extends Resource
         return [
             'index' => Pages\ListOrders::route('/'),
             'view' => Pages\ViewOrder::route('/{record}'),
+            'edit' => Pages\EditOrder::route('/{record}/edit'),
         ];
     }
 

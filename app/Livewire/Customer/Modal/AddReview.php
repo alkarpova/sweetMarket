@@ -41,7 +41,7 @@ class AddReview extends ModalComponent
     {
         // Check if the user is trying to review themselves
         if (auth()->user()->id === $this->supplier) {
-            $this->dispatch('alert', $message = 'You cannot review about yourself.', $type = 'error');
+            $this->dispatch('alert', 'You cannot review about yourself.', 'error');
             $this->forceClose()->closeModal();
 
             return;
@@ -52,7 +52,7 @@ class AddReview extends ModalComponent
             ->where('order_id', $this->order->id)
             ->where('order_item_id', $this->orderItem->id)
             ->exists()) {
-            $this->dispatch('alert', $message = 'You have already reviewed this product.', $type = 'error');
+            $this->dispatch('alert', 'You have already reviewed this product.', 'error');
             $this->forceClose()->closeModal();
 
             return;
@@ -61,7 +61,7 @@ class AddReview extends ModalComponent
         // Validate the input
         $this->validate([
             'rating' => 'required|integer|min:1|max:5', // required and integer between 1 and 5
-            'supplier' => 'nullable|exists:users,id', // required and exists in the users table
+            'supplier' => 'required|exists:users,id', // required and exists in the users table
             'comment' => 'nullable|max:65535', // required and max 65535 characters
         ]);
 
@@ -70,6 +70,7 @@ class AddReview extends ModalComponent
             'user_id' => auth()->user()->id,
             'order_id' => $this->order->id,
             'order_item_id' => $this->orderItem->id,
+            'supplier_id' => $this->supplier,
             'rating' => $this->rating,
             'comment' => $this->comment,
         ]);
@@ -77,7 +78,7 @@ class AddReview extends ModalComponent
         // Close the modal
         $this->forceClose()->closeModal();
 
-        $this->dispatch('alert', $message = 'Review added successfully.', $type = 'success');
+        $this->dispatch('alert', 'Review added successfully.', 'success');
     }
 
     public function render()
