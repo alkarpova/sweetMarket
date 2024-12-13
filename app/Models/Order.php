@@ -85,12 +85,12 @@ class Order extends Model
 
     public function getItemsStatusAttribute(): string
     {
-        // Проверяем, есть ли элементы заказа
+        // Check if the order has no items
         if ($this->items->isEmpty()) {
             return 'No items';
         }
 
-        // Если все элементы имеют статус Completed
+        // Check if all items are completed
         if ($this->items->every(fn ($item) => $item->status === OrderItemStatus::Completed)) {
             return 'Finished';
         }

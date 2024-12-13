@@ -28,6 +28,10 @@ class CategoryResource extends Resource
                             ->unique(ignoreRecord: true)
                             ->maxLength(255)
                             ->required(),
+                        Forms\Components\TextInput::make('slug')
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255)
+                            ->required(),
                         Forms\Components\Toggle::make('status')
                             ->default(true),
                     ]),
