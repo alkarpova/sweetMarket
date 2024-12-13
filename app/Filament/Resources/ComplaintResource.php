@@ -32,9 +32,7 @@ class ComplaintResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
-                    ->aside()
-                    ->description('Complaint Information')
+                Forms\Components\Section::make('Complaint Information')
                     ->schema([
                         Forms\Components\Group::make()
                             ->relationship('order')
@@ -72,6 +70,8 @@ class ComplaintResource extends Resource
                     'supplier',
                 ]);
             })
+            ->paginated([10])
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
@@ -90,7 +90,7 @@ class ComplaintResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -110,8 +110,6 @@ class ComplaintResource extends Resource
     {
         return [
             'index' => Pages\ListComplaints::route('/'),
-            'create' => Pages\CreateComplaint::route('/create'),
-            'edit' => Pages\EditComplaint::route('/{record}/edit'),
         ];
     }
 }

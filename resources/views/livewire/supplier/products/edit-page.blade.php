@@ -98,16 +98,6 @@
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="maximum" class="block text-sm font-bold text-gray-700">
-                            Maximum
-                            <span class="text-red-600">*</span>
-                        </label>
-                        <input wire:model="maximum" id="maximum" type="number" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('maximum') border-red-300 text-red-900 @enderror">
-                        @error('maximum')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div class="mb-4">
                         <label for="quantity" class="block text-sm font-bold text-gray-700">
                             Quantity
                             <span class="text-red-600">*</span>

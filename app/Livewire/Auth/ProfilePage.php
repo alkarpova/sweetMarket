@@ -22,6 +22,22 @@ class ProfilePage extends Component
             ->firstOrFail();
     }
 
+    /**
+     * Delete the user profile.
+     */
+    public function deleteProfile(): void
+    {
+        auth()->logout();
+        $this->user->delete();
+
+        session()->flash('notify', [
+            'type' => 'success',
+            'message' => 'Profile deleted',
+        ]);
+
+        $this->redirectRoute('home-page');
+    }
+
     public function render()
     {
         return view('livewire.auth.profile-page');

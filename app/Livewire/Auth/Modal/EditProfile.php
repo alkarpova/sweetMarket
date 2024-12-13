@@ -53,8 +53,8 @@ class EditProfile extends ModalComponent
     public function update(): void
     {
         $this->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:64|unique:users,email,'.$this->user->id,
+            'name' => 'required|string|min:4|max:255',
+            'email' => 'required|email|min:4|max:64|unique:users,email,'.$this->user->id,
             'phone' => 'nullable|string|max:255',
             'country_id' => 'nullable|exists:countries,id',
             'region_id' => 'nullable|exists:regions,id',
@@ -75,15 +75,6 @@ class EditProfile extends ModalComponent
         $this->forceClose()->closeModal();
         $this->dispatch('alert', 'Profile updated successfully.', 'success');
         $this->dispatch('userUpdated');
-    }
-
-    public function delete(): void
-    {
-        $this->user->delete();
-        auth()->logout();
-
-        $this->forceClose()->closeModal();
-        $this->dispatch('alert', 'Profile deleted successfully.', 'success');
     }
 
     public function render()

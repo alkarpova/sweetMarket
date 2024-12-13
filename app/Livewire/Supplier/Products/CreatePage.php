@@ -34,8 +34,6 @@ class CreatePage extends Component
 
     public $minimum = 1;
 
-    public $maximum = 1;
-
     public $quantity = 1;
 
     public $weight = 0;
@@ -54,7 +52,6 @@ class CreatePage extends Component
             'image' => 'required|image|max:2048',
             'price' => 'required|numeric|min:0',
             'minimum' => 'required|integer|min:1',
-            'maximum' => 'required|integer|min:1|gte:minimum',
             'quantity' => 'required|integer|min:1',
             'weight' => 'nullable|numeric|min:0',
             'status' => 'required|in:0,1',
@@ -74,7 +71,6 @@ class CreatePage extends Component
             'description' => $validated['description'],
             'price' => $validated['price'],
             'minimum' => $validated['minimum'],
-            'maximum' => $validated['maximum'],
             'quantity' => $validated['quantity'],
             'weight' => $validated['weight'],
             'image' => $validated['image'],

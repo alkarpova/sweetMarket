@@ -59,6 +59,8 @@ class AddRecord extends ModalComponent
         ]);
 
         $this->forceClose()->closeModal();
+
+        $this->dispatch('alert', 'Your message has been sent.', 'success');
     }
 
     public function render()

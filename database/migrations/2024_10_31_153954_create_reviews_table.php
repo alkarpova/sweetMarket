@@ -16,10 +16,9 @@ return new class extends Migration
             $table->foreignUlid('order_id')->constrained()->cascadeOnDelete();
             $table->foreignUlid('order_item_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignUlid('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignUlid('supplier_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignUlid('supplier_id')->constrained('users')->cascadeOnDelete();
             $table->integer('rating');
             $table->text('comment')->nullable();
-            $table->boolean('status')->default(false)->index();
             $table->timestamps();
         });
     }

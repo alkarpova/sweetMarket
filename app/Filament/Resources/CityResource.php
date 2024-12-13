@@ -46,6 +46,8 @@ class CityResource extends Resource
             ->modifyQueryUsing(function (Builder $query) {
                 $query->with(['country', 'region']);
             })
+            ->paginated([10])
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('country.name')
                     ->searchable()

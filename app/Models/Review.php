@@ -25,7 +25,6 @@ class Review extends Model
         'supplier_id',
         'rating',
         'comment',
-        'status',
     ];
 
     /**
@@ -38,7 +37,6 @@ class Review extends Model
         return [
             'rating' => ReviewRating::class,
             'comment' => 'string',
-            'status' => 'boolean',
         ];
     }
 

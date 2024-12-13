@@ -22,7 +22,10 @@
                         <li>Address: {{ $user->address }}</li>
                     @endif
                 </ul>
-                <button @click="$dispatch('openModal', { component: 'auth.modal.edit-profile' })" class="inline-block mt-4 rounded-md py-2 px-5 bg-green-500 text-white">Edit</button>
+                <div class="flex flex-wrap gap-4 items-center justify-between">
+                    <button @click="$dispatch('openModal', { component: 'auth.modal.edit-profile' })" class="inline-block mt-4 rounded-md py-2 px-5 bg-green-500 text-white">Edit</button>
+                    <button wire:click.prevent="deleteProfile" type="button" class="px-4 py-2 font-semibold text-white bg-red-500 rounded-lg">Delete Profile</button>
+                </div>
             </div>
         </div>
         <aside class="col-span-2 px-4 py-8 bg-white shadow rounded-lg">

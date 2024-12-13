@@ -15,7 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->foreignUlid('order_id')->constrained()->cascadeOnDelete();
             $table->foreignUlid('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignUlid('supplier_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignUlid('supplier_id')->constrained('users')->cascadeOnDelete();
             $table->text('comment');
             $table->timestamps();
         });

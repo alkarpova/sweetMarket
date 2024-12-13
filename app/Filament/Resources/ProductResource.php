@@ -51,8 +51,6 @@ class ProductResource extends Resource
                                             ->disabled(),
                                         Forms\Components\TextInput::make('minimum')
                                             ->disabled(),
-                                        Forms\Components\TextInput::make('maximum')
-                                            ->disabled(),
                                         Forms\Components\TextInput::make('quantity')
                                             ->disabled(),
                                         Forms\Components\TextInput::make('weight')
@@ -137,17 +135,18 @@ class ProductResource extends Resource
                 ]);
             })
             ->paginated([10])
+            ->defaultSort('created_at', 'desc')
             ->columns([
-                Tables\Columns\TextColumn::make('user.name'),
-                Tables\Columns\TextColumn::make('category.name'),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('options_count')
-                    ->counts('options'),
                 Tables\Columns\TextColumn::make('status')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

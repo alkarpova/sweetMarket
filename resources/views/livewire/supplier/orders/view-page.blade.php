@@ -31,7 +31,9 @@
                     <tbody>
                         @foreach ($order->items as $item)
                             <tr>
-                                <td class="px-4 py-2 border">{{ $item->product->name }}</td>
+                                <td class="px-4 py-2 border">
+                                    <a wire:navigate href="{{ route('product-page', $item->product->id) }}" class="text-blue-600">{{ $item->product->name }}</a>
+                                </td>
                                 <td class="px-4 py-2 border">{{ $item->quantity }}</td>
                                 <td class="px-4 py-2 border">{{ $item->price }}</td>
                                 <td class="px-4 py-2 border">{{ $item->total }}</td>

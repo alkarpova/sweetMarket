@@ -39,8 +39,6 @@ class EditPage extends Component
 
     public $minimum;
 
-    public $maximum;
-
     public $quantity;
 
     public $weight;
@@ -60,7 +58,6 @@ class EditPage extends Component
         $this->image = $query->image;
         $this->price = $query->price;
         $this->minimum = $query->minimum;
-        $this->maximum = $query->maximum;
         $this->quantity = $query->quantity;
         $this->weight = $query->weight;
     }
@@ -77,7 +74,6 @@ class EditPage extends Component
             'image' => 'nullable|image|max:2048',
             'price' => 'required|numeric|min:0',
             'minimum' => 'required|integer|min:1',
-            'maximum' => 'required|integer|min:1|gte:minimum',
             'quantity' => 'required|integer|min:1',
             'weight' => 'nullable|numeric|min:0',
         ]);
@@ -94,7 +90,6 @@ class EditPage extends Component
         $product->description = $validated['description'];
         $product->price = $validated['price'];
         $product->minimum = $validated['minimum'];
-        $product->maximum = $validated['maximum'];
         $product->quantity = $validated['quantity'];
         $product->weight = $validated['weight'];
         $product->image = $validated['image'];

@@ -23,9 +23,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->decimal('price', 15, 4)->default(0);
             $table->integer('minimum')->default(1);
-            $table->integer('maximum')->nullable();
             $table->integer('quantity')->default(0);
-            $table->decimal('weight', 15, 4)->nullable();
+            $table->decimal('weight', 15, 4)->default(0);
             $table->text('description')->nullable();
             $table->integer('status')->default(ProductStatus::Draft->value)->index();
             $table->timestamps();

@@ -40,9 +40,7 @@ class OrderResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
-                    ->aside()
-                    ->description('Order Information')
+                Forms\Components\Section::make('Order Information')
                     ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('number')
@@ -59,9 +57,7 @@ class OrderResource extends Resource
                                 return $livewire->record->status === OrderStatus::Delivered;
                             }),
                     ]),
-                Forms\Components\Section::make()
-                    ->aside()
-                    ->description('Customer Information')
+                Forms\Components\Section::make('Customer Information')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->disabled(),
@@ -89,12 +85,11 @@ class OrderResource extends Resource
                 ]);
             })
             ->paginated([10])
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('number')
-                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable()
                     ->label('Customer'),
                 Tables\Columns\TextColumn::make('items_count')
                     ->counts('items')
@@ -113,28 +108,16 @@ class OrderResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options(OrderStatus::class)
                     ->preload()
                     ->searchable(),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
             ]);
     }
 

@@ -11,19 +11,15 @@ use Livewire\Component;
 
 class ViewPage extends Component
 {
-    public Order $order;
+    public ?Order $order;
 
     public $statuses;
 
     public function mount(Order $order): void
     {
-        $this->order = $order->with([
-            'items' => function ($query) {
-                $query->where('supplier_id', auth()->user()->id);
-            },
-        ])->whereHas('items', function ($query) {
-            $query->where('supplier_id', auth()->user()->id);
-        })->firstOrFail();
+        $order->load([
+            'items' => fn ($query) => $query->where('supplier_id', auth()->user()->id),
+        ])->whereHas('items', fn ($query) => $query->where('supplier_id', auth()->user()->id));
 
         $this->statuses = OrderItemStatus::cases();
     }

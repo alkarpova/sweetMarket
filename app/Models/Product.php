@@ -32,7 +32,6 @@ class Product extends Model
         'image',
         'price',
         'minimum',
-        'maximum',
         'quantity',
         'weight',
         'description',
@@ -52,7 +51,6 @@ class Product extends Model
             'description' => 'string',
             'price' => 'float',
             'minimum' => 'integer',
-            'maximum' => 'integer',
             'quantity' => 'integer',
             'weight' => 'float',
             'status' => ProductStatus::class,
@@ -126,16 +124,6 @@ class Product extends Model
     {
         return $this->belongsToMany(Theme::class)
             ->withTimestamps();
-    }
-
-    /**
-     * Get the options for the product.
-     *
-     * @return HasMany<ProductOption>
-     */
-    public function options(): HasMany
-    {
-        return $this->hasMany(ProductOption::class);
     }
 
     /**

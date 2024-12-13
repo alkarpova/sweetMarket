@@ -27,9 +27,7 @@ class ReviewResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
-                    ->aside()
-                    ->description('Review Information')
+                Forms\Components\Section::make('Order Information')
                     ->schema([
                         Forms\Components\Group::make()
                             ->relationship('order')
@@ -60,7 +58,6 @@ class ReviewResource extends Resource
                             ->disabled(),
                         Forms\Components\Textarea::make('comment')
                             ->disabled(),
-                        Forms\Components\Toggle::make('status'),
                     ]),
             ]);
     }
@@ -75,6 +72,8 @@ class ReviewResource extends Resource
                     'orderItem' => fn ($query) => $query->with('product'),
                 ]);
             })
+            ->paginated([10])
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('order.number')
                     ->searchable()
@@ -88,9 +87,6 @@ class ReviewResource extends Resource
                 Tables\Columns\TextColumn::make('rating')
                     ->searchable()
                     ->label('Rating'),
-                Tables\Columns\IconColumn::make('status')
-                    ->sortable()
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

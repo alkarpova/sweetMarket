@@ -18,6 +18,7 @@ class ListPage extends Component
             ->with([
                 'user',
                 'order',
+                'orderItem' => fn ($query) => $query->with('product'),
             ])
             ->paginate();
     }

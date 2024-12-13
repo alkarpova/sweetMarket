@@ -35,6 +35,10 @@ class ProductPage extends Component
             ->status()
             ->firstOrFail();
 
+        if (!$this->record->category->status) {
+            abort(404);
+        }
+
         if (auth()->check() && auth()->user()->id === $this->record->user->id) {
             $this->canAddToCart = false;
         }

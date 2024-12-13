@@ -23,14 +23,13 @@ class CartService
     /**
      * Create a new cart item.
      */
-    protected function createCartItem(Product $product, int $quantity, array $options = []): Collection
+    protected function createCartItem(Product $product, int $quantity): Collection
     {
         return collect([
             'id' => $product->id,
             'name' => $product->name,
             'price' => $product->price,
             'quantity' => $quantity,
-            'options' => $options,
         ]);
     }
 
@@ -59,17 +58,12 @@ class CartService
             'status' => $product->status->value,
             'quantity' => $quantity,
             'minimum' => $product->minimum,
-            'maximum' => $product->maximum,
             'available_quantity' => $product->quantity,
         ], [
             'status' => ['in:4'],
-            'quantity' => ['integer', 'min:'.$product->minimum, 'max:'.$product->maximum],
             'quantity' => ['lte:available_quantity'], // Ensure requested quantity is less than or equal to available stock
         ], [
             'status.in' => 'This product is not available for purchase.',
-            'quantity.min' => "Minimum quantity for order: {$product->minimum}",
-            'quantity.max' => "Maximum quantity for order: {$product->maximum}",
-            'quantity.lte' => 'Requested quantity exceeds available stock.',
         ]);
 
         if ($validator->fails()) {
@@ -84,7 +78,7 @@ class CartService
     /**
      * Add or update a product in the cart.
      */
-    public function add(Product $product, int $quantity = 1, array $options = []): void
+    public function add(Product $product, int $quantity = 1): void
     {
         // Validate product and quantity
         $this->validateProduct($product, $quantity);
@@ -103,37 +97,11 @@ class CartService
         }
 
         // Add or update the product
-        $cartItem = $this->createCartItem($product, $quantity, $options);
+        $cartItem = $this->createCartItem($product, $quantity);
         // Add or update the cart item
         $cartItems->put($product->id, $cartItem);
 
         $this->saveCart($cartItems);
-    }
-
-    /**
-     * Update the quantity of a product in the cart.
-     */
-    public function update(Product $product, int $quantity): void
-    {
-        // Validate product and quantity
-        $this->validateProduct($product, $quantity);
-
-        if ($this->errors) {
-            return;
-        }
-
-        // Get the cart items
-        $cartItems = $this->getCartItems();
-
-        // Update the quantity of the product
-        if ($cartItems->has($product->id)) {
-            // Update the quantity
-            $cartItem = $cartItems->get($product->id)->put('quantity', $quantity);
-            // Update the cart item
-            $cartItems->put($product->id, $cartItem);
-            // Re-index the cart items
-            $this->saveCart($cartItems);
-        }
     }
 
     /**

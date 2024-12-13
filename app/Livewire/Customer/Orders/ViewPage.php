@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class ViewPage extends Component
 {
-    public Order $order;
+    public ?Order $order;
 
     public function mount(Order $order): void
     {
@@ -16,8 +16,7 @@ class ViewPage extends Component
                 'items.product',
                 'items.supplier',
                 'items.review',
-            ])
-            ->get();
+            ]);
     }
 
     public function render()

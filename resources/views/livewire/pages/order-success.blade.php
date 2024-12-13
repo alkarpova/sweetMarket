@@ -9,6 +9,9 @@
                     </h3>
                     <p class="text-sm text-gray-600">Total: {{ $order->total }}€</p>
                     <p class="text-sm font-bold text-gray-800">Status: {{ $order->status->name }}</p>
+                    <div>
+                        {{ $order->notes }}
+                    </div>
                 </div>
             </div>
             <div class="flex flex-col items-start gap-2 bg-white py-2 px-4 rounded-md">
@@ -26,6 +29,14 @@
                         Payment
                     </h3>
                     <p class="text-sm text-gray-600">{{ $order->payment_method->name }}</p>
+                </div>
+            </div>
+            <div class="flex flex-col items-start gap-2 bg-white py-2 px-4 rounded-md">
+                <div class="space-y-1">
+                    <h3 class="text-lg font-bold text-gray-800">
+                        Notes
+                    </h3>
+                    <p class="text-sm text-gray-600">{{ $order->notes }}</p>
                 </div>
             </div>
             <div class="flex flex-col items-start gap-2 bg-white py-2 px-4 rounded-md">

@@ -13,7 +13,6 @@
                                 <th class="px-6 py-3">Product name</th>
                                 <th class="px-6 py-3">Price</th>
                                 <th class="px-6 py-3">Minimum</th>
-                                <th class="px-6 py-3">Maximum</th>
                                 <th class="px-6 py-3">Quantity</th>
                                 <th class="px-6 py-3">Status</th>
                                 <th class="px-6 py-3">Modified</th>
@@ -24,16 +23,13 @@
                             @foreach($this->products as $product)
                                 <tr class="odd:bg-white even:bg-gray-50 border-b">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                        <a wire:navigate href="{{ route('supplier-products-edit-page', ['product' => $product->id]) }}" class="text-blue-500">{!! $product->name !!}</a>
+                                        <a wire:navigate href="{{ route('product-page', $product->id) }}" class="text-blue-500">{!! $product->name !!}</a>
                                     </th>
                                     <td class="px-6 py-4">
                                         {{ $product->price }}€
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ $product->minimum }}
-                                    </td>
-                                    <td class="px-6 py-4">
-                                        {{ $product->maximum }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ $product->quantity }}

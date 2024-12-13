@@ -34,7 +34,6 @@ class ProductFactory extends Factory
             'weight' => $this->faker->randomFloat(2, 0, 100),
             'quantity' => 10,
             'minimum' => 1,
-            'maximum' => 5,
             'status' => $this->faker->randomElement(ProductStatus::cases())->value,
         ];
     }

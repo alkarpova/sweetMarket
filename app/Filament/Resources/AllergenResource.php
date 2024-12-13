@@ -38,6 +38,7 @@ class AllergenResource extends Resource
     {
         return $table
             ->paginated([10])
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()

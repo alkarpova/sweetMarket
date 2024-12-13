@@ -49,7 +49,7 @@ class CheckoutPage extends Component
         }
 
         // Get the cities
-        $this->cities = City::all()->map(function ($city) {
+        $this->cities = City::status()->get()->map(function ($city) {
             return [
                 'id' => $city->id,
                 'name' => $city->name,
@@ -215,11 +215,15 @@ class CheckoutPage extends Component
     public function decreaseCartItem($cartItemId): void
     {
         Cart::decrease($cartItemId);
+
+        $this->validateCart();
     }
 
     public function increaseCartItem($cartItemId): void
     {
         Cart::increase($cartItemId);
+
+        $this->validateCart();
     }
 
     #[Computed]

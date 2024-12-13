@@ -17,6 +17,9 @@
                             @forelse($this->reviews as $review)
                                 <tr class="odd:bg-white even:bg-gray-50 border-b">
                                     <td class="px-6 py-4">{{ $review->order->number }}</td>
+                                    <td class="px-6 py-4">
+                                        <a wire:navigate href="{{ route('product-page', $item->orderItem->product->id) }}" class="text-blue-600">{{ $item->orderItem->product->name }}</a>
+                                    </td>
                                     <td class="px-6 py-4">{{ $review->user->name }}</td>
                                     <td class="px-6 py-4">{{ $review->rating }}</td>
                                     <td class="px-6 py-4">{{ $review->comment }}</td>

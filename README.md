@@ -27,8 +27,8 @@ The user model represents a system user.
 ### **Country**
 The country model represents countries.
 - `name`: country name
-- `has_vat`: VAT presence (true, false)
-- `outside_eu_vat`: country outside the EU
+- `iso2`: country ISO code
+- `status`: status
 
 ### **Region**
 The region model represents regions within a country.
@@ -60,18 +60,6 @@ Ingredients used in products.
 - `is_allergen`: allergen flag
 - `is_vegan`: vegan flag
 - `is_organic`: organic flag
-
-### **???Seller???**
-Sellers registered on the platform.
-- `name`: seller name
-- `description`: seller description
-- `user_id`: foreign key to the user model
-- `country_id`: foreign key to the country model
-- `region_id`: foreign key to the region model
-- `address`: seller address
-- `phone`: seller phone number
-- `website`: seller website
-- `vat_number`: VAT number
 
 ### **Category**
 Product categories.
@@ -163,5 +151,3 @@ Complaints filed by buyers.
 - `reason`: complaint reason
 - `resolution`: complaint resolution
 - `status`: complaint status
-
-###')

@@ -190,7 +190,7 @@ class CategoryPage extends Component
     public function themes(): Collection
     {
         return Theme::whereHas('products', function ($query) {
-            $query->where('category_id', $this->record->id);
+            $query->where('category_id', $this->record->id)->status();
         })->status()->get();
     }
 
@@ -201,9 +201,8 @@ class CategoryPage extends Component
     public function suppliers(): Collection
     {
         return User::whereHas('products', function ($query) {
-            $query->where('category_id', $this->record->id);
-            $query->status();
-        })->get();
+            $query->where('category_id', $this->record->id)->status();
+        })->whereNotNull('deleted_at')->get();
     }
 
     /**
@@ -213,8 +212,8 @@ class CategoryPage extends Component
     public function regions(): Collection
     {
         return Region::whereHas('products', function ($query) {
-            $query->where('category_id', $this->record->id);
-        })->get();
+            $query->where('category_id', $this->record->id)->status();
+        })->status()->get();
     }
 
     /**
@@ -224,13 +223,13 @@ class CategoryPage extends Component
     public function cities(): Collection
     {
         return City::whereHas('products', function ($query) {
-            $query->where('category_id', $this->record->id);
+            $query->where('category_id', $this->record->id)->status();
 
             // Apply region filter if selected
             if ($this->selectedRegion) {
                 $query->where('region_id', $this->selectedRegion);
             }
-        })->get();
+        })->status()->get();
     }
 
     /**

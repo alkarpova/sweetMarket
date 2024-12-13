@@ -22,6 +22,7 @@ class Categories extends Component
                     ->where('products.status', ProductStatus::Published);
             })
             ->where('categories.status', 1)
+            ->whereNull('deleted_at')
             ->get();
     }
 
