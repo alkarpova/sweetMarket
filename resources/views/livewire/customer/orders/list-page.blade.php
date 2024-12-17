@@ -14,7 +14,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse ($this->orders as $item)
+                    @forelse($this->orders as $item)
                         <tr>
                             <td class="px-4 py-2 border">
                                 <a wire:navigate href="{{ route('customer-orders-view-page', $item->id) }}" class="text-blue-500"> {{ $item->number }}</a>

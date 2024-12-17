@@ -92,7 +92,7 @@
                             Minimum
                             <span class="text-red-600">*</span>
                         </label>
-                        <input wire:model="minimum" id="minimum" type="number" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('minimum') border-red-300 text-red-900 @enderror">
+                        <input wire:model="minimum" id="minimum" type="number" min="1" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('minimum') border-red-300 text-red-900 @enderror">
                         @error('minimum')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -102,7 +102,7 @@
                             Quantity
                             <span class="text-red-600">*</span>
                         </label>
-                        <input wire:model="quantity" id="quantity" type="number" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('quantity') border-red-300 text-red-900 @enderror">
+                        <input wire:model="quantity" id="quantity" type="number" min="1" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('quantity') border-red-300 text-red-900 @enderror">
                         @error('quantity')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -116,19 +116,19 @@
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
-                    <div class="mb-4">
-                        <label for="image" class="block text-sm font-bold text-gray-700">
-                            Image
-                            <span class="text-red-600">*</span>
-                        </label>
-                        <input wire:model="image" id="image" type="file" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('image') border-red-300 text-red-900 @enderror">
-                        @if ($this->image && Storage::disk('public')->exists($this->image))
-                            <img src="{{ Storage::disk('public')->url($this->image) }}" alt="{{ $this->name }}">
-                        @endif
-                        @error('image')
-                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                        @enderror
-                    </div>
+{{--                    <div class="mb-4">--}}
+{{--                        <label for="image" class="block text-sm font-bold text-gray-700">--}}
+{{--                            Image--}}
+{{--                            <span class="text-red-600">*</span>--}}
+{{--                        </label>--}}
+{{--                        <input wire:model="image" id="image" type="file"  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('image') border-red-300 text-red-900 @enderror">--}}
+{{--                        @if ($this->image && Storage::disk('public')->exists($this->image))--}}
+{{--                            <img src="{{ Storage::disk('public')->url($this->image) }}" alt="{{ $this->name }}">--}}
+{{--                        @endif--}}
+{{--                        @error('image')--}}
+{{--                            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>--}}
+{{--                        @enderror--}}
+{{--                    </div>--}}
                     <div class="mb-4">
                         <label for="status" class="block text-sm font-bold text-gray-700">
                             Status

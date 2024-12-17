@@ -2,7 +2,7 @@
     <div class="grid grid-cols-12 gap-6">
         <div class="col-span-10">
             <div class="px-4 py-8 bg-white shadow rounded-lg">
-                <h1 class="mb-4 font-bold text-xl xl:text-2xl">List Orders</h1>
+                <h1 class="mb-4 font-bold text-xl xl:text-2xl">Customer Orders</h1>
                 <table class="w-full border-collapse table-auto">
                     <thead>
                         <tr class="text-left">
@@ -16,7 +16,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($this->orders as $item)
+                        @forelse($this->orders as $item)
                             <tr>
                                 <td class="px-4 py-2 border">{{ $item->number }}</td>
                                 <td class="px-4 py-2 border">{{ $item->name }}</td>

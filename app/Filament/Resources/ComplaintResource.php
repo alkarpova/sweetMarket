@@ -75,15 +75,12 @@ class ComplaintResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->searchable()
-                    ->sortable()
                     ->label('User'),
                 Tables\Columns\TextColumn::make('order.number')
                     ->searchable()
-                    ->sortable()
                     ->label('Order'),
                 Tables\Columns\TextColumn::make('supplier.name')
                     ->searchable()
-                    ->sortable()
                     ->label('Supplier'),
             ])
             ->filters([

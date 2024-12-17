@@ -27,15 +27,15 @@ class ProductPage extends Component
             ->with([
                 'category',
                 'user',
-                'allergens',
-                'ingredients',
-                'themes',
+                'allergens' => fn ($query) => $query->status(),
+                'ingredients' => fn ($query) => $query->status(),
+                'themes' => fn ($query) => $query->status(),
                 'reviews',
             ])
             ->status()
             ->firstOrFail();
 
-        if (!$this->record->category->status) {
+        if (! $this->record->category->status) {
             abort(404);
         }
 

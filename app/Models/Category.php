@@ -20,7 +20,6 @@ class Category extends Model
      */
     protected $fillable = [
         'name',
-        'slug',
         'status',
     ];
 
@@ -33,7 +32,6 @@ class Category extends Model
     {
         return [
             'name' => 'string',
-            'slug' => 'string',
             'status' => 'boolean',
         ];
     }

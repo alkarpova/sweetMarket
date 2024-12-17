@@ -33,7 +33,7 @@ class EditPage extends Component
     public $description;
 
     #[Validate('image|max:2048')]
-    public $image;
+    //    public $image;
 
     public $price;
 
@@ -55,7 +55,7 @@ class EditPage extends Component
         $this->selectedIngredients = $query->ingredients->pluck('id')->toArray();
         $this->name = $query->name;
         $this->description = $query->description;
-        $this->image = $query->image;
+        //        $this->image = $query->image;
         $this->price = $query->price;
         $this->minimum = $query->minimum;
         $this->quantity = $query->quantity;
@@ -71,14 +71,14 @@ class EditPage extends Component
             'selectedIngredients.*' => 'nullable|exists:ingredients,id',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|max:2048',
+            //            'image' => 'nullable|image|max:2048',
             'price' => 'required|numeric|min:0',
             'minimum' => 'required|integer|min:1',
             'quantity' => 'required|integer|min:1',
             'weight' => 'nullable|numeric|min:0',
         ]);
 
-        $validated['image'] = $this->image->store('products', 'public');
+        //        $validated['image'] = $this->image->store('products', 'public');
 
         $product = Product::findOrFail($this->productId);
 
@@ -91,8 +91,8 @@ class EditPage extends Component
         $product->price = $validated['price'];
         $product->minimum = $validated['minimum'];
         $product->quantity = $validated['quantity'];
-        $product->weight = $validated['weight'];
-        $product->image = $validated['image'];
+        $product->weight = filled($validated['weight']) ? $validated['weight'] : 0;
+        //        $product->image = $validated['image'];
         $product->status = ProductStatus::Pending;
         $product->save();
 

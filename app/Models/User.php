@@ -30,7 +30,6 @@ class User extends Authenticatable implements FilamentUser
         'region_id',
         'city_id',
         'address',
-        'rating',
     ];
 
     /**
@@ -54,7 +53,6 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'role' => UserRole::class,
-            'rating' => 'float',
         ];
     }
 

@@ -10,7 +10,6 @@
             <div class="w-full md:w-2/3 p-6">
                 <h2 class="text-xl font-semibold mb-4">Customer information</h2>
                 <form>
-                    <!-- Name -->
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">
                             First and last name
@@ -22,7 +21,6 @@
                         @enderror
                     </div>
 
-                    <!-- Email -->
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">
                             Email
@@ -34,7 +32,6 @@
                         @enderror
                     </div>
 
-                    <!-- Phone -->
                     <div class="mb-4">
                         <label for="phone" class="block text-sm font-medium text-gray-700">
                             Phone
@@ -46,7 +43,6 @@
                         @enderror
                     </div>
 
-                    <!-- City -->
                     <div class="mb-4">
                         <label for="city" class="block text-sm font-medium text-gray-700">
                             City
@@ -63,7 +59,6 @@
                         @enderror
                     </div>
 
-                    <!-- Address -->
                     <div class="mb-4">
                         <label for="address" class="block text-sm font-medium text-gray-700">
                             Delivery address
@@ -75,7 +70,6 @@
                         @enderror
                     </div>
 
-                    <!-- Notes -->
                     <div class="mb-4">
                         <label for="notes" class="block text-sm font-medium text-gray-700">Notes</label>
                         <textarea wire:model="notes" id="notes" rows="3" class="w-full mt-1 p-2 border rounded-lg focus:ring focus:ring-blue-300" placeholder="Enter your notes"></textarea>
@@ -84,7 +78,6 @@
                         @enderror
                     </div>
 
-                    <!-- Payment Method -->
                     <h2 class="text-xl font-semibold mb-4 mt-6">Method of payment</h2>
                     <div class="space-y-2">
                         <div class="flex items-center">
@@ -93,7 +86,6 @@
                         </div>
                     </div>
 
-                    <!-- Shipping Method -->
                     <h2 class="text-xl font-semibold mb-4 mt-6">Delivery method</h2>
                     <div class="space-y-2">
                         <div class="flex items-center">
@@ -111,16 +103,18 @@
                     @foreach($this->cartItems as $item)
                         @php
                             $itemErrors = collect($this->getCartErrors)->firstWhere('id', $item['id']);
+                            $itemWarnings = collect($this->getCartWarnings)->firstWhere('id', $item['id']);
                         @endphp
-                        @if($itemErrors)
-                            <div class="flex flex-col items-start gap-2 bg-red-50 py-2 px-4 rounded-md">
-                                <div class="space-y-1">
-                                    <h3 class="text-sm font-bold text-neutral-600">
-                                        <a wire:navigate href="{{ route('product-page', $item['id']) }}">{!! $item['name'] !!}</a>
-                                    </h3>
-                                    <p class="text-sm text-neutral-600">{{ $item['quantity'] }} x {{ $item['price'] }}€</p>
-                                    <p class="text-sm font-bold text-neutral-600">{{ $item['price'] * $item['quantity'] }}€</p>
-                                </div>
+                        <div class="flex flex-col items-start gap-2 {{ $itemErrors ? 'bg-red-50' : ($itemWarnings ? 'bg-yellow-50' : 'bg-white') }} py-2 px-4 rounded-md">
+                            <div class="space-y-1">
+                                <h3 class="text-sm font-bold {{ $itemErrors ? 'text-neutral-600' : 'text-gray-800' }}">
+                                    <a wire:navigate href="{{ route('product-page', $item['id']) }}">{!! $item['name'] !!}</a>
+                                </h3>
+                                <p class="text-sm {{ $itemErrors ? 'text-neutral-600' : 'text-gray-600' }}">{{ $item['quantity'] }} x {{ $item['price'] }}€</p>
+                                <p class="text-sm font-bold {{ $itemErrors ? 'text-neutral-600' : 'text-gray-800' }}">{{ $item['price'] * $item['quantity'] }}€</p>
+                            </div>
+
+                            @if($itemErrors)
                                 <div>
                                     <ul class="list-disc list-inside text-sm text-red-600">
                                         @foreach($itemErrors['errors']->all() as $message)
@@ -128,70 +122,41 @@
                                         @endforeach
                                     </ul>
                                 </div>
-                                <div>
-                                    {{-- Decrease quantity --}}
-                                    <button
-                                        wire:click="decreaseCartItem('{{ $item['id'] }}')"
-                                        class="inline-flex items-center justify-center size-5 rounded-full bg-blue-600 font-bold text-white"
-                                    >
-                                        -
-                                    </button>
-                                    {{-- Quantity --}}
-                                    {{-- Increase quantity --}}
-                                    <button
-                                        wire:click="increaseCartItem('{{ $item['id'] }}')"
-                                        class="inline-flex items-center justify-center size-5 rounded-full bg-blue-600 font-bold text-white"
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                                <div>
-                                    <button
-                                        wire:click="removeCartItem('{{ $item['id'] }}')"
-                                        class="inline-flex text-sm font-bold text-red-600 hover:text-red-700 focus:ring focus:ring-red-300"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            </div>
-                        @else
-                            <div class="flex flex-col items-start gap-2 bg-white py-2 px-4 rounded-md">
-                                <div class="space-y-1">
-                                    <h3 class="text-sm font-bold text-gray-800">
-                                        <a wire:navigate href="{{ route('product-page', $item['id']) }}">{!! $item['name'] !!}</a>
-                                    </h3>
-                                    <p class="text-sm text-gray-600">{{ $item['quantity'] }} x {{ $item['price'] }}€</p>
-                                    <p class="text-sm font-bold text-gray-800">{{ $item['price'] * $item['quantity'] }}€</p>
-                                </div>
-                                <div>
-                                    {{-- Decrease quantity --}}
-                                    <button
-                                        wire:click="decreaseCartItem('{{ $item['id'] }}')"
-                                        class="inline-flex items-center justify-center size-5 rounded-full bg-blue-600 font-bold text-white"
-                                    >
-                                        -
-                                    </button>
-                                    {{-- Quantity --}}
-                                    {{-- Increase quantity --}}
-                                    <button
-                                        wire:click="increaseCartItem('{{ $item['id'] }}')"
-                                        class="inline-flex items-center justify-center size-5 rounded-full bg-blue-600 font-bold text-white"
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                                <div>
-                                    <button
-                                        wire:click="removeCartItem('{{ $item['id'] }}')"
-                                        class="inline-flex text-sm text-red-600 hover:text-red-700 focus:ring focus:ring-red-300"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-                            </div>
-                        @endif
-                    @endforeach
+                            @endif
 
+                            @if($itemWarnings)
+                                <div>
+                                    <ul class="list-disc list-inside text-sm text-yellow-600">
+                                        <li>{{ $itemWarnings['warning'] }}</li>
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <div>
+                                <button
+                                    wire:click="decreaseCartItem('{{ $item['id'] }}')"
+                                    class="inline-flex items-center justify-center size-5 rounded-full bg-blue-600 font-bold text-white"
+                                >
+                                    -
+                                </button>
+                                <button
+                                    wire:click="increaseCartItem('{{ $item['id'] }}')"
+                                    class="inline-flex items-center justify-center size-5 rounded-full bg-blue-600 font-bold text-white"
+                                >
+                                    +
+                                </button>
+                            </div>
+
+                            <div>
+                                <button
+                                    wire:click="removeCartItem('{{ $item['id'] }}')"
+                                    class="inline-flex text-sm font-bold text-red-600 hover:text-red-700 focus:ring focus:ring-red-300"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
                     <!-- Total -->
                     <div class="border-t pt-4">
                         <div class="flex justify-between">

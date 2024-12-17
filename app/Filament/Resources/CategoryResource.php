@@ -28,10 +28,6 @@ class CategoryResource extends Resource
                             ->unique(ignoreRecord: true)
                             ->maxLength(255)
                             ->required(),
-                        Forms\Components\TextInput::make('slug')
-                            ->unique(ignoreRecord: true)
-                            ->maxLength(255)
-                            ->required(),
                         Forms\Components\Toggle::make('status')
                             ->default(true),
                     ]),
@@ -45,22 +41,17 @@ class CategoryResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\IconColumn::make('status')
-                    ->sortable()
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

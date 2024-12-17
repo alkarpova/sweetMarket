@@ -53,7 +53,7 @@
                                     </h3>
                                     <p class="text-sm text-gray-600">{{ $item->quantity }} x {{ $item->price }}€</p>
                                     <p class="text-sm font-bold text-gray-800">{{ $item->price * $item->quantity }}€</p>
-                                    <p class="text-sm text-gray-600">Supplier: {{ $item->supplier->name }}</p>
+                                    <p class="text-sm text-gray-600">Supplier: {{ $item->supplier?->name }}</p>
                                 </div>
                             </div>
                         @endforeach

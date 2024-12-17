@@ -17,6 +17,7 @@ class HomePage extends Component
     public function products(): Collection
     {
         return Product::whereHas('user', static fn (Builder $query) => $query->whereNull('deleted_at'))
+            ->whereHas('category', static fn (Builder $query) => $query->status())
             ->with(['themes'])
             ->latest()
             ->status()

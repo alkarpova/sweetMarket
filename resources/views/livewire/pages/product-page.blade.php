@@ -3,7 +3,7 @@
     <div class="p-8 border-b border-gray-200">
         <div class="flex flex-col gap-4">
             <a
-                href="{{ route('category-page', ['slug' => $this->record->category->slug]) }}"
+                href="{{ route('category-page', ['id' => $this->record->category->id]) }}"
                 class="text-sm font-medium text-blue-600 hover:underline"
                 wire:navigate
             >

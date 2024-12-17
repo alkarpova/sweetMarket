@@ -23,20 +23,12 @@ class ItemsRelationManager extends RelationManager
             ->recordTitleAttribute('product.name')
             ->paginated([10])
             ->columns([
-                Tables\Columns\TextColumn::make('product.name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('supplier.name')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('price')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('quantity')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('total')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('product.name'),
+                Tables\Columns\TextColumn::make('supplier.name'),
+                Tables\Columns\TextColumn::make('price'),
+                Tables\Columns\TextColumn::make('quantity'),
+                Tables\Columns\TextColumn::make('total'),
+                Tables\Columns\TextColumn::make('status'),
             ]);
     }
 }

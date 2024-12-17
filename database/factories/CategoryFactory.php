@@ -21,7 +21,6 @@ class CategoryFactory extends Factory
 
         return [
             'name' => $name,
-            'slug' => Str::slug($name),
             'status' => $this->faker->boolean,
         ];
     }

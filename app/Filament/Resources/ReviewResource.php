@@ -27,7 +27,7 @@ class ReviewResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Order Information')
+                Forms\Components\Section::make('Review Information')
                     ->schema([
                         Forms\Components\Group::make()
                             ->relationship('order')
@@ -89,11 +89,9 @@ class ReviewResource extends Resource
                     ->label('Rating'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

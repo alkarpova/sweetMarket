@@ -108,22 +108,51 @@ class CheckoutPage extends Component
             'shippingMethod' => ['required', new Enum(ShippingMethod::class)],
         ]);
 
-        // Get the cart items
-        $products = Cart::getContent();
-
         // Validate cart items before creating the order
         $this->validateCart();
 
+        if (Cart::getErrors()->isNotEmpty()) {
+            $this->dispatch('alert', 'Unable to place the order. Please resolve the errors and try again.', 'error');
+
+            return;
+        }
+
         // Create the order transaction
-        DB::transaction(function () use ($validated, $products) {
-            $this->createOrderTransaction($validated, $products);
+        $order = null;
+        DB::transaction(function () use ($validated, &$order) {
+            $order = $this->createOrderTransaction($validated, Cart::getContent());
         });
+
+        if ($order === null) {
+            $this->dispatch('alert', 'Failed to create the order. Please try again.', 'error');
+
+            logger()->error('Failed to create the order', [
+                'validated' => $validated,
+                'cart' => Cart::getContent(),
+            ]);
+        }
+
+        try {
+            $this->sendOrderEmails($order);
+        } catch (\Throwable $e) {
+            // Log the error for debugging
+            logger()->error('Failed to send order emails: '.$e->getMessage(), [
+                'order_id' => $order->id ?? null,
+            ]);
+
+            // Optionally, notify the user about the issue
+            $this->dispatch('alert', 'Order created successfully, but we encountered an issue with email notifications.', 'warning');
+        }
+
+        $this->dispatch('alert', 'Order created successfully', 'success');
+        // Redirect to success page
+        $this->redirect(route('order-success-page', $order->number));
     }
 
     /**
      * Create the order transaction
      */
-    private function createOrderTransaction($validated, $products): void
+    private function createOrderTransaction($validated, $products): Order
     {
         // Generate a unique order number
         do {
@@ -174,19 +203,13 @@ class CheckoutPage extends Component
         // Reset form fields
         $this->reset(['name', 'email', 'phone', 'city', 'address', 'notes', 'paymentMethod', 'shippingMethod']);
 
-        // Supplier email notification with queue
-        $suppliers = $order->items
-            ->pluck('supplier.email', 'supplier.id')
-            ->unique();
+        return $order;
+    }
 
-        foreach ($suppliers as $email) {
-            SendOrderEmail::dispatch($order, $email);
-        }
-
-        // User email notification with queue
+    private function sendOrderEmails(Order $order): void
+    {
+        // Notify the customer
         SendOrderEmail::dispatch($order, $order->email);
-
-        $this->redirect(route('order-success-page', $order->number));
     }
 
     /**
@@ -230,6 +253,12 @@ class CheckoutPage extends Component
     public function getCartErrors(): Collection
     {
         return Cart::getErrors();
+    }
+
+    #[Computed]
+    public function getCartWarnings(): Collection
+    {
+        return Cart::getWarnings();
     }
 
     public function render()

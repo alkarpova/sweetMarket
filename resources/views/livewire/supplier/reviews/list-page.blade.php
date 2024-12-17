@@ -18,7 +18,11 @@
                                 <tr class="odd:bg-white even:bg-gray-50 border-b">
                                     <td class="px-6 py-4">{{ $review->order->number }}</td>
                                     <td class="px-6 py-4">
-                                        <a wire:navigate href="{{ route('product-page', $item->orderItem->product->id) }}" class="text-blue-600">{{ $item->orderItem->product->name }}</a>
+                                        @if($review->product->status === \App\Enums\ProductStatus::Published)
+                                            <a wire:navigate href="{{ route('product-page', $review->orderItem->product->id) }}" class="text-blue-600">{{ $review->orderItem->product->name }}</a>
+                                        @else
+                                            {{ $review->orderItem->product->name }}
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4">{{ $review->user->name }}</td>
                                     <td class="px-6 py-4">{{ $review->rating }}</td>

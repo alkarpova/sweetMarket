@@ -20,10 +20,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($this->products as $product)
+                            @forelse($this->products as $product)
                                 <tr class="odd:bg-white even:bg-gray-50 border-b">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                        <a wire:navigate href="{{ route('product-page', $product->id) }}" class="text-blue-500">{!! $product->name !!}</a>
+                                        @if($product->status === \App\Enums\ProductStatus::Published)
+                                            <a wire:navigate href="{{ route('product-page', $product->id) }}" class="text-blue-500">{!! $product->name !!}</a>
+                                        @else
+                                            {!! $product->name !!}
+                                        @endif
                                     </th>
                                     <td class="px-6 py-4">
                                         {{ $product->price }}€
@@ -44,7 +48,11 @@
                                         <a wire:navigate href="{{ route('supplier-products-edit-page', ['product' => $product->id]) }}" class="text-blue-500">Edit</a>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td class="px-6 py-4" colspan="7">No data available</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

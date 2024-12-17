@@ -87,26 +87,21 @@ class OrderResource extends Resource
             ->paginated([10])
             ->defaultSort('created_at', 'desc')
             ->columns([
-                Tables\Columns\TextColumn::make('number')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('number'),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Customer'),
                 Tables\Columns\TextColumn::make('items_count')
                     ->counts('items')
                     ->label('Products'),
-                Tables\Columns\TextColumn::make('total')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('total'),
                 Tables\Columns\TextColumn::make('items_status')
                     ->label('Products Status'),
-                Tables\Columns\TextColumn::make('status')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([

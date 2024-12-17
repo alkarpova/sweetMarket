@@ -15,6 +15,8 @@ class CartService
 
     public mixed $errors = [];
 
+    public mixed $warnings = [];
+
     public function __construct()
     {
         $this->instance = self::DEFAULT_INSTANCE;
@@ -54,18 +56,33 @@ class CartService
      */
     public function validateProduct(Product $product, int $quantity): void
     {
-        $validator = Validator::make([
-            'status' => $product->status->value,
-            'quantity' => $quantity,
-            'minimum' => $product->minimum,
-            'available_quantity' => $product->quantity,
-        ], [
-            'status' => ['in:4'],
-            'quantity' => ['lte:available_quantity'], // Ensure requested quantity is less than or equal to available stock
-        ], [
-            'status.in' => 'This product is not available for purchase.',
-        ]);
+        $validator = Validator::make(
+            [
+                'status' => $product->status->value,
+                'requested_quantity' => $quantity,
+                'minimum' => $product->minimum,
+                'available_quantity' => $product->quantity,
+            ],
+            [
+                'status' => ['in:4'], // 4 = 'Published'
+                'requested_quantity' => ['gte:minimum'],
+            ],
+            [
+                'status.in' => 'This product is not available for purchase.',
+                'requested_quantity.gte' => "The minimum quantity for this product is {$product->minimum}.",
+            ]
+        );
 
+        // Проверка предупреждения при заказе большего количества, чем есть на складе
+        if ($quantity > $product->quantity) {
+            $this->warnings[] = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'warning' => 'You are ordering more than the available stock. Delivery may take longer.',
+            ];
+        }
+
+        // Если валидация провалилась
         if ($validator->fails()) {
             $this->errors[] = [
                 'id' => $product->id,
@@ -82,10 +99,6 @@ class CartService
     {
         // Validate product and quantity
         $this->validateProduct($product, $quantity);
-
-        if ($this->errors) {
-            return;
-        }
 
         // Get the cart items
         $cartItems = $this->getCartItems();
@@ -188,5 +201,10 @@ class CartService
     public function getErrors(): Collection
     {
         return collect($this->errors);
+    }
+
+    public function getWarnings(): Collection
+    {
+        return collect($this->warnings);
     }
 }

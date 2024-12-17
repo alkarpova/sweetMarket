@@ -48,9 +48,9 @@ class CategoryPage extends Component
     /**
      * Get the category by slug
      */
-    public function mount(string $slug): void
+    public function mount(string $id): void
     {
-        $this->record = Category::where('slug', $slug)
+        $this->record = Category::where('id', $id)
             ->status()
             ->firstOrFail();
     }
@@ -146,9 +146,9 @@ class CategoryPage extends Component
     public function priceRanges(): array
     {
         return [
-            'budget' => 'Budget products',
-            'mid' => 'Medium price segment',
-            'premium' => 'Premium segment',
+            'budget' => 'Under 10 euro',
+            'mid' => '11-50 euro',
+            'premium' => 'Above 50 euro',
         ];
     }
 
@@ -202,7 +202,7 @@ class CategoryPage extends Component
     {
         return User::whereHas('products', function ($query) {
             $query->where('category_id', $this->record->id)->status();
-        })->whereNotNull('deleted_at')->get();
+        })->whereNull('deleted_at')->get();
     }
 
     /**

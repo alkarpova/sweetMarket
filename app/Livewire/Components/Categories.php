@@ -27,9 +27,9 @@ class Categories extends Component
     }
 
     #[Computed]
-    public function isActiveCategory($slug): bool
+    public function isActiveCategory($id): bool
     {
-        return url()->current() === route('category-page', ['slug' => $slug]);
+        return url()->current() === route('category-page', ['id' => $id]);
     }
 
     public function render(): View
