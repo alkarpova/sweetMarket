@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\ProductStatus;
 use App\Models\Product;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
@@ -64,7 +65,7 @@ class CartService
                 'available_quantity' => $product->quantity,
             ],
             [
-                'status' => ['in:4'], // 4 = 'Published'
+                'status' => ['in:' . ProductStatus::Published->value],
                 'requested_quantity' => ['gte:minimum'],
             ],
             [
@@ -73,7 +74,7 @@ class CartService
             ]
         );
 
-        // Проверка предупреждения при заказе большего количества, чем есть на складе
+        // Check if the requested quantity is more than the available stock
         if ($quantity > $product->quantity) {
             $this->warnings[] = [
                 'id' => $product->id,
@@ -82,7 +83,7 @@ class CartService
             ];
         }
 
-        // Если валидация провалилась
+        // Global errors
         if ($validator->fails()) {
             $this->errors[] = [
                 'id' => $product->id,

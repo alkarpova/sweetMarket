@@ -94,7 +94,7 @@ class CheckoutPage extends Component
     /**
      * Create a new order
      */
-    public function createOrder(): void
+    public function createOrder()
     {
         // Validate form fields
         $validated = $this->validate([
@@ -145,6 +145,7 @@ class CheckoutPage extends Component
         }
 
         $this->dispatch('alert', 'Order created successfully', 'success');
+
         // Redirect to success page
         $this->redirect(route('order-success-page', $order->number));
     }

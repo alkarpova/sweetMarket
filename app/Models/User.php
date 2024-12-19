@@ -127,4 +127,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(Product::class);
     }
+
+    public function hasProfileFields(): bool
+    {
+        return $this->country_id && $this->phone && $this->region_id && $this->city_id;
+    }
 }

@@ -26,6 +26,18 @@
                     <button @click="$dispatch('openModal', { component: 'auth.modal.edit-profile' })" class="inline-block mt-4 rounded-md py-2 px-5 bg-green-500 text-white">Edit</button>
                     <button wire:click.prevent="deleteProfile" type="button" class="px-4 py-2 font-semibold text-white bg-red-500 rounded-lg">Delete Profile</button>
                 </div>
+                @if(auth()->user()->isSupplier() && !auth()->user()->hasProfileFields())
+                    <div class="mt-4 bg-gray-50 p-5 text-red-500">
+                        <p class="font-bold">
+                            If you want to add products, you need to fill these profile fields:
+                        </p>
+                        <ul class="list-disc ps-4">
+                            <li>Country</li>
+                            <li>Region</li>
+                            <li>City</li>
+                        </ul>
+                    </div>
+                @endif
             </div>
         </div>
         <aside class="col-span-2 px-4 py-8 bg-white shadow rounded-lg">

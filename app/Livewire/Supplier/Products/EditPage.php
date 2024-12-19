@@ -27,7 +27,7 @@ class EditPage extends Component
     public string $name = '';
     public string $description = '';
     public $photo;
-    public string $image = '';
+    public $image;
     public float $price = 0.0;
     public int $minimum = 1;
     public int $quantity = 1;

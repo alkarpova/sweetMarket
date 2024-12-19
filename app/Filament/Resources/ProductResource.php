@@ -60,24 +60,7 @@ class ProductResource extends Resource
                                 Forms\Components\Select::make('status')
                                     ->searchable()
                                     ->preload()
-                                    ->options(function ($livewire) {
-                                        $currentStatus = $livewire->record->status;
-
-                                        if ($currentStatus === ProductStatus::Pending) {
-                                            return [
-                                                '3' => ProductStatus::Rejected->getLabel(),
-                                                '4' => ProductStatus::Published->getLabel(),
-                                            ];
-                                        }
-
-                                        if ($currentStatus === ProductStatus::Published) {
-                                            return [
-                                                '4' => ProductStatus::Rejected->getLabel(),
-                                            ];
-                                        }
-
-                                        return [];
-                                    })
+                                    ->options(ProductStatus::class)
                                     ->disabled(function ($livewire) {
                                         return $livewire->record->status === ProductStatus::Draft;
                                     })

@@ -67,7 +67,7 @@ class ViewPage extends Component
             'items' => fn ($query) => $query->where('supplier_id', auth()->user()->id),
         ]);
 
-        $this->dispatch('alert', $message = 'Status updated successfully.', $type = 'success');
+        $this->dispatch('alert','Status updated successfully.', 'success');
     }
 
     public function render()

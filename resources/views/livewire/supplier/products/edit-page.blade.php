@@ -126,9 +126,13 @@
                             <img src="{{ \Illuminate\Support\Facades\Storage::url($image) }}" alt="{{ $name }}" class="w-24 h-24 object-cover rounded-lg">
                         @endif
                         <p>If you want to change the photo, please select a new one.</p>
-                        <input wire:model="photo" id="image" type="file" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('image') border-red-300 text-red-900 @enderror">
+                        @if($image)
+                            <input wire:model="photo" id="image" type="file" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('image') border-red-300 text-red-900 @enderror">
+                        @else
+                            <input wire:model="photo" id="image" type="file" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('image') border-red-300 text-red-900 @enderror">
+                        @endif
                         <div wire:loading wire:target="photo">Uploading...</div>
-                        @if ($photo)
+                        @if($photo)
                             <img src="{{ $photo->temporaryUrl() }}" class="w-24 h-24 object-cover rounded-lg" alt="image">
                         @endif
                         @error('image')
