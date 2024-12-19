@@ -17,8 +17,8 @@ class LoginPage extends Component
     public $remember = false;
 
     protected $rules = [
-        'email' => ['required', 'email'],
-        'password' => ['required'],
+        'email' => 'required|email|min:4|max:255',
+        'password' => 'required|min:8|max:255',
     ];
 
     public function authenticate()
@@ -27,8 +27,6 @@ class LoginPage extends Component
 
         if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
             $this->addError('email', trans('auth.failed'));
-
-            return;
         }
 
         return redirect()->intended(route('home-page'));

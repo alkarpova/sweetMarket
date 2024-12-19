@@ -110,20 +110,24 @@
                     <div class="mb-4">
                         <label for="weight" class="block text-sm font-bold text-gray-700">
                             Weight
+                            <span class="text-red-600">*</span>
                         </label>
-                        <input wire:model="weight" id="weight" type="text" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('weight') border-red-300 text-red-900 @enderror">
+                        <input wire:model="weight" id="weight" type="text" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('weight') border-red-300 text-red-900 @enderror">
                         @error('weight')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="image" class="block text-sm font-bold text-gray-700">
-                            Image
+                        <label for="photo" class="block text-sm font-bold text-gray-700">
+                            Photo
                             <span class="text-red-600">*</span>
                         </label>
-                        <input wire:model="image" id="image" type="file" required class="mt-1 block
-                        w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('image') border-red-300 text-red-900 @enderror">
-                        @error('image')
+                        <input wire:model="photo" id="photo" type="file" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('image') border-red-300 text-red-900 @enderror">
+                        <div wire:loading wire:target="photo">Uploading...</div>
+                        @if ($photo)
+                            <img src="{{ $photo->temporaryUrl() }}" class="w-24 h-24 object-cover rounded-lg" alt="image">
+                        @endif
+                        @error('photo')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
@@ -133,8 +137,9 @@
                             <span class="text-red-600">*</span>
                         </label>
                         <select wire:model="status" id="status" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('status') border-red-300 text-red-900 @enderror">
-                            <option value="0">Draft</option>
-                            <option value="1">Pending</option>
+                            @foreach($this->statuses as $status)
+                                <option value="{{ $status->value }}">{{ $status->getLabel() }}</option>
+                            @endforeach
                         </select>
                         @error('status')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>

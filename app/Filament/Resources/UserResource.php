@@ -67,6 +67,10 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('role')
+                    ->options(UserRole::class)
+                    ->preload()
+                    ->searchable(),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([

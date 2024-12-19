@@ -1,7 +1,7 @@
 <article class="flex flex-col bg-white rounded-lg p-3 space-y-4">
     <a href="{{ route('product-page', ['id' => $product->id]) }}">
         @if($product->image)
-            <img class="object-cover w-full h-full rounded" src="{{ Storage::disk('public')->url($product->image) }}" alt="{{ $product->name }}">
+            <img class="object-cover w-full h-full rounded" src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}">
         @else
             <img
                 src="https://placehold.co/500x320/000000/333"

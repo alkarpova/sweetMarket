@@ -55,7 +55,7 @@ class EditProfile extends ModalComponent
         $this->validate([
             'name' => 'required|string|min:4|max:255',
             'email' => 'required|email|min:4|max:64|unique:users,email,'.$this->user->id,
-            'phone' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|min:8|max:255',
             'country_id' => 'nullable|exists:countries,id',
             'region_id' => 'nullable|exists:regions,id',
             'city_id' => 'nullable|exists:cities,id',

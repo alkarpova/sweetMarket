@@ -32,7 +32,15 @@
                         @foreach ($order->items as $item)
                             <tr>
                                 <td class="px-4 py-2 border">
-                                    <a wire:navigate href="{{ route('product-page', $item->product->id) }}" class="text-blue-600">{{ $item->product->name }}</a>
+                                    @if($item->product)
+                                        @if($item->product->status === \App\Enums\ProductStatus::Published)
+                                            <a wire:navigate href="{{ route('product-page', $item->product->id) }}" class="text-blue-600">{{ $item->product->name }}</a>
+                                        @else
+                                            {{ $item->product->name }}
+                                        @endif
+                                    @else
+                                        <span class="text-gray-500">Product not available</span>
+                                    @endif
                                 </td>
                                 <td class="px-4 py-2 border">{{ $item->quantity }}</td>
                                 <td class="px-4 py-2 border">{{ $item->price }}</td>

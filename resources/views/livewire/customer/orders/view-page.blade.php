@@ -40,14 +40,22 @@
                     <tbody>
                         @forelse ($this->order->items as $item)
                             <tr>
-                                <td class="px-4 py-2 border">{{ $item->supplier?->name }}</td>
                                 <td class="px-4 py-2 border">
-                                    @if($item->product)
+                                    @if($item->supplier)
+                                        {{ $item->supplier->name }}
+                                    @else
+                                        <span class="text-gray-500">Supplier not available</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-2 border">
+                                    @if($item->supplier && $item->product)
                                         @if($item->product->status === \App\Enums\ProductStatus::Published)
                                             <a wire:navigate href="{{ route('product-page', $item->product->id) }}" class="text-blue-600">{{ $item->product->name }}</a>
                                         @else
-                                            {{ $item->product?->name }}
+                                            {{ $item->product->name }}
                                         @endif
+                                    @else
+                                        <span class="text-gray-500">Product not available</span>
                                     @endif
                                 </td>
                                 <td class="px-4 py-2 border">{{ $item->quantity }}</td>

@@ -24,7 +24,7 @@
         <!-- Product Image -->
         <div class="flex-shrink-0 w-full md:w-1/2">
             @if($this->record->image)
-                <img class="w-full h-auto rounded-lg" src="{{ Storage::disk('public')->url($this->record->image) }}" alt="{{ $this->record->name }}">
+                <img class="w-full h-auto rounded-lg" src="{{ Storage::url($this->record->image) }}" alt="{{ $this->record->name }}">
             @else
                 <img
                     src="https://placehold.co/700x420/000000/333"

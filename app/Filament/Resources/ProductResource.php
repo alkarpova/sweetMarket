@@ -60,13 +60,28 @@ class ProductResource extends Resource
                                 Forms\Components\Select::make('status')
                                     ->searchable()
                                     ->preload()
-                                    ->options(function () {
-                                        return ProductStatus::class;
+                                    ->options(function ($livewire) {
+                                        $currentStatus = $livewire->record->status;
+
+                                        if ($currentStatus === ProductStatus::Pending) {
+                                            return [
+                                                '3' => ProductStatus::Rejected->getLabel(),
+                                                '4' => ProductStatus::Published->getLabel(),
+                                            ];
+                                        }
+
+                                        if ($currentStatus === ProductStatus::Published) {
+                                            return [
+                                                '4' => ProductStatus::Rejected->getLabel(),
+                                            ];
+                                        }
+
+                                        return [];
                                     })
                                     ->disabled(function ($livewire) {
                                         return $livewire->record->status === ProductStatus::Draft;
                                     })
-                                    ->default(ProductStatus::Draft),
+                                    ->default(ProductStatus::Draft->value),
                             ]),
                         Forms\Components\Section::make('Relations')
                             ->columnSpan(1)

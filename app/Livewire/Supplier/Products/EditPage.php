@@ -9,6 +9,7 @@ use App\Models\Ingredient;
 use App\Models\Product;
 use App\Models\Theme;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Validation\Rules\Enum;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -18,33 +19,33 @@ class EditPage extends Component
 {
     use WithFileUploads;
 
-    public $productId;
+    public string $productId;
+    public string $category;
+    public array $selectedThemes = [];
+    public array $selectedAllergens = [];
+    public array $selectedIngredients = [];
+    public string $name = '';
+    public string $description = '';
+    public $photo;
+    public string $image = '';
+    public float $price = 0.0;
+    public int $minimum = 1;
+    public int $quantity = 1;
+    public float $weight = 0;
+    public int $status = ProductStatus::Pending->value;
+    public array $statuses = [];
 
-    public $category;
-
-    public $selectedThemes;
-
-    public $selectedAllergens;
-
-    public $selectedIngredients;
-
-    public $name;
-
-    public $description;
-
-    #[Validate('image|max:2048')]
-    //    public $image;
-
-    public $price;
-
-    public $minimum;
-
-    public $quantity;
-
-    public $weight;
-
-    public function mount($product)
+    public function mount($product): void
     {
+        if (!auth()->user()->country_id || !auth()->user()->region_id || !auth()->user()->city_id) {
+            $this->redirect(route('profile-page'));
+        }
+
+        $this->statuses = array_filter(
+            ProductStatus::cases(),
+            static fn($status) => !in_array($status->name, ['Rejected', 'Published'])
+        );
+
         $query = Product::where('id', $product)
             ->firstOrFail();
 
@@ -55,70 +56,89 @@ class EditPage extends Component
         $this->selectedIngredients = $query->ingredients->pluck('id')->toArray();
         $this->name = $query->name;
         $this->description = $query->description;
-        //        $this->image = $query->image;
+        $this->image = $query->image;
         $this->price = $query->price;
         $this->minimum = $query->minimum;
         $this->quantity = $query->quantity;
         $this->weight = $query->weight;
+        $this->status = $query->status->value;
     }
 
     public function updateProduct(): void
     {
-        $validated = $this->validate([
+        // Validate
+        $this->validate([
             'category' => 'required|exists:categories,id',
             'selectedThemes.*' => 'nullable|exists:themes,id',
             'selectedAllergens.*' => 'nullable|exists:allergens,id',
             'selectedIngredients.*' => 'nullable|exists:ingredients,id',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            //            'image' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image|max:2048',
             'price' => 'required|numeric|min:0',
             'minimum' => 'required|integer|min:1',
             'quantity' => 'required|integer|min:1',
-            'weight' => 'nullable|numeric|min:0',
+            'weight' => 'required|numeric|min:0',
+            'status' => ['required', new Enum(ProductStatus::class)],
         ]);
 
-        //        $validated['image'] = $this->image->store('products', 'public');
-
+        // Update product
         $product = Product::findOrFail($this->productId);
-
         $product->country_id = auth()->user()?->country_id;
         $product->region_id = auth()->user()?->region_id;
         $product->city_id = auth()->user()?->city_id;
-        $product->category_id = $validated['category'];
-        $product->name = $validated['name'];
-        $product->description = $validated['description'];
-        $product->price = $validated['price'];
-        $product->minimum = $validated['minimum'];
-        $product->quantity = $validated['quantity'];
-        $product->weight = filled($validated['weight']) ? $validated['weight'] : 0;
-        //        $product->image = $validated['image'];
-        $product->status = ProductStatus::Pending;
+        $product->category_id = $this->category;
+        $product->name = trim($this->name);
+        $product->description = trim($this->description);
+        $product->price = $this->price;
+        $product->minimum = $this->minimum;
+        $product->quantity = $this->quantity;
+        $product->weight = $this->weight;
+
+        if ($this->status === ProductStatus::Draft->value) {
+            $product->status = ProductStatus::Draft;
+        } else {
+            $product->status = ProductStatus::Pending;
+        }
+
+        if ($this->photo) {
+            $photoName = md5($this->photo . microtime()).'.'.$this->photo->extension();
+            $this->photo->storePubliclyAs(path: 'public', name: $photoName);
+            $product->image = $photoName;
+        }
+
         $product->save();
 
+        // Save relationships
         $product->themes()->sync($this->selectedThemes);
         $product->allergens()->sync($this->selectedAllergens);
         $product->ingredients()->sync($this->selectedIngredients);
 
+        // Notify
         session()->flash('notify', [
             'type' => 'success',
             'message' => 'Product updated',
         ]);
 
+        // Redirect
         $this->redirect(route('supplier-products-page'));
     }
 
     public function deleteProduct(): void
     {
+        // Find product
         $product = Product::findOrFail($this->productId);
 
+        // Delete product
         $product->delete();
 
+        // Notify
         session()->flash('notify', [
             'type' => 'success',
             'message' => 'Product deleted',
         ]);
 
+        // Redirect
         $this->redirect(route('supplier-products-page'));
     }
 

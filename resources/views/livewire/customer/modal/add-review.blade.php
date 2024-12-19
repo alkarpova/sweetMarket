@@ -5,15 +5,10 @@
             <div class="space-y-2">
                 <label for="supplier" class="font-bold">
                     Supplier
-                    <span class="text-red-600">*</span>
                 </label>
-                <select wire:model="supplier" id="supplier" class="block w-full border" required>
-                    <option value="">Select supplier</option>
-                    @foreach($suppliers as $supplier)
-                        <option value="{{ $supplier['id'] }}">{{ $supplier['name'] }}</option>
-                    @endforeach
-                </select>
-                <div class="text-red-500">@error('supplier') {{ $message }} @enderror</div>
+                <div>
+                    {{ $this->supplier->name }}
+                </div>
             </div>
             <div class="space-y-2">
                 <label for="rating" class="font-bold">

@@ -7,9 +7,7 @@ use Filament\Support\Contracts\HasLabel;
 enum OrderStatus: string implements HasLabel
 {
     case Pending = 'pending';
-    case Confirmed = 'confirmed';
     case Rejected = 'rejected';
-    case Ready = 'ready';
     case Delivered = 'delivered';
     case Canceled = 'canceled';
 
@@ -17,9 +15,7 @@ enum OrderStatus: string implements HasLabel
     {
         return match ($this) {
             self::Pending => 'Pending',
-            self::Confirmed => 'Confirmed',
             self::Rejected => 'Rejected',
-            self::Ready => 'Ready',
             self::Delivered => 'Delivered',
             self::Canceled => 'Canceled',
         };

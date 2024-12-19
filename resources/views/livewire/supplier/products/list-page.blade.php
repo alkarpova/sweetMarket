@@ -4,7 +4,14 @@
             <div class="px-4 py-8 bg-white shadow rounded-lg">
                 <div class="flex items-center justify-between gap-4 mb-4">
                     <h1 class="font-bold text-xl xl:text-2xl">List Products</h1>
-                    <a href="{{ route('supplier-products-create-page') }}" class="px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg">Add Product</a>
+                    <div class="flex flex-col items-end gap-2">
+                        @if(auth()->user()->country_id && auth()->user()->city_id && auth()->user()->region_id)
+                            <a href="{{ route('supplier-products-create-page') }}" class="px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg">Add Product</a>
+                        @else
+                            <p class="text-red-500">Please complete your profile to add products</p>
+                            <a href="{{ route('profile-page') }}" class="px-4 py-2 font-semibold text-white bg-blue-500 rounded-lg">Complete Profile</a>
+                        @endif
+                    </div>
                 </div>
                 <div class="relative overflow-x-auto sm:rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right">

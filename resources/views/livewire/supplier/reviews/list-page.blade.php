@@ -9,6 +9,7 @@
                             <tr>
                                 <th class="px-6 py-3">Order</th>
                                 <th class="px-6 py-3">Customer</th>
+                                <th class="px-6 py-3">User</th>
                                 <th class="px-6 py-3">Rating</th>
                                 <th class="px-6 py-3">Comment</th>
                             </tr>
@@ -18,10 +19,14 @@
                                 <tr class="odd:bg-white even:bg-gray-50 border-b">
                                     <td class="px-6 py-4">{{ $review->order->number }}</td>
                                     <td class="px-6 py-4">
-                                        @if($review->product->status === \App\Enums\ProductStatus::Published)
-                                            <a wire:navigate href="{{ route('product-page', $review->orderItem->product->id) }}" class="text-blue-600">{{ $review->orderItem->product->name }}</a>
+                                        @if($review->product)
+                                            @if($review->product->status === \App\Enums\ProductStatus::Published)
+                                                <a wire:navigate href="{{ route('product-page', $review->product->id) }}" class="text-blue-600">{{ $review->product->name }}</a>
+                                            @else
+                                                {{ $review->product->name }}
+                                            @endif
                                         @else
-                                            {{ $review->orderItem->product->name }}
+                                            <span class="text-gray-500">Product not available</span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">{{ $review->user->name }}</td>
