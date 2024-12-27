@@ -8,7 +8,7 @@
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                             <tr>
                                 <th class="px-6 py-3">Order</th>
-                                <th class="px-6 py-3">Customer</th>
+                                <th class="px-6 py-3">Product</th>
                                 <th class="px-6 py-3">User</th>
                                 <th class="px-6 py-3">Rating</th>
                                 <th class="px-6 py-3">Comment</th>

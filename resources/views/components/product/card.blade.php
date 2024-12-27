@@ -53,6 +53,6 @@
     </div>
     <div class="flex items-center justify-between">
         <div class="font-bold text-lg">{{ $product->price }}€</div>
-        <a class="bg-green-900 text-white px-3 py-2 rounded-lg font-semibold text-sm hover:bg-black" href="{{ route('product-page', ['id' => $product->id]) }}">Skatit</a>
+        <a class="bg-green-900 text-white px-3 py-2 rounded-lg font-semibold text-sm hover:bg-black" href="{{ route('product-page', ['id' => $product->id]) }}">Show</a>
     </div>
 </article>

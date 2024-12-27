@@ -19,8 +19,8 @@ class CityFactory extends Factory
     public function definition(): array
     {
         return [
-            'country_id' => Country::value('id'),
-            'region_id' => Region::value('id'),
+            'country_id' => Country::factory()->create()->id,
+            'region_id' => Region::factory()->create()->id,
             'name' => $this->faker->city,
             'status' => $this->faker->boolean,
         ];

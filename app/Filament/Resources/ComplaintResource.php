@@ -83,16 +83,8 @@ class ComplaintResource extends Resource
                     ->searchable()
                     ->label('Supplier'),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ]);
     }
 

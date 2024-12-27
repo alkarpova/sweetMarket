@@ -54,22 +54,7 @@ it('removes a product from cart', function () {
     expect(Cart::getContent())->toBeEmpty();
 });
 
-it('clears the cart', function () {
-    $product = Product::factory()->create([
-        'status' => ProductStatus::Published,
-        'price' => 100,
-        'quantity' => 10,
-        'minimum' => 1,
-    ]);
-
-    Cart::add($product, 2);
-    Cart::remove($product);
-
-    expect(Cart::getContent())->toBeEmpty();
-});
-
-
-it('adds error if product not published', function () {
+it('displays an error when trying to add a non-published product to the cart', function () {
     $product = Product::factory()->create([
         'status' => ProductStatus::Draft, // Not published
         'price' => 100,
@@ -85,7 +70,7 @@ it('adds error if product not published', function () {
         ->toBe('This product is not available for purchase.');
 });
 
-it('adds error if requested quantity less than minimum', function () {
+it('displays an error when adding less than the minimum quantity to the cart', function () {
     $product = Product::factory()->create([
         'status' => ProductStatus::Published,
         'price' => 100,
@@ -99,6 +84,22 @@ it('adds error if requested quantity less than minimum', function () {
     expect($errors)->not->toBeEmpty()
         ->and($errors->first()['errors']->first('requested_quantity'))
         ->toContain('The minimum quantity for this product is 5.');
+});
+
+it('displays a warning when adding more items to the cart than available stock', function () {
+    $product = Product::factory()->create([
+        'status' => ProductStatus::Published,
+        'price' => 100,
+        'quantity' => 10,
+        'minimum' => 5,
+    ]);
+
+    Cart::add($product, 11);
+    $warnings = Cart::getWarnings();
+
+    expect($warnings)->not->toBeEmpty()
+        ->and($warnings->first()['warning'])
+        ->toContain('You are ordering more than the available stock. Delivery may take longer.');
 });
 
 it('calculates total correctly', function () {

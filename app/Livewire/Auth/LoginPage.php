@@ -26,7 +26,10 @@ class LoginPage extends Component
         $this->validate();
 
         if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
-            $this->addError('email', trans('auth.failed'));
+            $this->reset('password');
+            $this->dispatch('alert', 'Invalid email or password', 'error');
+
+            return false;
         }
 
         return redirect()->intended(route('home-page'));

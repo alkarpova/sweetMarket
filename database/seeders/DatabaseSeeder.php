@@ -28,37 +28,45 @@ class DatabaseSeeder extends Seeder
             'status' => true,
         ]);
 
-        Region::factory()->create([
+        $regionRiga = Region::factory()->create([
+            'country_id' => Country::all()->random()->id,
             'name' => 'Rīga',
             'status' => true,
         ]);
 
         Region::factory()->create([
+            'country_id' => Country::all()->random()->id,
             'name' => 'Pierīga',
             'status' => true,
         ]);
 
         Region::factory()->create([
+            'country_id' => Country::all()->random()->id,
             'name' => 'Kurzeme',
             'status' => true,
         ]);
 
         Region::factory()->create([
+            'country_id' => Country::all()->random()->id,
             'name' => 'Latgale',
             'status' => true,
         ]);
 
         Region::factory()->create([
+            'country_id' => Country::all()->random()->id,
             'name' => 'Vidzeme',
             'status' => true,
         ]);
 
         Region::factory()->create([
+            'country_id' => Country::all()->random()->id,
             'name' => 'Zemgale',
             'status' => true,
         ]);
 
         City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionRiga->id,
             'name' => 'Rīga',
             'status' => true,
         ]);
@@ -207,6 +215,10 @@ class DatabaseSeeder extends Seeder
         $categories->each(function ($category) {
             // Create products
             $products = Product::factory(50)->create([
+                'user_id' => User::all()->random()->id,
+                'country_id' => Country::all()->random()->id,
+                'region_id' => Region::all()->random()->id,
+                'city_id' => City::all()->random()->id,
                 'category_id' => $category->id,
                 'status' => ProductStatus::Published,
             ]);

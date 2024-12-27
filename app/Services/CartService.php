@@ -62,7 +62,6 @@ class CartService
                 'status' => $product->status->value,
                 'requested_quantity' => $quantity,
                 'minimum' => $product->minimum,
-                'available_quantity' => $product->quantity,
             ],
             [
                 'status' => ['in:' . ProductStatus::Published->value],
