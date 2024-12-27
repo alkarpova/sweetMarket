@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 
 it('displays the CreateProduct page for the supplier', function () {
-    $category = \App\Models\Category::factory()->create(['status' => true]);
     Country::factory()->create();
     Region::factory()->create();
     City::factory()->create();
