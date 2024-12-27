@@ -98,7 +98,7 @@ class CheckoutPage extends Component
     {
         // Validate form fields
         $validated = $this->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|min:3|max:255',
             'email' => 'required|email|min:4|max:64',
             'phone' => 'required|string|min:8|max:12',
             'city' => 'required|exists:cities,id',

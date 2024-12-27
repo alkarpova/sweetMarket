@@ -53,13 +53,13 @@ class EditProfile extends ModalComponent
     public function update(): void
     {
         $this->validate([
-            'name' => 'required|string|min:4|max:255',
+            'name' => 'required|string|min:3|max:255',
             'email' => 'required|email|min:4|max:64|unique:users,email,'.$this->user->id,
-            'phone' => 'nullable|string|min:8|max:255',
+            'phone' => 'nullable|string|min:8|max:12',
             'country_id' => 'nullable|exists:countries,id',
             'region_id' => 'nullable|exists:regions,id',
             'city_id' => 'nullable|exists:cities,id',
-            'address' => 'nullable|string|max:255',
+            'address' => 'nullable|string|min:4|max:255',
         ]);
 
         User::where('id', $this->user->id)->update([

@@ -17,7 +17,7 @@ class LoginPage extends Component
     public $remember = false;
 
     protected $rules = [
-        'email' => 'required|email|min:4|max:255',
+        'email' => 'required|email|min:4|max:64',
         'password' => 'required|min:8|max:255',
     ];
 

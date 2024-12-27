@@ -101,9 +101,13 @@ class EditPage extends Component
             $product->status = ProductStatus::Pending;
         }
 
+        // Check if a photo has been provided before proceeding.
         if ($this->photo) {
+            // Generate a unique name for the photo to avoid file name conflicts.
             $photoName = md5($this->photo . microtime()).'.'.$this->photo->extension();
+            // Save the photo to the publicly accessible storage directory.
             $this->photo->storePubliclyAs(path: 'public', name: $photoName);
+            // Assign the generated photo name to the product's image attribute.
             $product->image = $photoName;
         }
 

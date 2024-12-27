@@ -24,7 +24,7 @@ class CreatePage extends Component
     public string $name = '';
     public string $description = '';
     public $photo;
-    public float $price = 0.0;
+    public float $price = 0;
     public int $minimum = 1;
     public int $quantity = 1;
     public float $weight = 0;
@@ -62,7 +62,11 @@ class CreatePage extends Component
             'status' => 'required|in:0,1',
         ]);
 
+        // Generate a unique name for the photo to avoid file name conflicts.
+        // The final result is a unique file name in the format: "hash.extension".
         $photoName = md5($this->photo . microtime()).'.'.$this->photo->extension();
+
+        // Save the file to the publicly accessible storage directory.
         $this->photo->storePubliclyAs(path: 'public', name: $photoName);
 
         // Create product
