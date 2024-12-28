@@ -1,4 +1,4 @@
-<article class="flex flex-col bg-white rounded-lg p-3 space-y-4">
+<article class="flex flex-col bg-white rounded-lg p-3 space-y-4" wire:key="{{ $product->id }}">
     <a href="{{ route('product-page', ['id' => $product->id]) }}">
         @if($product->image)
             <img class="object-cover w-full h-full rounded" src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}">
