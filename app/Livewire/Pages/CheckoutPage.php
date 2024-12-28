@@ -94,7 +94,7 @@ class CheckoutPage extends Component
     /**
      * Create a new order
      */
-    public function createOrder()
+    public function createOrder(): void
     {
         // Validate form fields
         $validated = $this->validate([
@@ -219,6 +219,7 @@ class CheckoutPage extends Component
     public function removeCartItem(Product $productId): void
     {
         Cart::remove($productId);
+        $this->validateCart();
 
         $this->dispatch('alert', 'Product removed from cart', 'success');
     }

@@ -73,11 +73,6 @@ class DatabaseSeeder extends Seeder
             'role' => \App\Enums\UserRole::Admin,
         ]);
 
-        // Create suppliers
-        User::factory(10)->create([
-            'role' => \App\Enums\UserRole::Supplier,
-        ]);
-
         $categoryMap = [
             'Tortes',
             'Smalkmaizes',
@@ -201,28 +196,31 @@ class DatabaseSeeder extends Seeder
             $allergens->push($allergen);
         }
 
-        // make products
-        $categories->each(function ($category) {
-            // Create products
-            $products = Product::factory(50)->create([
-                'user_id' => User::all()->random()->id,
-                'country_id' => Country::all()->random()->id,
-                'region_id' => Region::all()->random()->id,
-                'city_id' => City::all()->random()->id,
-                'category_id' => $category->id,
-                'status' => ProductStatus::Published,
-            ]);
+        // Create suppliers
+        $users = User::factory(10)->create([
+            'role' => \App\Enums\UserRole::Supplier,
+        ]);
 
-            $products->each(function ($product) {
-                $product->allergens()->attach(
-                    Allergen::inRandomOrder()->limit(3)->get()
-                );
-                $product->ingredients()->attach(
-                    Ingredient::inRandomOrder()->limit(3)->get()
-                );
-                $product->themes()->attach(
-                    Theme::inRandomOrder()->limit(3)->get()
-                );
+        $users->each(function ($user) use ($categories) {
+            $categories->each(function ($category) use ($user) {
+                Product::factory(10)->create([
+                    'user_id' => $user->id,
+                    'country_id' => Country::all()->random()->id,
+                    'region_id' => Region::all()->random()->id,
+                    'city_id' => City::all()->random()->id,
+                    'category_id' => $category->id,
+                    'status' => \App\Enums\ProductStatus::Published,
+                ])->each(function ($product) {
+                    $product->allergens()->attach(
+                        Allergen::inRandomOrder()->limit(3)->get()
+                    );
+                    $product->ingredients()->attach(
+                        Ingredient::inRandomOrder()->limit(3)->get()
+                    );
+                    $product->themes()->attach(
+                        Theme::inRandomOrder()->limit(3)->get()
+                    );
+                });
             });
         });
     }

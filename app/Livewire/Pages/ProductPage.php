@@ -64,7 +64,7 @@ class ProductPage extends Component
         if ($warning->isNotEmpty()) {
             $warning->each(function ($message) {
                 if ($this->record->id === $message['id']) {
-                    $this->dispatch('alert', $message, 'warning');
+                    $this->dispatch('alert', $message['warning'], 'warning');
                 }
             });
         }

@@ -57,15 +57,25 @@ it('shows validation errors when creating a product with invalid data', function
     $this->actingAs(User::factory()->create());
 
     Livewire::test(\App\Livewire\Supplier\Products\CreatePage::class)
+        ->set('category', null)
+        ->set('photo', '')
         ->set('name', '')
         ->set('description', '')
         ->set('price', -10)
         ->set('minimum', 0)
+        ->set('quantity', 0)
+        ->set('weight', -1)
+        ->set('status', 5)
         ->call('createProduct')
         ->assertHasErrors([
+            'category' => 'required',
+            'photo' => 'required',
             'name' => 'required',
             'description' => 'required',
             'price' => 'min',
             'minimum' => 'min',
+            'quantity' => 'min',
+            'weight' => 'min',
+            'status' => 'in',
         ]);
 });
