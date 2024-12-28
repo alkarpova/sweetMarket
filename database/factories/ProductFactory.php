@@ -23,10 +23,10 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory()->create()->id,
-            'country_id' => Country::factory()->create()->id,
-            'region_id' => Region::factory()->create()->id,
-            'city_id' => City::factory()->create()->id,
+            'user_id' => fn () => User::factory()->create()->id,
+            'country_id' => fn () => Country::factory()->create()->id,
+            'region_id' => fn () => Region::factory()->create()->id,
+            'city_id' => fn () => City::factory()->create()->id,
             'category_id' => Category::factory()->create()->id,
             'name' => $this->faker->sentence,
             'description' => $this->faker->text,

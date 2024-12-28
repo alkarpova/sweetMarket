@@ -35,31 +35,26 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Region::factory()->create([
-            'country_id' => Country::all()->random()->id,
             'name' => 'Pierīga',
             'status' => true,
         ]);
 
         Region::factory()->create([
-            'country_id' => Country::all()->random()->id,
             'name' => 'Kurzeme',
             'status' => true,
         ]);
 
         Region::factory()->create([
-            'country_id' => Country::all()->random()->id,
             'name' => 'Latgale',
             'status' => true,
         ]);
 
         Region::factory()->create([
-            'country_id' => Country::all()->random()->id,
             'name' => 'Vidzeme',
             'status' => true,
         ]);
 
         Region::factory()->create([
-            'country_id' => Country::all()->random()->id,
             'name' => 'Zemgale',
             'status' => true,
         ]);
@@ -79,14 +74,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create suppliers
-        $users = User::factory(10)->create([
+        User::factory(10)->create([
             'role' => \App\Enums\UserRole::Supplier,
         ]);
-
-        $users->each(function ($user) {
-            $user->city()->associate(City::inRandomOrder()->first());
-            $user->save();
-        });
 
         $categoryMap = [
             'Tortes',

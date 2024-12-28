@@ -161,7 +161,7 @@ class CategoryPage extends Component
     public function weightRanges(): array
     {
         return [
-            'under_1kg' => 'Up to 1 kg',
+            'under_1kg' => 'Under to 1 kg',
             '1_2kg' => '1-2 kg',
             '2_5kg' => '2-5 kg',
             'above_5kg' => 'Above 5 kg',
