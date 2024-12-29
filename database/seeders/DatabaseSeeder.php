@@ -28,41 +28,114 @@ class DatabaseSeeder extends Seeder
             'status' => true,
         ]);
 
-        $regionRiga = Region::factory()->create([
-            'country_id' => Country::all()->random()->id,
-            'name' => 'Rīga',
-            'status' => true,
-        ]);
-
-        Region::factory()->create([
-            'name' => 'Pierīga',
-            'status' => true,
-        ]);
-
-        Region::factory()->create([
+        $regionKurzeme = Region::factory()->create([
             'name' => 'Kurzeme',
             'status' => true,
         ]);
 
-        Region::factory()->create([
+        $regionLatgale = Region::factory()->create([
             'name' => 'Latgale',
             'status' => true,
         ]);
 
-        Region::factory()->create([
+        $regionVidzeme = Region::factory()->create([
             'name' => 'Vidzeme',
             'status' => true,
         ]);
 
-        Region::factory()->create([
+        $regionZemgale = Region::factory()->create([
             'name' => 'Zemgale',
             'status' => true,
         ]);
 
         City::factory()->create([
             'country_id' => Country::all()->random()->id,
-            'region_id' => $regionRiga->id,
+            'region_id' => $regionVidzeme->id,
             'name' => 'Rīga',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionVidzeme->id,
+            'name' => 'Jūrmala',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionVidzeme->id,
+            'name' => 'Sigulda',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionVidzeme->id,
+            'name' => 'Ogre',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionVidzeme->id,
+            'name' => 'Valmiera',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionKurzeme->id,
+            'name' => 'Liepāja',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionKurzeme->id,
+            'name' => 'Ventspils',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionKurzeme->id,
+            'name' => 'Tukums',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionZemgale->id,
+            'name' => 'Jelgava',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionZemgale->id,
+            'name' => 'Bauska',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionLatgale->id,
+            'name' => 'Daugavpils',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionLatgale->id,
+            'name' => 'Rēzekne',
+            'status' => true,
+        ]);
+
+        City::factory()->create([
+            'country_id' => Country::all()->random()->id,
+            'region_id' => $regionLatgale->id,
+            'name' => 'Preiļi',
             'status' => true,
         ]);
 
@@ -74,17 +147,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $categoryMap = [
-            'Tortes',
-            'Smalkmaizes',
-            'Pīrādziņi',
-            'Ruletes',
-            'Ekleri',
-            'Riekstiņi',
-            'Kūkas',
-            'Kliņģeri',
-            'Zefīrs',
-            'Austrumu saldumi',
-            'Cits',
+            'Cakes',
+            'Bento Cakes',
+            'Pies',
+            'Hand Pies',
+            'Cupcakes',
+            'Patties',
+            'Kringles',
+            'Roll Cakes',
+            'Eclairs',
+            'Eastern Delicacies',
+            'Other',
         ];
 
         $categories = collect();
@@ -98,11 +171,11 @@ class DatabaseSeeder extends Seeder
         }
 
         $themeMap = [
-            'Bērniem',
-            'Dzimšanas diena',
-            'Kāzas',
-            'Ziemassvētki',
-            'Lieldienas',
+            'For Children',
+            'Birthday',
+            'Wedding',
+            'Christmas',
+            'Easter',
         ];
 
         $themes = collect();
@@ -116,32 +189,31 @@ class DatabaseSeeder extends Seeder
         }
 
         $ingredientMap = [
-            'Šokolāde',
-            'Mellenes',
-            'Zemenes',
-            'Medus',
-            'Biezpiens',
-            'Āboli',
-            'Apelsīni',
-            'Ķirši',
-            'Vārītais krēms',
-            'Avenes',
-            'Banāns',
-            'Rieksti',
-            'Kanēlis',
-            'Magones',
-            'Plūmes',
-            'Iebiezinātais piens',
-            'Aprikozes',
-            'Karamele',
-            'Olas',
-            'Siers',
-            'Gaļa',
-            'Kāposti',
-            'Sīpoli',
-            'Sēnes',
-            'Kartupeļi',
-            'Cits',
+            'Chocolate',
+            'Blueberries',
+            'Strawberries',
+            'Honey',
+            'Cottage Cheese',
+            'Apples',
+            'Oranges',
+            'Cherries',
+            'Custard',
+            'Raspberries',
+            'Banana',
+            'Nuts',
+            'Cinnamon',
+            'Poppy Seeds',
+            'Plums',
+            'Condensed Milk',
+            'Apricots',
+            'Caramel',
+            'Eggs',
+            'Cheese',
+            'Meat',
+            'Cabbage',
+            'Onions',
+            'Mushrooms',
+            'Potatoes',
         ];
 
         $ingredients = collect();
@@ -155,35 +227,16 @@ class DatabaseSeeder extends Seeder
         }
 
         $allergenMap = [
-            'Glutēns',
-            'Laktoze',
-            'Olu',
-            'Soja',
-            'Rieksti',
-            'Zivis',
-            'Garneles',
-            'Jūras veltes',
-            'Zirņi',
-            'Sinepes',
-            'Sēnes',
-            'Sulfiți',
-            'Lupīna',
-            'Kukurūza',
-            'Kvieši',
-            'Piena olbaltumvielas',
-            'Mitrālija',
-            'Kakao',
-            'Kokosrieksti',
-            'Mandarīni',
-            'Piena šokolāde',
-            'Kivi',
-            'Mango',
-            'Ananāsi',
-            'Piena produkti',
-            'Melnā šokolāde',
-            'Baltais šokolāde',
-            'Kafija',
-            'Cits',
+            'Dairy Products',
+            'Eggs',
+            'Nuts',
+            'Celery',
+            'Sulphites',
+            'Mustard',
+            'Lupin and Lupin Products',
+            'Gluten from Cereals',
+            'Soybeans and Soy Products',
+            'Sesame',
         ];
 
         $allergens = collect();

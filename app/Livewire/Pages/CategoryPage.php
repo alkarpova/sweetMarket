@@ -93,7 +93,7 @@ class CategoryPage extends Component
                     $query->where('price', '<', 10); // Example threshold
                     break;
                 case 'mid':
-                    $query->whereBetween('price', [11, 50]); // Example range
+                    $query->whereBetween('price', [10, 50]); // Example range
                     break;
                 case 'premium':
                     $query->where('price', '>', 50); // Example threshold
@@ -147,7 +147,7 @@ class CategoryPage extends Component
     {
         return [
             'budget' => 'Under 10 euro',
-            'mid' => '11-50 euro',
+            'mid' => '10-50 euro',
             'premium' => 'Above 50 euro',
         ];
     }
@@ -161,7 +161,7 @@ class CategoryPage extends Component
     public function weightRanges(): array
     {
         return [
-            'under_1kg' => 'Under to 1 kg',
+            'under_1kg' => 'Under 1 kg',
             '1_2kg' => '1-2 kg',
             '2_5kg' => '2-5 kg',
             'above_5kg' => 'Above 5 kg',
