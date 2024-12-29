@@ -11,7 +11,7 @@
             </a>
             <span class="text-sm text-gray-500">Supplier: {{ $this->record->user->name }}</span>
         </div>
-        <h1 class="text-4xl font-bold text-gray-900 mt-4">{!! $this->record->name !!}</h1>
+        <h1 class="text-4xl font-bold text-gray-900 mt-4">{{ $this->record->name }}</h1>
         <div class="flex flex-wrap items-center gap-2 mt-3">
             @foreach($this->record->themes as $theme)
                 <span class="bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full">{{ $theme->name }}</span>
@@ -37,7 +37,7 @@
         <!-- Product Details -->
         <div class="w-full md:w-1/2 space-y-6">
             <div class="text-gray-600 leading-relaxed">
-                {!! $this->record->description !!}
+                {{ $this->record->description }}
             </div>
             <div class="flex flex-col">
                 @if($this->record->weight)

@@ -33,7 +33,7 @@
                                         @if($product->status === \App\Enums\ProductStatus::Published)
                                             <a wire:navigate href="{{ route('product-page', $product->id) }}" class="text-blue-500">{!! $product->name !!}</a>
                                         @else
-                                            {!! $product->name !!}
+                                            {{ $product->name }}
                                         @endif
                                     </th>
                                     <td class="px-6 py-4">
