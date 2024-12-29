@@ -27,7 +27,7 @@ class ProductFactory extends Factory
             'country_id' => fn () => Country::factory()->create()->id,
             'region_id' => fn () => Region::factory()->create()->id,
             'city_id' => fn () => City::factory()->create()->id,
-            'category_id' => Category::factory()->create()->id,
+            'category_id' => fn () => Category::factory()->create()->id,
             'name' => $this->faker->sentence,
             'description' => $this->faker->text,
             'price' => $this->faker->randomFloat(2, 0, 100),
