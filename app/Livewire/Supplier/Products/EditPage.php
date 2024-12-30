@@ -41,7 +41,10 @@ class EditPage extends Component
             $this->redirect(route('profile-page'));
         }
 
-        $this->statuses = ProductStatus::cases();
+        $this->statuses = array_filter(
+            ProductStatus::cases(),
+            static fn($status) => !in_array($status->name, ['Rejected', 'Published'])
+        );
 
         $query = Product::where('id', $product)
             ->firstOrFail();

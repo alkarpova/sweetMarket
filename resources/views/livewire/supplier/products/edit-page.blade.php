@@ -145,6 +145,7 @@
                             <span class="text-red-600">*</span>
                         </label>
                         <select wire:model="status" id="status" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('status') border-red-300 text-red-900 @enderror">
+                            <option value="" disabled>Select a status</option>
                             @foreach($this->statuses as $status)
                                 <option value="{{ $status->value }}">{{ $status->getLabel() }}</option>
                             @endforeach
