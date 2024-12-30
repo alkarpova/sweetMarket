@@ -32,7 +32,7 @@ class EditPage extends Component
     public int $minimum = 1;
     public int $quantity = 1;
     public float $weight = 0;
-    public int $status = ProductStatus::Pending->value;
+    public ?int $status = null;
     public array $statuses = [];
 
     public function mount($product): void
