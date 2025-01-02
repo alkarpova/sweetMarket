@@ -37,29 +37,37 @@ class ProductPage extends Component
             ->status()
             ->firstOrFail();
 
+        // Check if the category is active
         if (! $this->record->category->status) {
             abort(404);
         }
 
+        // Check if user is the owner of the product
         if (auth()->check() && auth()->user()->id === $this->record->user->id) {
             $this->canAddToCart = false;
         }
     }
 
+    /**
+     * Add the product to the cart
+     */
     public function addToCart(): void
     {
         $this->validate([
             'quantity' => 'required|integer|min:1',
         ]);
 
+        // Check if user is the owner of the product
         if (auth()->check() && auth()->user()->id === $this->record->user->id) {
             $this->dispatch('alert', 'You can not add your own product to cart', 'error');
 
             return;
         }
 
+        // Add the product to the cart
         Cart::add($this->record, $this->quantity);
 
+        // Check if the product has warnings
         $warning = Cart::getWarnings();
         if ($warning->isNotEmpty()) {
             $warning->each(function ($message) {

@@ -18,6 +18,9 @@ class AddComplaint extends ModalComponent
 
     public string $supplier;
 
+    /**
+     * Get the suppliers and set the default supplier
+     */
     public function mount(): void
     {
         // Find users and set them to the suppliers
@@ -32,6 +35,9 @@ class AddComplaint extends ModalComponent
             : '';
     }
 
+    /**
+     * Send the complaint
+     */
     public function send(): void
     {
         // Check if the user is trying to complaint themselves

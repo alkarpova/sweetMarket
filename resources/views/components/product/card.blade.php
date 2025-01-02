@@ -15,7 +15,7 @@
             <span class="bg-gray-100 px-2 py-1 rounded-lg">{{ $theme->name }}</span>
         @endforeach
         @if($product->themes->count() > 2)
-            <span class="text-xs">un citi...</span>
+            <span class="text-xs">and others...</span>
         @endif
     </div>
     <div class="flex-1 space-y-4">

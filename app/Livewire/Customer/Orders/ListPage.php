@@ -11,6 +11,9 @@ class ListPage extends Component
 {
     use WithPagination;
 
+    /**
+     * Get the orders
+     */
     #[Computed]
     public function orders()
     {

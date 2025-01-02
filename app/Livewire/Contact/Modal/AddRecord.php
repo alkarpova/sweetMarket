@@ -40,6 +40,7 @@ class AddRecord extends ModalComponent
 
     public function send(): void
     {
+        // Validate form fields
         $this->validate([
             'topic' => [
                 'required',
@@ -50,6 +51,7 @@ class AddRecord extends ModalComponent
             'comment' => 'required|string|max:1000',
         ]);
 
+        // Create a new contact record
         Contact::create([
             'user_id' => $this->user?->id,
             'topic' => $this->topic,
@@ -58,8 +60,8 @@ class AddRecord extends ModalComponent
             'comment' => $this->comment,
         ]);
 
+        // Close the modal and show a success alert
         $this->forceClose()->closeModal();
-
         $this->dispatch('alert', 'Your message has been sent.', 'success');
     }
 

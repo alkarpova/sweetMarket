@@ -14,6 +14,7 @@ class Categories extends Component
     #[Computed]
     public function categories(): Collection
     {
+        // Get the categories that have published products
         return DB::table('categories')
             ->whereExists(function ($query) {
                 $query->select(DB::raw(1))
@@ -29,6 +30,7 @@ class Categories extends Component
     #[Computed]
     public function isActiveCategory($id): bool
     {
+        // Check if the current URL is the category page
         return url()->current() === route('category-page', ['id' => $id]);
     }
 

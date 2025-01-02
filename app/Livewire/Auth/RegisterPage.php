@@ -25,6 +25,9 @@ class RegisterPage extends Component
 
     public string $customerType = 'client';
 
+    /**
+     * Register the user.
+     */
     public function register()
     {
         $this->validate([

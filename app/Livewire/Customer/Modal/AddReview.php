@@ -23,11 +23,17 @@ class AddReview extends ModalComponent
 
     public ?string $comment = null;
 
+    /**
+     * Set the order and order item
+     */
     public function mount(): void
     {
         $this->supplier = User::find($this->orderItem->supplier_id);
     }
 
+    /**
+     * Send the review
+     */
     public function send(): void
     {
         // Check if the user is trying to review themselves
@@ -67,7 +73,6 @@ class AddReview extends ModalComponent
 
         // Close the modal
         $this->forceClose()->closeModal();
-
         $this->dispatch('alert', 'Review added successfully.', 'success');
     }
 

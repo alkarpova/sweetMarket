@@ -96,6 +96,9 @@ class CheckoutPage extends Component
      */
     public function createOrder(): void
     {
+        // Validate cart items before creating the order
+        $this->validateCart();
+
         // Validate form fields
         $validated = $this->validate([
             'name' => 'required|string|min:3|max:255',
@@ -107,9 +110,6 @@ class CheckoutPage extends Component
             'paymentMethod' => ['required', new Enum(PaymentMethod::class)],
             'shippingMethod' => ['required', new Enum(ShippingMethod::class)],
         ]);
-
-        // Validate cart items before creating the order
-        $this->validateCart();
 
         if (Cart::getErrors()->isNotEmpty()) {
             $this->dispatch('alert', 'Unable to place the order. Please resolve the errors and try again.', 'error');

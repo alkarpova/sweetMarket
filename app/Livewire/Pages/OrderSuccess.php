@@ -9,6 +9,11 @@ class OrderSuccess extends Component
 {
     public ?Order $order;
 
+    /**
+     * Get the order by number
+     *
+     * @param string $number
+     */
     public function mount(string $number): void
     {
         $this->order = Order::where('number', $number)

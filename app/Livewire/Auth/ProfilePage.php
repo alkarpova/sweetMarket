@@ -10,6 +10,9 @@ class ProfilePage extends Component
 {
     public ?User $user;
 
+    /**
+     * Get the user profile.
+     */
     #[On('userUpdated')]
     public function mount(): void
     {
@@ -27,6 +30,7 @@ class ProfilePage extends Component
      */
     public function deleteProfile(): void
     {
+        // Logout the user and delete the profile
         auth()->logout();
         $this->user->delete();
 

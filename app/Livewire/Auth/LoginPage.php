@@ -21,6 +21,9 @@ class LoginPage extends Component
         'password' => 'required|min:8|max:255',
     ];
 
+    /**
+     * Authenticate the user.
+     */
     public function authenticate()
     {
         $this->validate();
