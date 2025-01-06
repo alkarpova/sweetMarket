@@ -1,13 +1,9 @@
 <article class="flex flex-col bg-white rounded-lg p-3 space-y-4" wire:key="{{ $product->id }}">
     <a href="{{ route('product-page', ['id' => $product->id]) }}">
         @if($product->image)
-            <img class="object-cover w-full h-full rounded" src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}">
+            <div style="background-image: url('{{ Storage::url($product->image) }}');" class="bg-center bg-cover h-[300px] w-full"></div>
         @else
-            <img
-                src="https://placehold.co/500x320/000000/333"
-                alt="{{ $product->name }}"
-                class="object-cover w-full h-full rounded"
-            />
+            <div style="background-image: url('https://placehold.co/500x320/000000/333');" class="bg-center bg-cover h-[300px] w-full"></div>
         @endif
     </a>
     <div class="flex flex-wrap items-center gap-2 text-xs">

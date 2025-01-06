@@ -24,13 +24,9 @@
         <!-- Product Image -->
         <div class="flex-shrink-0 w-full md:w-1/2">
             @if($this->record->image)
-                <img class="w-full h-auto rounded-lg" src="{{ Storage::url($this->record->image) }}" alt="{{ $this->record->name }}">
+                <div style="background-image: url('{{ Storage::url($this->record->image) }}');" class="bg-center bg-cover h-[400px] w-full"></div>
             @else
-                <img
-                    src="https://placehold.co/700x420/000000/333"
-                    alt="{{ $this->record->name }}"
-                    class="w-full h-auto rounded-lg"
-                />
+                <div style="background-image: url('https://placehold.co/700x420/000000/333');" class="bg-center bg-cover h-[400px] w-full"></div>
             @endif
         </div>
 
